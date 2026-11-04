@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -6,6 +7,14 @@ import type { ReactNode } from "react";
 import { AppShell } from "@/components/AppShell";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
+
+// Inter auto-hébergée (police variable, sous-ensemble latin) : aucun appel à Google Fonts.
+const inter = localFont({
+  src: "../fonts/InterVariable-latin.woff2",
+  weight: "100 900",
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -30,7 +39,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={inter.variable}>
       <body className="font-sans antialiased">
         <NextIntlClientProvider>
           <AppShell>{children}</AppShell>
