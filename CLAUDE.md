@@ -18,7 +18,7 @@ Promesse produit non négociable : un résultat de détection est **une probabil
 | --- | --- |
 | Front + API applicative | Next.js (App Router), TypeScript strict, React Server Components par défaut |
 | UI | Tailwind CSS, composants maison (pas de bibliothèque de composants lourde), icônes Lucide |
-| i18n | next-intl ; `fr` par défaut, `en` ; fichiers `messages/{fr,en}.json` |
+| i18n | next-intl ; `fr` par défaut, `en` ; fichiers `apps/web/messages/{fr,en}.json` ; langue dans l'URL (`/fr`, `/en`, ADR-0002) |
 | Auth | Auth.js (e-mail magic link + Google) |
 | Base | PostgreSQL 16 + pgvector ; Prisma comme ORM côté Node |
 | File de tâches | Redis ; BullMQ côté Node, RQ côté Python |
@@ -117,7 +117,7 @@ Tous les contrats sont des schémas zod dans `packages/core` et des modèles Pyd
 - L'encart sous le score : « Un détecteur donne une probabilité, pas une preuve. Ce résultat doit être croisé avec d'autres éléments avant toute décision. » (clé i18n `detect.disclaimer`).
 - Les trois états : « Probablement IA », « Indéterminé », « Probablement humain ».
 
-Un test lint (`scripts/lint-vocabulary.ts`) échoue si un mot interdit apparaît dans `messages/`, `apps/web/app/` ou `docs/public/`.
+Un test lint (`scripts/lint-vocabulary.ts`) échoue si un mot interdit apparaît dans `apps/web/messages/`, `apps/web/app/` ou `docs/public/`.
 
 ## 8. Interface
 
