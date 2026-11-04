@@ -11,10 +11,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Header
-        sidebarOpen={sidebarOpen}
-        onToggleSidebar={() => setSidebarOpen((open) => !open)}
-      />
+      <Header sidebarOpen={sidebarOpen} onToggleSidebar={() => setSidebarOpen((open) => !open)} />
       <div className="flex flex-1">
         <Sidebar open={sidebarOpen} />
         <main className="min-w-0 flex-1 p-4 md:p-6">{children}</main>

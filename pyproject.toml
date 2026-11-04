@@ -1,3 +1,9 @@
 # Espace de travail uv (virtuel) : regroupe les services et les outils ML.
 [tool.uv.workspace]
 members = ["services/*", "ml/*"]
+
+# Outils partagés par tout le dépôt.
+[dependency-groups]
+dev = [
+  "pre-commit>=4.3",
+]
