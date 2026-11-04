@@ -1,0 +1,19 @@
+{
+  "header": {
+    "brand": "AltyDetect",
+    "openSidebar": "Ouvrir la barre latérale",
+    "closeSidebar": "Fermer la barre latérale",
+    "languageSwitcher": "Langue de l'interface",
+    "signIn": "Se connecter"
+  },
+  "sidebar": {
+    "navigation": "Navigation principale",
+    "tools": "Outils",
+    "detect": "Détecter",
+    "plagiarism": "Plagiat",
+    "rewrite": "Réécrire",
+    "write": "Écrire",
+    "recent": "Récents",
+    "noRecent": "Aucun document récent"
+  }
+}
