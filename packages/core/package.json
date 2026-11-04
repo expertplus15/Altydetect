@@ -1,0 +1,13 @@
+{
+  "name": "@altydetect/core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Types partagés, contrats d'API internes (zod), clés i18n.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  }
+}

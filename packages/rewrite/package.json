@@ -1,0 +1,13 @@
+{
+  "name": "@altydetect/rewrite",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Module Réécrire : prompts, registres, orchestration LLM.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  }
+}

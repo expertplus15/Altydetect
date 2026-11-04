@@ -1,0 +1,10 @@
+[project]
+name = "indexa"
+version = "0.0.0"
+description = "Indexa — moteur de plagiat (n-grammes, recherche web, alignement, base privée)."
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"

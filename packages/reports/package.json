@@ -1,0 +1,13 @@
+{
+  "name": "@altydetect/reports",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Génération PDF des rapports.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  }
+}

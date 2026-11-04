@@ -1,0 +1,3 @@
+# Espace de travail uv (virtuel) : regroupe les services et les outils ML.
+[tool.uv.workspace]
+members = ["services/*", "ml/*"]

@@ -1,0 +1,37 @@
+version = 1
+revision = 3
+requires-python = "==3.12.*"
+
+[manifest]
+members = [
+    "altydetect-ml-corpus",
+    "altydetect-ml-eval",
+    "altydetect-ml-train",
+    "indexa",
+    "veritas",
+]
+
+[[package]]
+name = "altydetect-ml-corpus"
+version = "0.0.0"
+source = { virtual = "ml/corpus" }
+
+[[package]]
+name = "altydetect-ml-eval"
+version = "0.0.0"
+source = { virtual = "ml/eval" }
+
+[[package]]
+name = "altydetect-ml-train"
+version = "0.0.0"
+source = { virtual = "ml/train" }
+
+[[package]]
+name = "indexa"
+version = "0.0.0"
+source = { editable = "services/indexa" }
+
+[[package]]
+name = "veritas"
+version = "0.0.0"
+source = { editable = "services/veritas" }

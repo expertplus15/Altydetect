@@ -1,0 +1,13 @@
+{
+  "name": "@altydetect/write",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Module Écrire : plan, correction, citations, résumé.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  }
+}
