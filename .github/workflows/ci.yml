@@ -1,0 +1,64 @@
+# Intégration continue : vérifications JS et Python, images Docker, dépendances locales.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Lint, types et tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - run: pnpm install --frozen-lockfile
+      - run: uv sync --all-packages --frozen
+      - run: pnpm check
+      - run: pnpm build
+
+  docker:
+    name: Images Docker et docker compose
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Construire les images des services
+        run: |
+          docker build -f services/veritas/Dockerfile -t altydetect-veritas .
+          docker build -f services/indexa/Dockerfile -t altydetect-indexa .
+      - name: Vérifier /health dans les conteneurs
+        run: |
+          docker run -d --name veritas -p 8001:8001 altydetect-veritas
+          docker run -d --name indexa -p 8002:8002 altydetect-indexa
+          for port in 8001 8002; do
+            for i in $(seq 1 30); do curl -fsS "http://localhost:$port/health" && break; sleep 1; done
+            curl -fsS "http://localhost:$port/health" | grep -q '"status":"ok"'
+          done
+      - name: Démarrer PostgreSQL + pgvector et Redis
+        run: docker compose up -d --wait
+      - name: Vérifier pgvector et Redis
+        run: |
+          docker compose exec -T postgres psql -U altydetect -d altydetect -tAc \
+            "SELECT extname FROM pg_extension WHERE extname = 'vector'" | grep -qx vector
+          docker compose exec -T redis redis-cli ping | grep -qx PONG
+      - name: Journaux en cas d'échec
+        if: failure()
+        run: |
+          docker logs veritas || true
+          docker logs indexa || true
+          docker compose logs
