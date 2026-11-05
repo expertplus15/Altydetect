@@ -223,5 +223,104 @@
     "upgrade": "Passer à Pro",
     "signUp": "Créer un compte gratuit",
     "trialSaved": "Créez un compte gratuit pour enregistrer ce résultat dans votre historique."
+  },
+  "write": {
+    "title": "Écrire",
+    "correctTitle": "Corriger",
+    "tools": "Outils d'écriture",
+    "tabs": {
+      "outline": "Plan",
+      "correct": "Corriger",
+      "cite": "Citer",
+      "summarize": "Résumer"
+    },
+    "run": "Lancer",
+    "running": "En cours…",
+    "copy": "Copier",
+    "copied": "Copié",
+    "insert": "Insérer dans le document",
+    "inserted": "Inséré dans le document.",
+    "needText": "Saisissez ou collez d'abord un texte dans l'éditeur.",
+    "outline": {
+      "subject": "Sujet",
+      "subjectPlaceholder": "Ex. : l'évaluation formative au collège",
+      "level": "Niveau",
+      "levels": {
+        "secondary": "Lycée",
+        "bachelor": "Licence",
+        "master": "Master",
+        "professional": "Professionnel"
+      },
+      "generate": "Proposer un plan",
+      "insert": "Insérer le plan"
+    },
+    "correct": {
+      "check": "Corriger le texte",
+      "none": "Aucune faute relevée.",
+      "count": "{count, plural, one {# correction} other {# corrections}}",
+      "acceptAll": "Tout accepter",
+      "accept": "Accepter",
+      "ignore": "Ignorer",
+      "stale": "Le texte a changé depuis la correction : relancez-la.",
+      "kinds": {
+        "spelling": "Orthographe",
+        "grammar": "Grammaire",
+        "punctuation": "Ponctuation",
+        "typography": "Typographie"
+      }
+    },
+    "cite": {
+      "style": "Norme",
+      "from": "Source",
+      "fromUrl": "URL ou DOI",
+      "fromFields": "Saisie manuelle",
+      "url": "Adresse de la page",
+      "type": "Type",
+      "types": {
+        "article": "Article",
+        "book": "Livre",
+        "web": "Page web"
+      },
+      "authors": "Auteurs",
+      "authorsHint": "Un auteur par ligne, sous la forme « Nom, Prénom ».",
+      "titleField": "Titre",
+      "year": "Année",
+      "container": "Revue ou site",
+      "volume": "Volume",
+      "issue": "Numéro",
+      "pages": "Pages",
+      "publisher": "Éditeur",
+      "doi": "DOI",
+      "accessed": "Consulté le",
+      "generate": "Générer la référence",
+      "missing": "À compléter : {fields}.",
+      "fieldNames": {
+        "authors": "auteurs",
+        "year": "année",
+        "container": "revue ou site",
+        "publisher": "éditeur",
+        "url": "adresse",
+        "accessed": "date de consultation"
+      }
+    },
+    "summarize": {
+      "length": "Longueur",
+      "lengths": {
+        "short": "Court",
+        "medium": "Moyen",
+        "long": "Détaillé"
+      },
+      "generate": "Résumer le texte"
+    },
+    "errors": {
+      "QUOTA_EXCEEDED": "Vous avez utilisé vos demandes du jour (réécriture et écriture assistée). Le compteur repart à zéro à minuit (UTC).",
+      "BLOCKED_ADDRESS": "Cette adresse ne peut pas être consultée. Saisissez la référence à la main.",
+      "FETCH_FAILED": "La page n'a pas pu être lue. Vérifiez l'adresse ou saisissez la référence à la main.",
+      "NOT_HTML": "Cette adresse ne renvoie pas une page web. Saisissez la référence à la main.",
+      "TEXT_TOO_LONG": "Ce texte est trop long. Traitez-le par parties.",
+      "REFUSED": "Ce texte n'a pas pu être traité. Modifiez-le et réessayez.",
+      "INVALID_INPUT": "Vérifiez les champs remplis.",
+      "default": "La demande n'a pas abouti. Réessayez dans un instant."
+    }
   }
 }

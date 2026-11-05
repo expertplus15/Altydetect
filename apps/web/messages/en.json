@@ -223,5 +223,104 @@
     "upgrade": "Upgrade to Pro",
     "signUp": "Create a free account",
     "trialSaved": "Create a free account to save this result to your history."
+  },
+  "write": {
+    "title": "Write",
+    "correctTitle": "Proofread",
+    "tools": "Writing tools",
+    "tabs": {
+      "outline": "Outline",
+      "correct": "Proofread",
+      "cite": "Cite",
+      "summarize": "Summarise"
+    },
+    "run": "Run",
+    "running": "Working…",
+    "copy": "Copy",
+    "copied": "Copied",
+    "insert": "Insert into document",
+    "inserted": "Inserted into the document.",
+    "needText": "First type or paste a text in the editor.",
+    "outline": {
+      "subject": "Topic",
+      "subjectPlaceholder": "E.g. formative assessment in middle school",
+      "level": "Level",
+      "levels": {
+        "secondary": "Secondary",
+        "bachelor": "Undergraduate",
+        "master": "Master's",
+        "professional": "Professional"
+      },
+      "generate": "Suggest an outline",
+      "insert": "Insert outline"
+    },
+    "correct": {
+      "check": "Proofread the text",
+      "none": "No mistakes found.",
+      "count": "{count, plural, one {# correction} other {# corrections}}",
+      "acceptAll": "Accept all",
+      "accept": "Accept",
+      "ignore": "Ignore",
+      "stale": "The text changed since proofreading: run it again.",
+      "kinds": {
+        "spelling": "Spelling",
+        "grammar": "Grammar",
+        "punctuation": "Punctuation",
+        "typography": "Typography"
+      }
+    },
+    "cite": {
+      "style": "Style",
+      "from": "Source",
+      "fromUrl": "URL or DOI",
+      "fromFields": "Manual entry",
+      "url": "Page address",
+      "type": "Type",
+      "types": {
+        "article": "Article",
+        "book": "Book",
+        "web": "Web page"
+      },
+      "authors": "Authors",
+      "authorsHint": "One author per line, as \"Last name, First name\".",
+      "titleField": "Title",
+      "year": "Year",
+      "container": "Journal or site",
+      "volume": "Volume",
+      "issue": "Issue",
+      "pages": "Pages",
+      "publisher": "Publisher",
+      "doi": "DOI",
+      "accessed": "Accessed on",
+      "generate": "Create reference",
+      "missing": "To complete: {fields}.",
+      "fieldNames": {
+        "authors": "authors",
+        "year": "year",
+        "container": "journal or site",
+        "publisher": "publisher",
+        "url": "address",
+        "accessed": "access date"
+      }
+    },
+    "summarize": {
+      "length": "Length",
+      "lengths": {
+        "short": "Short",
+        "medium": "Medium",
+        "long": "Detailed"
+      },
+      "generate": "Summarise the text"
+    },
+    "errors": {
+      "QUOTA_EXCEEDED": "You've used today's requests (rewriting and writing tools). The counter resets at midnight (UTC).",
+      "BLOCKED_ADDRESS": "This address can't be read. Enter the reference by hand.",
+      "FETCH_FAILED": "The page couldn't be read. Check the address or enter the reference by hand.",
+      "NOT_HTML": "This address doesn't return a web page. Enter the reference by hand.",
+      "TEXT_TOO_LONG": "This text is too long. Process it in parts.",
+      "REFUSED": "This text couldn't be processed. Edit it and try again.",
+      "INVALID_INPUT": "Check the fields you filled in.",
+      "default": "The request didn't go through. Try again in a moment."
+    }
   }
 }

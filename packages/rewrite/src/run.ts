@@ -1,6 +1,6 @@
 import type { RewriteInput, RewriteOutput } from "@altydetect/core";
 import { buildRewriteRequest } from "./build";
-import type { StreamFactory } from "./llm";
+import type { StreamFactory } from "@altydetect/core/llm";
 import { finalizeVariants, parseVariants, type ParsedVariant } from "./parse";
 
 export type RewriteErrorCode = "REFUSED" | "INVALID_OUTPUT";

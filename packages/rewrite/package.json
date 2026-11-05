@@ -13,7 +13,6 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@altydetect/core": "workspace:*",
-    "@anthropic-ai/sdk": "1.5.0"
+    "@altydetect/core": "workspace:*"
   }
 }

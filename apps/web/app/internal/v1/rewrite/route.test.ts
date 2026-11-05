@@ -1,5 +1,5 @@
 import { fakeStreamFactory } from "@altydetect/rewrite/testing";
-import type { StreamFactory } from "@altydetect/rewrite";
+import type { StreamFactory } from "@altydetect/core/llm";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { db } from "@/lib/db";
 

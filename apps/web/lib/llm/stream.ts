@@ -1,7 +1,7 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
-import { anthropicStreamFactory, type StreamFactory } from "@altydetect/rewrite";
-import { echoStreamFactory } from "@altydetect/rewrite/testing";
+import { anthropicStreamFactory, type StreamFactory } from "@altydetect/core/llm";
+import { e2eStreamFactory } from "@altydetect/core/llm/testing";
 
 let factory: StreamFactory | null = null;
 
@@ -15,7 +15,7 @@ export function getStreamFactory(): StreamFactory {
       if (process.env.NODE_ENV === "production" && process.env.ALTY_E2E !== "1") {
         throw new Error("ALTY_LLM=fake est interdit en production.");
       }
-      factory = echoStreamFactory();
+      factory = e2eStreamFactory();
     } else {
       factory = anthropicStreamFactory(new Anthropic());
     }
