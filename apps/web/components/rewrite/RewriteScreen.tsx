@@ -339,7 +339,12 @@ export function RewriteScreen({
     <div className="flex min-h-full flex-col md:flex-row">
       <div className="flex min-w-0 flex-1 flex-col gap-4 p-4 md:p-6">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
-          <h1 className="text-[22px] font-semibold tracking-tight">{t("title")}</h1>
+          {/* Un seul titre de niveau 1 par page : sur l'accueil, l'outil est une section. */}
+          {mode === "trial" ? (
+            <h2 className="text-[22px] font-semibold tracking-tight">{t("title")}</h2>
+          ) : (
+            <h1 className="text-[22px] font-semibold tracking-tight">{t("title")}</h1>
+          )}
           <p className="text-[13px] text-gray-600">{t("subtitle")}</p>
         </div>
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">

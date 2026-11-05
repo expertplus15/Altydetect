@@ -35,3 +35,7 @@ ml/**/checkpoints/
 
 # Client Prisma généré
 apps/web/lib/generated/
+
+# Playwright
+apps/web/test-results/
+apps/web/playwright-report/

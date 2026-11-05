@@ -58,6 +58,50 @@ jobs:
       - run: pnpm check
       - run: pnpm build
 
+  e2e:
+    name: Parcours de bout en bout (Playwright)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: altydetect
+          POSTGRES_PASSWORD: altydetect
+          POSTGRES_DB: altydetect
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U altydetect" --health-interval 5s --health-timeout 3s --health-retries 10
+      redis:
+        image: redis:7.4-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://altydetect:altydetect@localhost:5432/altydetect
+      REDIS_URL: redis://localhost:6379
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm -C apps/web db:migrate
+      - name: Construire l'application (Stripe et Claude simulés, aucune clé réelle)
+        run: pnpm -C apps/web build
+        env:
+          NEXT_PUBLIC_APP_URL: http://localhost:3200
+      - run: pnpm -C apps/web exec playwright install --with-deps chromium
+      - run: pnpm -C apps/web test:e2e
+      - name: Traces en cas d'échec
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: apps/web/test-results/
+          retention-days: 7
+
   docker:
     name: Images Docker et docker compose
     runs-on: ubuntu-latest
