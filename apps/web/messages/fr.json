@@ -147,5 +147,25 @@
     },
     "meanwhile": "En attendant, vous pouvez réécrire ou corriger vos textes.",
     "toRewrite": "Ouvrir Réécrire"
+  },
+  "editor": {
+    "label": "Éditeur de texte",
+    "placeholder": "Collez ou saisissez votre texte ici…",
+    "words": "{count, plural, =0 {0 mot} one {# mot} other {# mots}}",
+    "minWords": "Encore {missing, plural, one {# mot} other {# mots}} pour atteindre le minimum de {min} mots demandé par la détection.",
+    "import": "Importer PDF ou DOCX",
+    "importHint": "10 Mo maximum",
+    "importing": "Import en cours…",
+    "importProOnly": "L'import de fichiers est inclus dans Pro.",
+    "importErrors": {
+      "FILE_TOO_LARGE": "Ce fichier dépasse 10 Mo. Réduisez-le ou copiez son texte.",
+      "UNSUPPORTED_TYPE": "Seuls les fichiers PDF et DOCX sont acceptés.",
+      "EMPTY_TEXT": "Aucun texte trouvé : ce PDF est peut-être une image scannée.",
+      "EXTRACTION_FAILED": "Le fichier n'a pas pu être lu. Vérifiez qu'il n'est pas protégé par un mot de passe.",
+      "UPGRADE_REQUIRED": "L'import de fichiers est inclus dans Pro.",
+      "UNAUTHENTICATED": "Connectez-vous pour importer un fichier.",
+      "default": "L'import n'a pas abouti. Réessayez."
+    },
+    "imported": "Texte importé : {words} mots."
   }
 }

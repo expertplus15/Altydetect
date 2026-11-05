@@ -147,5 +147,25 @@
     },
     "meanwhile": "Meanwhile, you can rewrite or proofread your texts.",
     "toRewrite": "Open Rewrite"
+  },
+  "editor": {
+    "label": "Text editor",
+    "placeholder": "Paste or type your text here…",
+    "words": "{count, plural, =0 {0 words} one {# word} other {# words}}",
+    "minWords": "{missing, plural, one {# more word} other {# more words}} to reach the {min}-word minimum for detection.",
+    "import": "Import PDF or DOCX",
+    "importHint": "10 MB max",
+    "importing": "Importing…",
+    "importProOnly": "File import is included in Pro.",
+    "importErrors": {
+      "FILE_TOO_LARGE": "This file is over 10 MB. Shrink it or copy its text.",
+      "UNSUPPORTED_TYPE": "Only PDF and DOCX files are accepted.",
+      "EMPTY_TEXT": "No text found: this PDF may be a scanned image.",
+      "EXTRACTION_FAILED": "The file couldn't be read. Check it isn't password-protected.",
+      "UPGRADE_REQUIRED": "File import is included in Pro.",
+      "UNAUTHENTICATED": "Sign in to import a file.",
+      "default": "Import failed. Try again."
+    },
+    "imported": "Text imported: {words} words."
   }
 }

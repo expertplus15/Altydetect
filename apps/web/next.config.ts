@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   // Les packages du monorepo sont publiés en TypeScript source.
   transpilePackages: ["@altydetect/billing", "@altydetect/core"],
+  // Bibliothèques Node chargées telles quelles côté serveur (pdf.js et son worker).
+  serverExternalPackages: ["pdf-parse", "mammoth"],
 };
 
 export default withNextIntl(nextConfig);
