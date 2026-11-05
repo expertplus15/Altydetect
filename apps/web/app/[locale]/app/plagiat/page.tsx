@@ -1,5 +1,5 @@
 import { MIN_WORDS_FOR_DETECTION } from "@altydetect/billing";
-import { PlagiarismScreen } from "@/components/plagiarism/PlagiarismScreen";
+import { PlagiarismWorkspace } from "@/components/plagiarism/PlagiarismWorkspace";
 import { checkDetectionQuota } from "@/lib/billing/quota";
 import { getUserPlan } from "@/lib/billing/subscription";
 import { db } from "@/lib/db";
@@ -16,7 +16,7 @@ export default async function PlagiarismPage() {
     }),
   ]);
   return (
-    <PlagiarismScreen
+    <PlagiarismWorkspace
       isPro={plan === "pro"}
       quota={{ used: quota.used, limit: quota.limit }}
       privateTitles={Object.fromEntries(sources.map((s) => [s.id, s.title]))}

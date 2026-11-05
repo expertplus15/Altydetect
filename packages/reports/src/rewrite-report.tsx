@@ -1,29 +1,11 @@
 /** @jsxRuntime automatic */
 /** @jsxImportSource react */
 // Pragmas : JSX automatique aussi quand le fichier est compilé hors de ce package (worker tsx).
-import { Document, Font, Page, StyleSheet, Text, View, renderToBuffer } from "@react-pdf/renderer";
-import { fileURLToPath } from "node:url";
+import { Document, Page, StyleSheet, Text, View, renderToBuffer } from "@react-pdf/renderer";
+import { registerFonts } from "./fonts";
 
 // Rapport PDF d'une réécriture : original, proposition retenue, registre, intensité, date et
 // horodatage. Les libellés sont fournis par l'application (traduits par next-intl).
-
-const fontsDir = fileURLToPath(new URL("../fonts/", import.meta.url));
-let fontsRegistered = false;
-
-function registerFonts(): void {
-  if (fontsRegistered) return;
-  // Inter statique (la version variable n'est pas prise en charge par le moteur PDF).
-  Font.register({
-    family: "Inter",
-    fonts: [
-      { src: `${fontsDir}Inter-Regular.woff` },
-      { src: `${fontsDir}Inter-SemiBold.woff`, fontWeight: 600 },
-    ],
-  });
-  // Pas de césure automatique : les mots français restent entiers.
-  Font.registerHyphenationCallback((word) => [word]);
-  fontsRegistered = true;
-}
 
 export interface RewriteReportLabels {
   title: string;

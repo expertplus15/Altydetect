@@ -41,7 +41,7 @@ export function PlagiarismScreen({
   isPro: boolean;
   quota: { used: number; limit: number };
   privateTitles: Record<string, string>;
-  renderActions?: (info: { analysisId: string; original: string }) => ReactNode;
+  renderActions?: ((info: { analysisId: string; original: string }) => ReactNode) | undefined;
 }) {
   const t = useTranslations("plagiarism");
   const format = useFormatter();

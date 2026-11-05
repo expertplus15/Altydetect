@@ -335,7 +335,32 @@
     "exporting": "Préparation du PDF…",
     "ready": "PDF prêt : le téléchargement démarre.",
     "failed": "Le PDF n'a pas pu être généré. Réessayez.",
-    "proOnly": "L'export PDF est inclus dans Pro."
+    "proOnly": "L'export PDF est inclus dans Pro.",
+    "analysis": {
+      "title": "Rapport d'analyse",
+      "date": "Date de l'analyse",
+      "timestamp": "Rapport généré le",
+      "engine": "Moteur",
+      "scope": "Périmètre",
+      "plagiarism": "Plagiat",
+      "similarity": "Similarité",
+      "sources": "Sources",
+      "source": "Source",
+      "passages": "Passages",
+      "bestScore": "Meilleur score",
+      "text": "Texte analysé (passages retrouvés surlignés)",
+      "textMissing": "Le texte analysé n'est pas conservé par AltyDetect et n'a pas été joint à cet export.",
+      "noMatch": "Aucun passage retrouvé dans les sources consultées.",
+      "detection": "Détection de texte IA",
+      "detectionPending": "La détection de texte IA sera ajoutée à ce rapport dès qu'elle sera disponible.",
+      "disclaimer": "Une similarité n'est pas une preuve. Chaque passage doit être vérifié dans sa source avant toute décision.",
+      "scopes": {
+        "web": "Web",
+        "private": "Base privée",
+        "both": "Web et base privée"
+      },
+      "privateDoc": "Document de la base privée"
+    }
   },
   "history": {
     "title": "Historique",

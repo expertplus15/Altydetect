@@ -335,7 +335,32 @@
     "exporting": "Preparing the PDF…",
     "ready": "PDF ready: the download is starting.",
     "failed": "The PDF couldn't be generated. Try again.",
-    "proOnly": "PDF export is included in Pro."
+    "proOnly": "PDF export is included in Pro.",
+    "analysis": {
+      "title": "Analysis report",
+      "date": "Analysis date",
+      "timestamp": "Report generated on",
+      "engine": "Engine",
+      "scope": "Scope",
+      "plagiarism": "Plagiarism",
+      "similarity": "Similarity",
+      "sources": "Sources",
+      "source": "Source",
+      "passages": "Passages",
+      "bestScore": "Best score",
+      "text": "Text checked (matching passages highlighted)",
+      "textMissing": "AltyDetect doesn't keep the text checked and it wasn't attached to this export.",
+      "noMatch": "No passages found in the sources checked.",
+      "detection": "AI text detection",
+      "detectionPending": "AI text detection will be added to this report as soon as it is available.",
+      "disclaimer": "Similarity is not proof. Each passage must be checked against its source before any decision.",
+      "scopes": {
+        "web": "Web",
+        "private": "Private base",
+        "both": "Web and private base"
+      },
+      "privateDoc": "Private base document"
+    }
   },
   "history": {
     "title": "History",
