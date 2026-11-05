@@ -22,8 +22,10 @@ function joinList(items: string[], and: string): string {
 const doiUrl = (doi: string) =>
   doi ? `https://doi.org/${doi.replace(/^https?:\/\/(dx\.)?doi\.org\//, "")}` : "";
 const end = (text: string) => (/[.?!]$/.test(text) ? text : `${text}.`);
+/** Titre en italique suivi du point, placé hors de l'italique (*Titre*.). */
+const italicEnd = (text: string) => (/[.?!]$/.test(text) ? `*${text}*` : `*${text}*.`);
 
-function apa(f: CitationFields): string {
+function apa(f: CitationFields, locale: "fr" | "en"): string {
   const names = f.authors.map((a: Author) =>
     a.given ? `${a.family}, ${initials(a.given)}` : a.family,
   );
@@ -31,17 +33,19 @@ function apa(f: CitationFields): string {
     names.length > 20
       ? `${names.slice(0, 19).join(", ")}, … ${names.at(-1)}`
       : joinList(names, "&");
-  const date = `(${f.year || "s.d."})`;
+  const date = `(${f.year || (locale === "fr" ? "s.d." : "n.d.")})`;
   const link = doiUrl(f.doi) || f.url;
-  const head = authors ? `${end(authors)} ${date}.` : `${end(f.title)} ${date}.`;
+  // Sans auteur, le titre prend sa place (en italique pour un livre ou une page web).
+  const titleFirst = f.type === "article" ? end(f.title) : italicEnd(f.title);
+  const head = authors ? `${end(authors)} ${date}.` : `${titleFirst} ${date}.`;
   let body: string;
   if (f.type === "article") {
     const volume = f.volume ? `, *${f.volume}*${f.issue ? `(${f.issue})` : ""}` : "";
     body = `${authors ? `${end(f.title)} ` : ""}*${f.container}*${volume}${f.pages ? `, ${f.pages}` : ""}.`;
   } else if (f.type === "book") {
-    body = `${authors ? `*${end(f.title)}*` : ""}${f.publisher ? ` ${end(f.publisher)}` : ""}`;
+    body = `${authors ? italicEnd(f.title) : ""}${f.publisher ? ` ${end(f.publisher)}` : ""}`;
   } else {
-    body = `${authors ? `*${end(f.title)}*` : ""}${f.container ? ` ${end(f.container)}` : ""}`;
+    body = `${authors ? italicEnd(f.title) : ""}${f.container ? ` ${end(f.container)}` : ""}`;
   }
   return [head, body.trim(), link].filter(Boolean).join(" ");
 }
@@ -60,7 +64,9 @@ function mlaAuthors(authors: Author[]): string {
 
 function mla(f: CitationFields): string {
   const authors = mlaAuthors(f.authors);
-  const title = f.type === "book" ? `*${end(f.title)}*` : `“${end(f.title)}”`;
+  const title = f.type === "book" ? italicEnd(f.title) : `“${end(f.title)}”`;
+  const link = f.doi ? doiUrl(f.doi) : f.url.replace(/^https?:\/\//, "");
+  // MLA 9 : éléments du conteneur séparés par des virgules, lien compris, un seul point final.
   const parts = [
     f.type !== "book" && f.container ? `*${f.container}*` : "",
     f.type === "book" ? f.publisher : "",
@@ -68,14 +74,9 @@ function mla(f: CitationFields): string {
     f.issue ? `no. ${f.issue}` : "",
     f.year,
     f.pages ? `pp. ${f.pages}` : "",
+    link,
   ].filter(Boolean);
-  const link = f.doi ? doiUrl(f.doi) : f.url.replace(/^https?:\/\//, "");
-  return [
-    authors ? end(authors) : "",
-    title,
-    parts.length ? end(parts.join(", ")) : "",
-    link ? end(link) : "",
-  ]
+  return [authors ? end(authors) : "", title, parts.length ? end(parts.join(", ")) : ""]
     .filter(Boolean)
     .join(" ");
 }
@@ -97,7 +98,7 @@ function chicago(f: CitationFields): string {
     const volume = f.volume ? ` ${f.volume}${f.issue ? ` (${f.issue})` : ""}` : "";
     body = `“${end(f.title)}” *${f.container}*${volume}${f.pages ? `: ${f.pages}` : ""}.`;
   } else if (f.type === "book") {
-    body = `*${end(f.title)}*${f.publisher ? ` ${end(f.publisher)}` : ""}`;
+    body = `${italicEnd(f.title)}${f.publisher ? ` ${end(f.publisher)}` : ""}`;
   } else {
     body = `“${end(f.title)}”${f.container ? ` ${end(f.container)}` : ""}`;
   }
@@ -145,7 +146,7 @@ export function formatCitation(
 ): string {
   switch (style) {
     case "apa7":
-      return apa(fields);
+      return apa(fields, locale);
     case "mla9":
       return mla(fields);
     case "chicago":

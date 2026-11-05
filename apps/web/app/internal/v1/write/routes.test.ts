@@ -107,7 +107,7 @@ describe.skipIf(!process.env.DATABASE_URL)("routes /internal/v1/write/*", () => 
       },
     });
     expect(await response.json()).toMatchObject({
-      citation: "Hattie, J. (2009). *Visible Learning.* Routledge.",
+      citation: "Hattie, J. (2009). *Visible Learning*. Routledge.",
       missing: [],
     });
   });
