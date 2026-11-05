@@ -63,7 +63,7 @@ test("parcours complet en français", async ({ page }) => {
     "(Durand, 2021)",
     "32 %",
   ]);
-  await expect(page.getByText("2 réécritures restantes aujourd'hui")).toBeVisible();
+  await expect(page.getByText("2 demandes restantes aujourd'hui")).toBeVisible();
 
   // 4. Passage à Pro (mensuel) via Stripe Checkout.
   await page.goto("/fr/tarifs");

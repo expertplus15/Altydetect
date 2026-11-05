@@ -6,6 +6,7 @@ export type BillingInterval = "monthly" | "yearly";
 
 // --- Gratuit ---
 export const FREE_DETECTION_WORDS_PER_MONTH: number = 5000;
+/** Demandes par jour, partagées entre Réécrire et les outils d'Écrire qui appellent le modèle. */
 export const FREE_REWRITE_REQUESTS_PER_DAY: number = 3;
 export const FREE_HISTORY_DAYS: number = 7;
 
