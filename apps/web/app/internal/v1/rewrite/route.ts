@@ -95,6 +95,7 @@ export async function POST(request: Request): Promise<Response> {
         output: result.output,
       };
       let documentId: string | null = null;
+      let analysisId: string | null = null;
       if (actor.kind === "user") {
         const document = await db.document.create({
           data: {
@@ -103,8 +104,10 @@ export async function POST(request: Request): Promise<Response> {
             wordCount: words,
             analyses: { create: { type: "rewrite", engine: result.engine, resultJson } },
           },
+          include: { analyses: { select: { id: true } } },
         });
         documentId = document.id;
+        analysisId = document.analyses[0]?.id ?? null;
       } else {
         await saveTrialResult(getRedis(), actor.trialId, {
           type: "rewrite",
@@ -114,7 +117,7 @@ export async function POST(request: Request): Promise<Response> {
           result: resultJson,
         });
       }
-      return { ok: true as const, result, documentId };
+      return { ok: true as const, result, documentId, analysisId };
     } catch (cause) {
       if (actor.kind === "user") {
         await releaseRewriteRequest(actor.userId);
@@ -139,6 +142,7 @@ export async function POST(request: Request): Promise<Response> {
       send("done", {
         ...outcome.result.output,
         documentId: outcome.documentId,
+        analysisId: outcome.analysisId,
         language: outcome.result.language,
         trial: actor.kind === "trial",
       });

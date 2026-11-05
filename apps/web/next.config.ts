@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
     "@altydetect/write",
   ],
   // Bibliothèques Node chargées telles quelles côté serveur (pdf.js et son worker).
-  serverExternalPackages: ["pdf-parse", "mammoth"],
+  serverExternalPackages: ["pdf-parse", "mammoth", "@react-pdf/renderer", "bullmq"],
 };
 
 export default withNextIntl(nextConfig);

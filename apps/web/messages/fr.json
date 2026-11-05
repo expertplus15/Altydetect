@@ -322,5 +322,49 @@
       "INVALID_INPUT": "Vérifiez les champs remplis.",
       "default": "La demande n'a pas abouti. Réessayez dans un instant."
     }
+  },
+  "report": {
+    "title": "Rapport de réécriture",
+    "original": "Texte d'origine",
+    "proposal": "Proposition retenue",
+    "date": "Date de la réécriture",
+    "timestamp": "Rapport généré le",
+    "originalMissing": "Le texte d'origine n'est pas conservé par AltyDetect et n'a pas été joint à cet export.",
+    "footer": "AltyDetect · altydetect.com",
+    "export": "Exporter en PDF",
+    "exporting": "Préparation du PDF…",
+    "ready": "PDF prêt : le téléchargement démarre.",
+    "failed": "Le PDF n'a pas pu être généré. Réessayez.",
+    "proOnly": "L'export PDF est inclus dans Pro."
+  },
+  "history": {
+    "title": "Historique",
+    "subtitle": "Vos réécritures et outils d'écriture. Le texte d'origine n'est conservé que si vous l'avez demandé.",
+    "retentionFree": "Conservé {days} jours avec le plan Gratuit.",
+    "retentionPro": "Conservé {months} mois avec Pro.",
+    "type": "Type",
+    "types": {
+      "all": "Tous",
+      "rewrite": "Réécriture",
+      "write": "Écriture"
+    },
+    "from": "Du",
+    "to": "Au",
+    "filter": "Filtrer",
+    "reset": "Effacer les filtres",
+    "empty": "Aucun document pour ces critères.",
+    "words": "{count, plural, one {# mot} other {# mots}}",
+    "open": "Rouvrir",
+    "openInRewrite": "Ouvrir dans Réécrire",
+    "detail": "Détail",
+    "tools": {
+      "outline": "Plan",
+      "correct": "Correction",
+      "summarize": "Résumé"
+    },
+    "variant": "Proposition {n}",
+    "correctionsCount": "{count, plural, =0 {Aucune faute relevée} one {# correction} other {# corrections}}",
+    "back": "Retour à l'historique",
+    "notFound": "Ce document n'existe plus ou a dépassé la durée de conservation."
   }
 }

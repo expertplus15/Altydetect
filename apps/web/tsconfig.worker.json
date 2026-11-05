@@ -1,0 +1,12 @@
+{
+  // Configuration du worker (processus Node hors de Next) : « server-only » y est remplacé par un
+  // module vide, comme dans les tests.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": ["./*"],
+      "server-only": ["./test/server-only.ts"]
+    }
+  }
+}

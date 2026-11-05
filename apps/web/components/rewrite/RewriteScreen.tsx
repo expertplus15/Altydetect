@@ -19,11 +19,9 @@ export interface RewriteScreenProps {
   canImport: boolean;
   initialText?: string;
   /** Actions supplémentaires sous la proposition (ex. export PDF). */
-  renderActions?: (info: {
-    documentId: string | null;
-    variantIndex: number;
-    original: string;
-  }) => ReactNode;
+  renderActions?:
+    | ((info: { analysisId: string | null; variantIndex: number; original: string }) => ReactNode)
+    | undefined;
 }
 
 // Écran Réécrire (maquette « Réécrire ») : original à gauche, proposition à droite, réglages dans
@@ -193,7 +191,7 @@ export function RewriteScreen({
           >
             {t("replace")}
           </button>
-          {renderActions?.({ documentId: state.documentId, variantIndex: index, original: text })}
+          {renderActions?.({ analysisId: state.analysisId, variantIndex: index, original: text })}
         </div>
       )}
       {state.status === "done" && state.trial && (

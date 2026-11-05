@@ -6,7 +6,13 @@ import { useCallback, useRef, useState } from "react";
 export type RewriteState =
   | { status: "idle" }
   | { status: "streaming"; variants: RewriteVariant[] }
-  | { status: "done"; variants: RewriteVariant[]; documentId: string | null; trial: boolean }
+  | {
+      status: "done";
+      variants: RewriteVariant[];
+      documentId: string | null;
+      analysisId: string | null;
+      trial: boolean;
+    }
   | { status: "error"; code: string; details: Record<string, unknown> };
 
 /** Lit les événements SSE d'une réponse fetch. */
@@ -65,6 +71,7 @@ export function useRewrite() {
             status: "done",
             variants: payload.variants as RewriteVariant[],
             documentId: (payload.documentId as string | null) ?? null,
+            analysisId: (payload.analysisId as string | null) ?? null,
             trial: payload.trial === true,
           });
         } else if (event === "error") {
