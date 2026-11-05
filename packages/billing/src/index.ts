@@ -3,3 +3,4 @@ export * from "./config/plans";
 export * from "./stripe/catalog";
 export * from "./stripe/webhooks";
 export * from "./stripe/seed";
+export * from "./quota";
