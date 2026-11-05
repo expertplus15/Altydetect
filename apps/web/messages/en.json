@@ -366,5 +366,110 @@
     "correctionsCount": "{count, plural, =0 {No mistakes found} one {# correction} other {# corrections}}",
     "back": "Back to history",
     "notFound": "This document no longer exists or is past its retention period."
+  },
+  "home": {
+    "metaTitle": "AltyDetect — Rewrite and write better, in English and French",
+    "metaDescription": "Improve the style, register and clarity of your texts. Rewriting, proofreading, APA, MLA, Chicago and ISO 690 citations. Try without an account.",
+    "eyebrow": "Rewrite · Write · Proofread",
+    "promise": "Improve the style, register and clarity of your texts, in English and French.",
+    "lead": "Paste a paragraph below and see the result right away. Try without an account.",
+    "commitments": "Our commitments",
+    "c1Title": "A probability, not a verdict",
+    "c1Body": "When detection arrives, every result will be a probability with a confidence level and an \"Undetermined\" zone. Never proof.",
+    "c2Title": "Built for French",
+    "c2Body": "Registers, agreement, typography, APA, MLA, Chicago and ISO 690 citation styles: the tool knows how written French works, and English too.",
+    "c3Title": "Your texts stay yours",
+    "c3Body": "Nothing is kept without your consent, and nothing trains a model unless you switch it on yourself in your account.",
+    "pricingTitle": "Free to start. Pro at {price} a month billed yearly.",
+    "pricingBody": "No commitment, cancel in one click.",
+    "pricingCta": "See pricing"
+  },
+  "footer": {
+    "rights": "© {year} AltyDetect",
+    "terms": "Terms of use",
+    "privacy": "Privacy",
+    "legal": "Legal notice"
+  },
+  "legal": {
+    "draft": "Draft version: this text must be approved before going live.",
+    "terms": {
+      "title": "Terms of use",
+      "sections": [
+        {
+          "h": "Purpose",
+          "p": "These terms govern the use of AltyDetect (altydetect.com), an online rewriting and writing assistance service published by [COMPANY NAME]."
+        },
+        {
+          "h": "Account and trial",
+          "p": "A trial without an account is available. Ongoing use requires an account, created with an email sign-in link or with Google."
+        },
+        {
+          "h": "Pro subscription",
+          "p": "Pro is a monthly or yearly subscription, paid in advance through Stripe. There is no commitment and you can cancel at any time from the Account page; it stays active until the end of the paid period. [REFUND AND WITHDRAWAL TERMS TO BE DEFINED]."
+        },
+        {
+          "h": "Acceptable use",
+          "p": "The service improves the style, register and clarity of your texts. You remain responsible for the texts you submit and how you use them. A fair-use limit applies to the Pro plan."
+        },
+        {
+          "h": "Results",
+          "p": "Suggestions are generated automatically and must be reviewed. Detection results, once available, will be probabilities, not proof."
+        },
+        {
+          "h": "Governing law",
+          "p": "[GOVERNING LAW, JURISDICTION AND CONSUMER MEDIATOR TO BE DEFINED]."
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "sections": [
+        {
+          "h": "Data controller",
+          "p": "[COMPANY NAME], [ADDRESS]. Contact: [CONTACT EMAIL]."
+        },
+        {
+          "h": "Your texts",
+          "p": "The texts you submit are processed in memory and then deleted. Only results (suggestions, corrections, outlines, summaries) are saved in your history. The original text is kept only if you ask for it."
+        },
+        {
+          "h": "Retention",
+          "p": "History: 7 days on the Free plan, 12 months with Pro, then automatic deletion. Account: until you delete it, which you can do at any time from the Account page."
+        },
+        {
+          "h": "Model training",
+          "p": "Your texts are never used to train a model unless you tick the corresponding option in your account yourself. It is off by default."
+        },
+        {
+          "h": "Processors",
+          "p": "Hosting: [HOSTING PROVIDER]. Payments: Stripe. Sign-in emails: Resend. Sign-in with Google: Google. Rewriting and writing assistance: Anthropic (Claude API). [TRANSFERS OUTSIDE THE EU AND SAFEGUARDS TO BE SPECIFIED]."
+        },
+        {
+          "h": "Your rights",
+          "p": "You have the rights of access, rectification, erasure, restriction, objection and portability. Write to [CONTACT EMAIL]. You can also contact the CNIL (cnil.fr)."
+        },
+        {
+          "h": "Cookies",
+          "p": "AltyDetect only uses necessary cookies: sign-in session, interface language and the no-account trial. No advertising or analytics cookies."
+        }
+      ]
+    },
+    "notice": {
+      "title": "Legal notice",
+      "sections": [
+        {
+          "h": "Publisher",
+          "p": "[COMPANY NAME], [LEGAL FORM] with a share capital of [CAPITAL], registered under number [REGISTRATION NUMBER], head office: [ADDRESS]. Contact: [CONTACT EMAIL]."
+        },
+        {
+          "h": "Publication director",
+          "p": "[NAME OF THE PUBLICATION DIRECTOR]."
+        },
+        {
+          "h": "Hosting",
+          "p": "[HOSTING PROVIDER, ADDRESS AND PHONE]."
+        }
+      ]
+    }
   }
 }

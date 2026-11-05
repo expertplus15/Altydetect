@@ -11,8 +11,10 @@ import {
 } from "@altydetect/billing";
 import { auth } from "@/auth";
 import { PricingPlans } from "@/components/pricing/PricingPlans";
+import { PublicFooter } from "@/components/public/PublicFooter";
 import { PublicHeader } from "@/components/public/PublicHeader";
 import { getUserPlan } from "@/lib/billing/subscription";
+import { localizedAlternates, siteUrl } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
@@ -23,6 +25,8 @@ export async function generateMetadata({
   const t = await getTranslations({ locale: locale as "fr" | "en", namespace: "pricing" });
   const format = await getFormatter({ locale: locale as "fr" | "en" });
   return {
+    metadataBase: new URL(siteUrl()),
+    alternates: localizedAlternates("/tarifs", locale as "fr" | "en"),
     title: t("metaTitle"),
     description: t("metaDescription", {
       yearlyMonthly: format.number(PRO_PRICE_YEARLY_EUR / 12, {
@@ -84,6 +88,7 @@ export default async function PricingPage({
           ))}
         </section>
       </main>
+      <PublicFooter />
     </div>
   );
 }

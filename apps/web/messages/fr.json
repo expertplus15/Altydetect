@@ -366,5 +366,110 @@
     "correctionsCount": "{count, plural, =0 {Aucune faute relevée} one {# correction} other {# corrections}}",
     "back": "Retour à l'historique",
     "notFound": "Ce document n'existe plus ou a dépassé la durée de conservation."
+  },
+  "home": {
+    "metaTitle": "AltyDetect — Réécrire et écrire mieux, en français comme en anglais",
+    "metaDescription": "Améliorez le style, le registre et la clarté de vos textes. Réécriture, correction, citations APA, MLA, Chicago et ISO 690. Essayez sans compte.",
+    "eyebrow": "Réécrire · Écrire · Corriger",
+    "promise": "Améliorez le style, le registre et la clarté de vos textes, en français comme en anglais.",
+    "lead": "Collez un paragraphe ci-dessous et voyez le résultat tout de suite. Essayez sans compte.",
+    "commitments": "Nos engagements",
+    "c1Title": "Une probabilité, pas un verdict",
+    "c1Body": "Quand la détection arrivera, chaque résultat sera une probabilité avec un niveau de confiance et une zone « Indéterminé ». Jamais une preuve.",
+    "c2Title": "Pensé pour le français",
+    "c2Body": "Registres, accords, typographie, normes de citation APA, MLA, Chicago et ISO 690 : l'outil connaît les usages du français écrit.",
+    "c3Title": "Vos textes restent vos textes",
+    "c3Body": "Rien n'est conservé sans votre accord, et rien ne sert à entraîner un modèle sauf si vous l'activez vous-même dans votre compte.",
+    "pricingTitle": "Gratuit pour commencer. Pro à {price} par mois en annuel.",
+    "pricingBody": "Sans engagement, résiliable en un clic.",
+    "pricingCta": "Voir les tarifs"
+  },
+  "footer": {
+    "rights": "© {year} AltyDetect",
+    "terms": "Conditions d'utilisation",
+    "privacy": "Confidentialité",
+    "legal": "Mentions légales"
+  },
+  "legal": {
+    "draft": "Version provisoire : ce texte doit être validé avant la mise en ligne.",
+    "terms": {
+      "title": "Conditions d'utilisation",
+      "sections": [
+        {
+          "h": "Objet",
+          "p": "Les présentes conditions encadrent l'utilisation d'AltyDetect (altydetect.com), service en ligne d'aide à la réécriture et à l'écriture édité par [RAISON SOCIALE]."
+        },
+        {
+          "h": "Compte et essai",
+          "p": "Un essai sans compte est proposé. L'utilisation suivie du service demande un compte, créé par lien de connexion envoyé par e-mail ou par Google."
+        },
+        {
+          "h": "Abonnement Pro",
+          "p": "Pro est un abonnement mensuel ou annuel, payé d'avance par Stripe. Il est sans engagement et résiliable à tout moment depuis la page Compte ; il reste actif jusqu'à la fin de la période payée. [CONDITIONS DE REMBOURSEMENT ET DROIT DE RÉTRACTATION À DÉFINIR]."
+        },
+        {
+          "h": "Usage acceptable",
+          "p": "Le service améliore le style, le registre et la clarté de vos textes. Vous restez responsable des textes que vous soumettez et de leur usage. Une limite d'usage équitable s'applique au plan Pro."
+        },
+        {
+          "h": "Résultats",
+          "p": "Les propositions sont produites automatiquement et doivent être relues. Les résultats de détection, quand ils seront disponibles, seront des probabilités et non des preuves."
+        },
+        {
+          "h": "Droit applicable",
+          "p": "[DROIT APPLICABLE, JURIDICTION ET MÉDIATEUR DE LA CONSOMMATION À DÉFINIR]."
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "sections": [
+        {
+          "h": "Responsable du traitement",
+          "p": "[RAISON SOCIALE], [ADRESSE]. Contact : [E-MAIL DE CONTACT]."
+        },
+        {
+          "h": "Vos textes",
+          "p": "Les textes que vous soumettez sont traités en mémoire puis supprimés. Seuls les résultats (propositions, corrections, plans, résumés) sont enregistrés dans votre historique. Le texte d'origine n'est conservé que si vous le demandez."
+        },
+        {
+          "h": "Durée de conservation",
+          "p": "Historique : 7 jours avec le plan Gratuit, 12 mois avec Pro, puis suppression automatique. Compte : jusqu'à sa suppression, que vous pouvez faire à tout moment depuis la page Compte."
+        },
+        {
+          "h": "Entraînement des modèles",
+          "p": "Vos textes ne servent jamais à entraîner un modèle, sauf si vous cochez vous-même l'option correspondante dans votre compte. Elle est désactivée par défaut."
+        },
+        {
+          "h": "Sous-traitants",
+          "p": "Hébergement : [HÉBERGEUR]. Paiement : Stripe. E-mails de connexion : Resend. Connexion avec Google : Google. Réécriture et écriture assistée : Anthropic (API Claude). [TRANSFERTS HORS UE ET GARANTIES À PRÉCISER]."
+        },
+        {
+          "h": "Vos droits",
+          "p": "Vous disposez des droits d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité. Écrivez à [E-MAIL DE CONTACT]. Vous pouvez aussi saisir la CNIL (cnil.fr)."
+        },
+        {
+          "h": "Cookies",
+          "p": "AltyDetect n'utilise que des cookies nécessaires : session de connexion, langue de l'interface et essai sans compte. Aucun cookie publicitaire ni de mesure d'audience."
+        }
+      ]
+    },
+    "notice": {
+      "title": "Mentions légales",
+      "sections": [
+        {
+          "h": "Éditeur",
+          "p": "[RAISON SOCIALE], [FORME JURIDIQUE] au capital de [CAPITAL], immatriculée sous le numéro [SIREN], siège : [ADRESSE]. Contact : [E-MAIL DE CONTACT]."
+        },
+        {
+          "h": "Directeur de la publication",
+          "p": "[NOM DU DIRECTEUR DE LA PUBLICATION]."
+        },
+        {
+          "h": "Hébergement",
+          "p": "[HÉBERGEUR, ADRESSE ET TÉLÉPHONE]."
+        }
+      ]
+    }
   }
 }
