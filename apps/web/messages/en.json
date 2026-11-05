@@ -471,5 +471,39 @@
         }
       ]
     }
+  },
+  "account": {
+    "title": "Account",
+    "plan": "Current plan",
+    "planFree": "Free",
+    "planPro": "Pro",
+    "interval": {
+      "monthly": "monthly",
+      "yearly": "yearly"
+    },
+    "renews": "Renews on {date}.",
+    "ends": "Cancelled: Pro stays active until {date}, then the account returns to Free.",
+    "pastDue": "The last payment failed. Update your payment method to keep Pro.",
+    "checkoutSuccess": "Welcome to Pro! Your subscription is active.",
+    "checkoutPending": "Payment received: Pro may take a few seconds to activate. Reload the page if needed.",
+    "manage": "Manage subscription and invoices",
+    "upgrade": "Upgrade to Pro",
+    "usage": "Usage",
+    "detectionWords": "Detection words this month",
+    "rewritesToday": "Rewrites and writing tools today",
+    "fairUse": "fair use",
+    "resets": "Resets on {date}.",
+    "language": "Interface language",
+    "languageHint": "Used for the interface and emails. The language of your texts is detected automatically.",
+    "save": "Save",
+    "saved": "Preferences saved.",
+    "training": "Model improvement",
+    "trainingLabel": "I agree that my texts may be used to improve AltyDetect's models",
+    "trainingHint": "Off by default. When on, excerpts of your texts may be included, anonymised, in our models' training corpora. You can switch it off at any time; this doesn't remove what has already been used.",
+    "delete": "Delete account",
+    "deleteBody": "Your account, history and preferences are permanently erased. An active Pro subscription is cancelled immediately, with no refund for the current period.",
+    "deleteConfirm": "To confirm, type your email address: {email}",
+    "deleteButton": "Delete permanently",
+    "deleteMismatch": "The address doesn't match the account's."
   }
 }

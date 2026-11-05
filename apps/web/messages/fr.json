@@ -471,5 +471,39 @@
         }
       ]
     }
+  },
+  "account": {
+    "title": "Compte",
+    "plan": "Plan actuel",
+    "planFree": "Gratuit",
+    "planPro": "Pro",
+    "interval": {
+      "monthly": "mensuel",
+      "yearly": "annuel"
+    },
+    "renews": "Renouvellement le {date}.",
+    "ends": "Résilié : Pro reste actif jusqu'au {date}, puis le compte repasse en Gratuit.",
+    "pastDue": "Le dernier paiement a échoué. Mettez à jour votre moyen de paiement pour garder Pro.",
+    "checkoutSuccess": "Bienvenue dans Pro ! Votre abonnement est actif.",
+    "checkoutPending": "Paiement reçu : l'activation de Pro peut prendre quelques secondes. Rechargez la page si besoin.",
+    "manage": "Gérer l'abonnement et les factures",
+    "upgrade": "Passer à Pro",
+    "usage": "Consommation",
+    "detectionWords": "Mots de détection ce mois-ci",
+    "rewritesToday": "Réécritures et outils d'écriture aujourd'hui",
+    "fairUse": "usage équitable",
+    "resets": "Remise à zéro le {date}.",
+    "language": "Langue de l'interface",
+    "languageHint": "Utilisée pour l'interface et les e-mails. La langue de vos textes est détectée automatiquement.",
+    "save": "Enregistrer",
+    "saved": "Préférences enregistrées.",
+    "training": "Amélioration des modèles",
+    "trainingLabel": "J'accepte que mes textes servent à améliorer les modèles d'AltyDetect",
+    "trainingHint": "Désactivé par défaut. Activé, des extraits de vos textes peuvent entrer, de façon anonymisée, dans les corpus d'entraînement de nos modèles. Vous pouvez le désactiver à tout moment ; cela ne retire pas ce qui a déjà été utilisé.",
+    "delete": "Supprimer le compte",
+    "deleteBody": "Votre compte, votre historique et vos préférences sont effacés définitivement. Un abonnement Pro en cours est résilié immédiatement, sans remboursement de la période entamée.",
+    "deleteConfirm": "Pour confirmer, saisissez votre adresse e-mail : {email}",
+    "deleteButton": "Supprimer définitivement",
+    "deleteMismatch": "L'adresse saisie ne correspond pas à celle du compte."
   }
 }
