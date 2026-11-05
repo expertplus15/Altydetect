@@ -11,7 +11,8 @@ def test_jeu_de_test_gele() -> None:
 
 def test_pas_de_regression() -> None:
     report = run()
-    # Garde-fou de non-régression ; la porte de sortie utilise RECALL_THRESHOLD (à fixer).
+    # Porte de sortie de la phase 2 : rappel ≥ 90 %.
+    assert report["gate_passed"] is True
     assert report["recall_gate"] >= 0.95
     assert report["false_positive_rate_negatives"] == 0.0
     assert report["precision"] >= 0.95

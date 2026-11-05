@@ -24,8 +24,8 @@ TESTSET = Path(__file__).resolve().parents[1] / "testset" / "plagiarism-v1"
 REPORTS = Path(__file__).resolve().parents[1] / "reports"
 # Catégories qui entrent dans la porte de sortie (la paraphrase forte est mesurée à part).
 GATE_CATEGORIES = ("verbatim", "light_edit", "reordered", "partial")
-# TODO : seuil de rappel de la porte de sortie de la phase 2 (« Rappel ≥ seuil »), à fixer.
-RECALL_THRESHOLD: float | None = None
+# Seuil de rappel de la porte de sortie de la phase 2 (« Rappel ≥ seuil »), fixé à 90 %.
+RECALL_THRESHOLD: float | None = 0.9
 # Passage attendu retrouvé si une correspondance de la bonne source en couvre la moitié.
 MIN_OVERLAP = 0.5
 

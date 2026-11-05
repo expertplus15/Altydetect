@@ -31,9 +31,8 @@
 | Coût de recherche par document                                               | 5,64 × prix unitaire Brave (prix à renseigner : `INDEXA_SEARCH_PRICE_PER_1000_EUR`) |
 | Latence par document (hors réseau)                                           | ≈ 15 ms                                                                             |
 
-**Porte de sortie** : `RECALL_THRESHOLD` reste à fixer (TODO dans
-`ml/eval/plagiarism/benchmark.py`). Avec un seuil inférieur ou égal à 100 %, elle est atteinte
-sur ce jeu.
+**Porte de sortie** : seuil de rappel fixé à **90 %** (`RECALL_THRESHOLD`). Atteinte sur ce jeu
+(100 %), avec une recherche web simulée ; à confirmer avec Brave sur des pages réelles.
 
 ## Limites à connaître
 

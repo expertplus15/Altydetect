@@ -24,7 +24,7 @@ export const MIN_WORDS_FOR_DETECTION: number = 150;
 
 // --- Plagiat (phase 2) ---
 // Les mots analysés pour le plagiat sont décomptés du quota de détection (décision phase 2).
-/** TODO : nombre maximal de documents de la base privée en Pro (null = sans limite). */
+/** Nombre maximal de documents de la base privée en Pro : sans limite (décision phase 2). */
 export const PRO_PRIVATE_SOURCES_MAX: number | null = null;
 
 // --- Équipe et API : non implémentés en phase 1 ---
