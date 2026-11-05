@@ -19,7 +19,7 @@
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm lint:py && pnpm typecheck:py && pnpm test:py",
     "stripe:seed": "tsx scripts/stripe-seed.ts",
     "test:coverage": "vitest run --coverage",
-    "contracts:generate": "tsx scripts/export-contracts.ts && uv run --no-sync ruff format services/indexa/src/indexa/contracts.py",
+    "contracts:generate": "tsx scripts/export-contracts.ts && prettier --write --log-level warn packages/core/schemas/indexa.json && uv run --no-sync ruff format services/indexa/src/indexa/contracts.py",
     "contracts:check": "pnpm contracts:generate && git diff --exit-code -- packages/core/schemas services/indexa/src/indexa/contracts.py"
   },
   "devDependencies": {
