@@ -15,5 +15,48 @@
     "write": "Write",
     "recent": "Recent",
     "noRecent": "No recent documents"
+  },
+  "email": {
+    "magicLink": {
+      "subject": "Your AltyDetect sign-in link ({host})",
+      "intro": "Click the button below to sign in to AltyDetect. This link is valid for 30 minutes and works only once.",
+      "button": "Sign in",
+      "ignore": "Didn't request this link? Ignore this email: no account will be created or changed."
+    }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign in",
+      "subtitle": "Get a sign-in link by email, no password needed.",
+      "noAccount": "No account yet?",
+      "toSignUp": "Create an account"
+    },
+    "signUp": {
+      "title": "Create an account",
+      "subtitle": "Free, no credit card. We'll email you a confirmation link.",
+      "hasAccount": "Already have an account?",
+      "toSignIn": "Sign in",
+      "consent": "By creating an account, you accept the <terms>terms of use</terms> and the <privacy>privacy policy</privacy>."
+    },
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@example.com",
+    "sendLink": "Send me the link",
+    "or": "or",
+    "google": "Continue with Google",
+    "invalidEmail": "Enter a valid email address, for example name@example.com.",
+    "error": "Sign-in didn't go through. Try again or request a new link.",
+    "verify": {
+      "title": "Check your inbox",
+      "body": "We've just sent you a sign-in link. It's valid for 30 minutes. Check your spam folder too.",
+      "back": "Use another address"
+    },
+    "signOut": "Sign out"
+  },
+  "trial": {
+    "saveTitle": "Your trial result is ready",
+    "saveBody": "Save it to your history to find it later.",
+    "save": "Save to history",
+    "dismiss": "Dismiss",
+    "saved": "Result saved to your history."
   }
 }

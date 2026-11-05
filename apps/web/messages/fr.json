@@ -15,5 +15,48 @@
     "write": "Écrire",
     "recent": "Récents",
     "noRecent": "Aucun document récent"
+  },
+  "email": {
+    "magicLink": {
+      "subject": "Votre lien de connexion à AltyDetect ({host})",
+      "intro": "Cliquez sur le bouton ci-dessous pour vous connecter à AltyDetect. Ce lien est valable 30 minutes et ne fonctionne qu'une fois.",
+      "button": "Me connecter",
+      "ignore": "Vous n'avez pas demandé ce lien ? Ignorez cet e-mail : aucun compte ne sera créé ni modifié."
+    }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Connexion",
+      "subtitle": "Recevez un lien de connexion par e-mail, sans mot de passe.",
+      "noAccount": "Pas encore de compte ?",
+      "toSignUp": "Créer un compte"
+    },
+    "signUp": {
+      "title": "Créer un compte",
+      "subtitle": "Gratuit, sans carte bancaire. Un lien de confirmation vous est envoyé par e-mail.",
+      "hasAccount": "Déjà un compte ?",
+      "toSignIn": "Se connecter",
+      "consent": "En créant un compte, vous acceptez les <terms>conditions d'utilisation</terms> et la <privacy>politique de confidentialité</privacy>."
+    },
+    "emailLabel": "Adresse e-mail",
+    "emailPlaceholder": "vous@exemple.fr",
+    "sendLink": "Recevoir le lien",
+    "or": "ou",
+    "google": "Continuer avec Google",
+    "invalidEmail": "Saisissez une adresse e-mail valide, par exemple prenom@exemple.fr.",
+    "error": "La connexion n'a pas abouti. Réessayez ou demandez un nouveau lien.",
+    "verify": {
+      "title": "Vérifiez votre boîte de réception",
+      "body": "Un lien de connexion vient de vous être envoyé. Il est valable 30 minutes. Pensez à regarder dans les courriers indésirables.",
+      "back": "Utiliser une autre adresse"
+    },
+    "signOut": "Se déconnecter"
+  },
+  "trial": {
+    "saveTitle": "Le résultat de votre essai est prêt",
+    "saveBody": "Enregistrez-le dans votre historique pour le retrouver plus tard.",
+    "save": "Enregistrer dans l'historique",
+    "dismiss": "Ignorer",
+    "saved": "Résultat enregistré dans votre historique."
   }
 }

@@ -2,6 +2,7 @@
 
 import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { signOutAction } from "@/lib/auth/actions";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
 export function Header({
@@ -12,6 +13,7 @@ export function Header({
   onToggleSidebar: () => void;
 }) {
   const t = useTranslations("header");
+  const tAuth = useTranslations("auth");
 
   return (
     <header className="flex h-14 items-center gap-3 border-b border-gray-200 px-4">
@@ -28,12 +30,14 @@ export function Header({
       <span className="text-base font-semibold">{t("brand")}</span>
       <div className="ml-auto flex items-center gap-2">
         <LocaleSwitcher />
-        <button
-          type="button"
-          className="inline-flex h-11 items-center whitespace-nowrap rounded-md bg-accent px-3 text-sm font-medium text-white hover:opacity-90"
-        >
-          {t("signIn")}
-        </button>
+        <form action={signOutAction}>
+          <button
+            type="submit"
+            className="inline-flex h-11 items-center whitespace-nowrap rounded-md px-3 text-sm font-medium text-gray-700 hover:bg-gray-100"
+          >
+            {tAuth("signOut")}
+          </button>
+        </form>
       </div>
     </header>
   );
