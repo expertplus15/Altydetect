@@ -1,0 +1,178 @@
+// Modèle de données d'AltyDetect (phase 1).
+// Règle CLAUDE.md §4.5 : le texte analysé n'est jamais stocké, sauf Document.text quand
+// l'utilisateur a demandé keep_text: true.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../lib/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Locale {
+  fr
+  en
+}
+
+enum Plan {
+  free
+  pro
+}
+
+enum BillingInterval {
+  monthly
+  yearly
+}
+
+enum DocumentSource {
+  paste
+  pdf
+  docx
+}
+
+enum AnalysisType {
+  detect
+  plagiarism
+  rewrite
+  write
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  /// Requis par Auth.js (lien magique).
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  locale        Locale    @default(fr)
+  /// Consentement à l'usage des textes pour l'entraînement : désactivé par défaut (CLAUDE.md §6).
+  trainingOptIn Boolean   @default(false) @map("training_opt_in")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  subscription Subscription?
+  usage        Usage?
+  documents    Document[]
+  accounts     Account[]
+  sessions     Session[]
+
+  @@index([createdAt])
+  @@map("users")
+}
+
+model Subscription {
+  id                   String           @id @default(cuid())
+  userId               String           @unique @map("user_id")
+  plan                 Plan             @default(free)
+  interval             BillingInterval?
+  stripeCustomerId     String?          @unique @map("stripe_customer_id")
+  stripeSubscriptionId String?          @unique @map("stripe_subscription_id")
+  /// Statut Stripe brut : active, past_due, canceled…
+  status               String           @default("active")
+  currentPeriodEnd     DateTime?        @map("current_period_end")
+  cancelAtPeriodEnd    Boolean          @default(false) @map("cancel_at_period_end")
+  createdAt            DateTime         @default(now()) @map("created_at")
+  updatedAt            DateTime         @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+  @@map("subscriptions")
+}
+
+model Usage {
+  id                   String   @id @default(cuid())
+  userId               String   @unique @map("user_id")
+  /// Début de la période de quota de détection en cours.
+  periodStart          DateTime @map("period_start")
+  detectionWordsUsed   Int      @default(0) @map("detection_words_used")
+  rewriteRequestsToday Int      @default(0) @map("rewrite_requests_today")
+  /// Jour UTC (minuit) auquel se rapporte rewrite_requests_today.
+  rewriteDate          DateTime @map("rewrite_date") @db.Date
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+  @@map("usage")
+}
+
+model Document {
+  id        String         @id @default(cuid())
+  userId    String         @map("user_id")
+  title     String
+  source    DocumentSource @default(paste)
+  wordCount Int            @map("word_count")
+  /// Rempli seulement si l'utilisateur a demandé keep_text: true.
+  text      String?
+  createdAt DateTime       @default(now()) @map("created_at")
+
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  analyses Analysis[]
+
+  @@index([userId, createdAt])
+  @@index([createdAt])
+  @@map("documents")
+}
+
+model Analysis {
+  id         String       @id @default(cuid())
+  documentId String       @map("document_id")
+  type       AnalysisType
+  resultJson Json         @map("result_json")
+  engine     String
+  createdAt  DateTime     @default(now()) @map("created_at")
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId, createdAt])
+  @@index([createdAt])
+  @@map("analyses")
+}
+
+// --- Tables Auth.js (adaptateur Prisma) ---
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}

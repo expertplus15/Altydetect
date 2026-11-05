@@ -17,6 +17,25 @@ jobs:
   check:
     name: Lint, types et tests
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: altydetect
+          POSTGRES_PASSWORD: altydetect
+          POSTGRES_DB: altydetect
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U altydetect" --health-interval 5s --health-timeout 3s --health-retries 10
+      redis:
+        image: redis:7.4-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://altydetect:altydetect@localhost:5432/altydetect
+      SHADOW_DATABASE_URL: postgresql://altydetect:altydetect@localhost:5432/altydetect_shadow
+      REDIS_URL: redis://localhost:6379
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -29,6 +48,13 @@ jobs:
           python-version: "3.12"
       - run: pnpm install --frozen-lockfile
       - run: uv sync --all-packages --frozen
+      - name: Appliquer les migrations
+        run: pnpm -C apps/web db:migrate
+      - name: Vérifier que les migrations correspondent au schéma
+        run: |
+          PGPASSWORD=altydetect psql -h localhost -U altydetect -d altydetect -c "CREATE DATABASE altydetect_shadow"
+          pnpm -C apps/web exec prisma migrate diff \
+            --from-migrations ../../infra/migrations --to-schema prisma/schema.prisma --exit-code
       - run: pnpm check
       - run: pnpm build
 
