@@ -167,5 +167,61 @@
       "default": "L'import n'a pas abouti. Réessayez."
     },
     "imported": "Texte importé : {words} mots."
+  },
+  "rewrite": {
+    "title": "Réécrire",
+    "subtitle": "Le style, le registre et la clarté changent ; le sens reste le même.",
+    "original": "Original",
+    "proposition": "Proposition {current} / {total}",
+    "propositionSingle": "Proposition",
+    "previous": "Proposition précédente",
+    "next": "Proposition suivante",
+    "empty": "Votre proposition apparaîtra ici.",
+    "writing": "Rédaction en cours…",
+    "copy": "Copier",
+    "copied": "Copié",
+    "replace": "Remplacer dans le document",
+    "replaced": "Texte remplacé dans le document.",
+    "settings": "Réglages de réécriture",
+    "register": "Registre",
+    "registers": {
+      "academic": "Académique",
+      "professional": "Professionnel",
+      "simple": "Simple",
+      "faithful": "Fidèle"
+    },
+    "registerHints": {
+      "academic": "Phrases précises, vocabulaire disciplinaire, ton neutre.",
+      "professional": "Direct et clair, adapté à un rapport ou un e-mail.",
+      "simple": "Phrases courtes et mots courants.",
+      "faithful": "Corrige la forme sans toucher au style."
+    },
+    "intensity": "Intensité",
+    "intensities": {
+      "1": "Légère",
+      "2": "Moyenne",
+      "3": "Forte"
+    },
+    "preserve": "Conserver les citations",
+    "preserveHint": "Citations, références, chiffres et URL restent intacts (surlignés en bleu).",
+    "variants": "Nombre de propositions",
+    "variantsPro": "Plusieurs propositions : inclus dans Pro.",
+    "submit": "Réécrire",
+    "stop": "Arrêter",
+    "remaining": "{count, plural, =0 {Plus de réécriture aujourd'hui} one {# réécriture restante aujourd'hui} other {# réécritures restantes aujourd'hui}} · remise à zéro à minuit (UTC).",
+    "needText": "Saisissez ou collez un texte à réécrire.",
+    "errors": {
+      "QUOTA_EXCEEDED": "Vous avez utilisé vos réécritures du jour. Le compteur repart à zéro à minuit (UTC).",
+      "QUOTA_EXCEEDED_PRO": "Limite d'usage du jour atteinte. Elle repart à zéro à minuit (UTC).",
+      "SIGN_UP_REQUIRED": "Votre essai est terminé. Créez un compte gratuit pour continuer.",
+      "TRIAL_LIMIT": "Trop d'essais depuis ce réseau aujourd'hui. Créez un compte gratuit pour continuer.",
+      "TEXT_TOO_LONG": "Ce texte dépasse {maxWords} mots. Réécrivez-le par parties.",
+      "REFUSED": "Ce texte n'a pas pu être réécrit. Modifiez-le ou essayez un autre registre.",
+      "INVALID_INPUT": "La demande est incomplète. Vérifiez le texte et les réglages.",
+      "default": "La réécriture n'a pas abouti. Réessayez dans un instant."
+    },
+    "upgrade": "Passer à Pro",
+    "signUp": "Créer un compte gratuit",
+    "trialSaved": "Créez un compte gratuit pour enregistrer ce résultat dans votre historique."
   }
 }

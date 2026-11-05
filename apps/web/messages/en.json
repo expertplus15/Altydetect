@@ -167,5 +167,61 @@
       "default": "Import failed. Try again."
     },
     "imported": "Text imported: {words} words."
+  },
+  "rewrite": {
+    "title": "Rewrite",
+    "subtitle": "Style, register and clarity change; the meaning stays the same.",
+    "original": "Original",
+    "proposition": "Suggestion {current} / {total}",
+    "propositionSingle": "Suggestion",
+    "previous": "Previous suggestion",
+    "next": "Next suggestion",
+    "empty": "Your suggestion will appear here.",
+    "writing": "Writing…",
+    "copy": "Copy",
+    "copied": "Copied",
+    "replace": "Replace in document",
+    "replaced": "Text replaced in the document.",
+    "settings": "Rewrite settings",
+    "register": "Register",
+    "registers": {
+      "academic": "Academic",
+      "professional": "Professional",
+      "simple": "Plain",
+      "faithful": "Faithful"
+    },
+    "registerHints": {
+      "academic": "Precise sentences, subject vocabulary, neutral tone.",
+      "professional": "Direct and clear, suited to a report or an email.",
+      "simple": "Short sentences and everyday words.",
+      "faithful": "Fixes the form without touching the style."
+    },
+    "intensity": "Intensity",
+    "intensities": {
+      "1": "Light",
+      "2": "Medium",
+      "3": "Strong"
+    },
+    "preserve": "Keep quotations",
+    "preserveHint": "Quotations, references, figures and URLs stay intact (highlighted in blue).",
+    "variants": "Number of suggestions",
+    "variantsPro": "Several suggestions: included in Pro.",
+    "submit": "Rewrite",
+    "stop": "Stop",
+    "remaining": "{count, plural, =0 {No rewrites left today} one {# rewrite left today} other {# rewrites left today}} · resets at midnight (UTC).",
+    "needText": "Type or paste a text to rewrite.",
+    "errors": {
+      "QUOTA_EXCEEDED": "You've used today's rewrites. The counter resets at midnight (UTC).",
+      "QUOTA_EXCEEDED_PRO": "Today's fair-use limit is reached. It resets at midnight (UTC).",
+      "SIGN_UP_REQUIRED": "Your trial is over. Create a free account to continue.",
+      "TRIAL_LIMIT": "Too many trials from this network today. Create a free account to continue.",
+      "TEXT_TOO_LONG": "This text is over {maxWords} words. Rewrite it in parts.",
+      "REFUSED": "This text couldn't be rewritten. Edit it or try another register.",
+      "INVALID_INPUT": "The request is incomplete. Check the text and settings.",
+      "default": "The rewrite didn't go through. Try again in a moment."
+    },
+    "upgrade": "Upgrade to Pro",
+    "signUp": "Create a free account",
+    "trialSaved": "Create a free account to save this result to your history."
   }
 }

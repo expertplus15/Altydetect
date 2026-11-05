@@ -16,6 +16,8 @@
   "dependencies": {
     "@altydetect/billing": "workspace:*",
     "@altydetect/core": "workspace:*",
+    "@altydetect/rewrite": "workspace:*",
+    "@anthropic-ai/sdk": "1.5.0",
     "@auth/prisma-adapter": "2.11.3",
     "@prisma/adapter-pg": "7.10.1",
     "@prisma/client": "7.10.1",
@@ -34,7 +36,8 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "server-only": "^0.0.1",
-    "stripe": "^23.1.0"
+    "stripe": "^23.1.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.4",
