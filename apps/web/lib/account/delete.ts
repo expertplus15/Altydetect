@@ -19,5 +19,7 @@ export async function deleteAccountData(
       if (code !== "resource_missing") throw error;
     });
   }
+  // Base privée du plagiat (espace = utilisateur en phase 2) ; empreintes supprimées en cascade.
+  await db.privateSource.deleteMany({ where: { workspaceId: userId } });
   await db.user.delete({ where: { id: userId } });
 }
