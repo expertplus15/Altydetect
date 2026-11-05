@@ -5,6 +5,10 @@ description = "Indexa — moteur de plagiat (n-grammes, recherche web, alignemen
 requires-python = ">=3.12,<3.13"
 dependencies = [
   "fastapi>=0.120",
+  "httpx2>=2.16",
+  "psycopg[binary]>=3.2",
+  "redis>=6",
+  "rq>=2.6",
   "uvicorn>=0.38",
 ]
 

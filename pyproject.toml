@@ -5,5 +5,6 @@ members = ["services/*", "ml/*"]
 # Outils partagés par tout le dépôt.
 [dependency-groups]
 dev = [
+  "datamodel-code-generator>=0.89.0",
   "pre-commit>=4.3",
 ]
