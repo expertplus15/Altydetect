@@ -1,0 +1,19 @@
+{
+  "version": "plagiarism-v1",
+  "created": "2026-11-05",
+  "licence": "CC0 1.0 — textes rédigés pour AltyDetect, aucune donnée externe",
+  "generator": "ml/eval/plagiarism/build_testset.py (graine 20261105)",
+  "cases": 56,
+  "categories": {
+    "verbatim": 12,
+    "light_edit": 12,
+    "reordered": 12,
+    "partial": 12,
+    "negative": 6,
+    "paraphrase": 2
+  },
+  "files": {
+    "pages.json": "219160c4f00d647eb580697507f45396c43d230c5d7ac5f0ba75dab309e0524e",
+    "cases.jsonl": "914f211e18ac864b630e86e9befd22572cb61ab3c9d9269472aa954c62c5bbe9"
+  }
+}

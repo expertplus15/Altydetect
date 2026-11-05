@@ -26,6 +26,12 @@ source = { virtual = "ml/corpus" }
 name = "altydetect-ml-eval"
 version = "0.0.0"
 source = { virtual = "ml/eval" }
+dependencies = [
+    { name = "indexa" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "indexa", editable = "services/indexa" }]
 
 [[package]]
 name = "altydetect-ml-train"
