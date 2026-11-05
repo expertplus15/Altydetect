@@ -97,7 +97,7 @@
       "cta": "Créer un compte",
       "rewrites": "{count} demandes par jour, partagées entre Réécrire et Écrire",
       "write": "Plan, correction et résumé (inclus dans les demandes du jour) ; citations sans limite",
-      "detection": "Détection : {words} mots par mois, dès sa sortie",
+      "detection": "Détection et plagiat sur le web : {words} mots par mois",
       "history": "Historique de {days} jours"
     },
     "pro": {
@@ -107,7 +107,7 @@
       "current": "Votre plan actuel",
       "rewrites": "Réécrire et Écrire sans limite quotidienne affichée",
       "variants": "Jusqu'à 3 propositions par réécriture",
-      "detection": "Détection : {words} mots par mois, dès sa sortie",
+      "detection": "Détection et plagiat : {words} mots par mois, avec votre base privée de documents",
       "files": "Import PDF et DOCX, export PDF",
       "history": "Historique de {months} mois"
     },
@@ -115,7 +115,7 @@
       "name": "Équipe",
       "tagline": "Pour les agences, écoles et services RH",
       "f1": "Espace partagé et gestion des membres",
-      "f2": "Base privée de documents pour le plagiat",
+      "f2": "Base privée partagée entre les membres",
       "f3": "Facturation centralisée"
     },
     "api": {
@@ -505,5 +505,61 @@
     "deleteConfirm": "Pour confirmer, saisissez votre adresse e-mail : {email}",
     "deleteButton": "Supprimer définitivement",
     "deleteMismatch": "L'adresse saisie ne correspond pas à celle du compte."
+  },
+  "plagiarism": {
+    "title": "Plagiat",
+    "subtitle": "Les passages retrouvés ailleurs sont surlignés. Une similarité n'est pas une preuve : vérifiez chaque source.",
+    "panel": "Analyse de plagiat",
+    "tabs": {
+      "analysis": "Analyse",
+      "base": "Base privée"
+    },
+    "scope": "Où chercher",
+    "scopes": {
+      "web": "Web",
+      "private": "Base privée",
+      "both": "Les deux"
+    },
+    "scopePro": "La base privée est incluse dans Pro.",
+    "analyze": "Analyser",
+    "edit": "Modifier le texte",
+    "needText": "Saisissez ou collez au moins 150 mots.",
+    "status": {
+      "queued": "En attente…",
+      "running": "Analyse en cours…",
+      "done": "Analyse terminée",
+      "failed": "L'analyse n'a pas abouti. Vos mots ont été rendus."
+    },
+    "similarity": "Similarité",
+    "similarityHint": "Part du texte retrouvée dans des sources.",
+    "sources": "{count, plural, =0 {Aucune source} one {# source} other {# sources}}",
+    "passages": "{count, plural, one {# passage} other {# passages}}",
+    "score": "{score} % identique",
+    "noMatch": "Aucun passage retrouvé dans les sources consultées.",
+    "privateDoc": "Base privée",
+    "quota": "Mots de détection et de plagiat ce mois-ci : {used} / {limit}",
+    "errors": {
+      "TEXT_TOO_SHORT": "Il faut au moins 150 mots pour une analyse.",
+      "QUOTA_EXCEEDED": "Votre quota de mots du mois est atteint. Il repart à zéro le {date}.",
+      "UPGRADE_REQUIRED": "La base privée est incluse dans Pro.",
+      "TEXT_TOO_LONG": "Ce texte est trop long. Analysez-le par parties.",
+      "INDEXA_UNAVAILABLE": "Le service d'analyse ne répond pas. Vos mots ont été rendus ; réessayez dans un instant.",
+      "default": "L'analyse n'a pas abouti. Réessayez dans un instant."
+    },
+    "base": {
+      "intro": "Ajoutez vos propres documents de référence (anciens devoirs, mémoires, rapports) : chaque analyse les compare au texte.",
+      "titleLabel": "Titre du document",
+      "textLabel": "Texte du document",
+      "add": "Ajouter à ma base privée",
+      "fromEditor": "Utiliser le texte de l'éditeur",
+      "empty": "Votre base privée est vide.",
+      "delete": "Supprimer",
+      "deleteLabel": "Supprimer {title}",
+      "words": "{count, plural, one {# mot} other {# mots}}",
+      "added": "Document ajouté à votre base privée.",
+      "full": "Votre base privée est pleine ({max} documents).",
+      "proOnly": "La base privée est incluse dans Pro.",
+      "failed": "L'opération n'a pas abouti. Réessayez."
+    }
   }
 }

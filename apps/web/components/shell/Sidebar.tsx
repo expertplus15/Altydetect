@@ -18,7 +18,7 @@ const TOOLS: {
   soon?: boolean;
 }[] = [
   { key: "detect", href: "/app/detecter", soon: true },
-  { key: "plagiarism", href: "/app/plagiat", soon: true },
+  { key: "plagiarism", href: "/app/plagiat" },
   { key: "rewrite", href: "/app/reecrire" },
   { key: "write", href: "/app/ecrire" },
   { key: "correct", href: "/app/corriger" },
