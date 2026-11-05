@@ -53,6 +53,9 @@ importers:
       '@altydetect/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@altydetect/plagiarism':
+        specifier: workspace:*
+        version: link:../../packages/plagiarism
       '@altydetect/reports':
         specifier: workspace:*
         version: link:../../packages/reports
@@ -171,7 +174,11 @@ importers:
 
   packages/detect: {}
 
-  packages/plagiarism: {}
+  packages/plagiarism:
+    dependencies:
+      '@altydetect/core':
+        specifier: workspace:*
+        version: link:../core
 
   packages/reports:
     dependencies:

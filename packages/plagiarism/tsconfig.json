@@ -1,4 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // fetch, Request, AbortSignal : disponibles dans Node 22 comme dans le navigateur.
+    "lib": ["ES2023", "DOM"]
+  },
   "include": ["src"]
 }

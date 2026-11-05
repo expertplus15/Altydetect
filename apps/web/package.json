@@ -18,6 +18,7 @@
   "dependencies": {
     "@altydetect/billing": "workspace:*",
     "@altydetect/core": "workspace:*",
+    "@altydetect/plagiarism": "workspace:*",
     "@altydetect/reports": "workspace:*",
     "@altydetect/rewrite": "workspace:*",
     "@altydetect/write": "workspace:*",
