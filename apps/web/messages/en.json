@@ -1,20 +1,30 @@
 {
   "header": {
     "brand": "AltyDetect",
-    "openSidebar": "Open sidebar",
-    "closeSidebar": "Close sidebar",
+    "workspace": "Workspace",
+    "pricing": "Pricing",
     "languageSwitcher": "Interface language",
+    "quota": "{used} / {limit} words",
+    "quotaLabel": "Detection words used this month: {used} of {limit}",
+    "upgrade": "Upgrade to Pro",
+    "proBadge": "Pro",
+    "account": "My account",
+    "accountMenu": "Account menu",
+    "history": "History",
     "signIn": "Sign in"
   },
   "sidebar": {
-    "navigation": "Main navigation",
+    "navigation": "Tools",
     "tools": "Tools",
     "detect": "Detect",
     "plagiarism": "Plagiarism",
     "rewrite": "Rewrite",
     "write": "Write",
+    "correct": "Proofread",
     "recent": "Recent",
-    "noRecent": "No recent documents"
+    "noRecent": "No recent documents",
+    "soon": "Soon",
+    "allHistory": "Full history"
   },
   "email": {
     "magicLink": {
@@ -125,5 +135,17 @@
       "quotaQ": "What happens when my detection quota runs out?",
       "quotaA": "Rewrite and Write stay available. The counter resets at the start of the next period."
     }
+  },
+  "comingSoon": {
+    "detect": {
+      "title": "Detect is coming soon",
+      "body": "AI text detection will be available in phase 3. It will give a probability with a confidence level and an \"Undetermined\" zone, never a verdict."
+    },
+    "plagiarism": {
+      "title": "Plagiarism is coming soon",
+      "body": "Plagiarism checking will be available in phase 2, across the web and your private document base."
+    },
+    "meanwhile": "Meanwhile, you can rewrite or proofread your texts.",
+    "toRewrite": "Open Rewrite"
   }
 }

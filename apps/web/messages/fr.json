@@ -1,40 +1,50 @@
 {
   "header": {
     "brand": "AltyDetect",
-    "openSidebar": "Ouvrir la barre latérale",
-    "closeSidebar": "Fermer la barre latérale",
+    "workspace": "Espace de travail",
+    "pricing": "Tarifs",
     "languageSwitcher": "Langue de l'interface",
+    "quota": "{used} / {limit} mots",
+    "quotaLabel": "Mots de détection utilisés ce mois-ci : {used} sur {limit}",
+    "upgrade": "Passer à Pro",
+    "proBadge": "Pro",
+    "account": "Mon compte",
+    "accountMenu": "Menu du compte",
+    "history": "Historique",
     "signIn": "Se connecter"
   },
   "sidebar": {
-    "navigation": "Navigation principale",
+    "navigation": "Outils",
     "tools": "Outils",
     "detect": "Détecter",
     "plagiarism": "Plagiat",
     "rewrite": "Réécrire",
     "write": "Écrire",
+    "correct": "Corriger",
     "recent": "Récents",
-    "noRecent": "Aucun document récent"
+    "noRecent": "Aucun document récent",
+    "soon": "Bientôt",
+    "allHistory": "Tout l'historique"
   },
   "email": {
     "magicLink": {
       "subject": "Votre lien de connexion à AltyDetect ({host})",
       "intro": "Cliquez sur le bouton ci-dessous pour vous connecter à AltyDetect. Ce lien est valable 30 minutes et ne fonctionne qu'une fois.",
       "button": "Me connecter",
-      "ignore": "Vous n'avez pas demandé ce lien ? Ignorez cet e-mail : aucun compte ne sera créé ni modifié."
+      "ignore": "Vous n'avez pas demandé ce lien ? Ignorez cet e-mail : aucun compte ne sera créé ni modifié."
     }
   },
   "auth": {
     "signIn": {
       "title": "Connexion",
       "subtitle": "Recevez un lien de connexion par e-mail, sans mot de passe.",
-      "noAccount": "Pas encore de compte ?",
+      "noAccount": "Pas encore de compte ?",
       "toSignUp": "Créer un compte"
     },
     "signUp": {
       "title": "Créer un compte",
       "subtitle": "Gratuit, sans carte bancaire. Un lien de confirmation vous est envoyé par e-mail.",
-      "hasAccount": "Déjà un compte ?",
+      "hasAccount": "Déjà un compte ?",
       "toSignIn": "Se connecter",
       "consent": "En créant un compte, vous acceptez les <terms>conditions d'utilisation</terms> et la <privacy>politique de confidentialité</privacy>."
     },
@@ -74,20 +84,20 @@
     "subtitle": "Pas d'abonnement à la semaine, pas d'essai facturé. Vous résiliez en un clic depuis votre compte.",
     "period": "Période de facturation",
     "monthly": "Mensuel",
-    "yearly": "Annuel · −20 %",
+    "yearly": "Annuel · −20 %",
     "perMonth": "/ mois",
     "recommended": "Recommandé",
     "soon": "Bientôt",
     "billedMonthly": "Facturé chaque mois",
     "billedYearly": "Facturé {amount} par an",
-    "cancelled": "Paiement annulé : aucun montant n'a été prélevé.",
+    "cancelled": "Paiement annulé : aucun montant n'a été prélevé.",
     "free": {
       "name": "Gratuit",
       "tagline": "Pour découvrir les outils",
       "cta": "Créer un compte",
       "rewrites": "{count} réécritures par jour",
       "write": "Plan, correction, citations et résumé",
-      "detection": "Détection : {words} mots par mois, dès sa sortie",
+      "detection": "Détection : {words} mots par mois, dès sa sortie",
       "history": "Historique de {days} jours"
     },
     "pro": {
@@ -97,7 +107,7 @@
       "current": "Votre plan actuel",
       "rewrites": "Réécritures sans limite quotidienne affichée",
       "variants": "Jusqu'à 3 propositions par réécriture",
-      "detection": "Détection : {words} mots par mois, dès sa sortie",
+      "detection": "Détection : {words} mots par mois, dès sa sortie",
       "files": "Import PDF et DOCX, export PDF",
       "history": "Historique de {months} mois"
     },
@@ -118,12 +128,24 @@
     "priceToCome": "Prix à venir",
     "faqTitle": "Questions fréquentes",
     "faq": {
-      "cancelQ": "Comment résilier ?",
+      "cancelQ": "Comment résilier ?",
       "cancelA": "Depuis la page Compte, en un clic. Pro reste actif jusqu'à la fin de la période déjà payée.",
-      "dataQ": "Mes textes sont-ils conservés ?",
+      "dataQ": "Mes textes sont-ils conservés ?",
       "dataA": "Non, sauf si vous choisissez de les enregistrer. Seuls les résultats apparaissent dans votre historique.",
-      "quotaQ": "Que se passe-t-il quand mon quota de détection est atteint ?",
+      "quotaQ": "Que se passe-t-il quand mon quota de détection est atteint ?",
       "quotaA": "Réécrire et Écrire restent disponibles. Le compteur repart à zéro au début de la période suivante."
     }
+  },
+  "comingSoon": {
+    "detect": {
+      "title": "Détecter arrive bientôt",
+      "body": "La détection de texte IA sera disponible en phase 3. Elle donnera une probabilité avec un niveau de confiance et une zone « Indéterminé », jamais un verdict."
+    },
+    "plagiarism": {
+      "title": "Plagiat arrive bientôt",
+      "body": "La recherche de plagiat sera disponible en phase 2, sur le web et dans votre base privée de documents."
+    },
+    "meanwhile": "En attendant, vous pouvez réécrire ou corriger vos textes.",
+    "toRewrite": "Ouvrir Réécrire"
   }
 }
