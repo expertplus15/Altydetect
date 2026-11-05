@@ -56,6 +56,8 @@ jobs:
           pnpm -C apps/web exec prisma migrate diff \
             --from-migrations ../../infra/migrations --to-schema prisma/schema.prisma --exit-code
       - run: pnpm check
+      - name: Vérifier que les modèles Pydantic d'Indexa suivent les contrats zod
+        run: pnpm contracts:check
       - run: pnpm build
 
   e2e:

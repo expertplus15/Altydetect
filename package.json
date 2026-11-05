@@ -18,10 +18,13 @@
     "test:py": "uv run pytest services/veritas && uv run pytest services/indexa",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm lint:py && pnpm typecheck:py && pnpm test:py",
     "stripe:seed": "tsx scripts/stripe-seed.ts",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "contracts:generate": "tsx scripts/export-contracts.ts && uv run --no-sync ruff format services/indexa/src/indexa/contracts.py",
+    "contracts:check": "pnpm contracts:generate && git diff --exit-code -- packages/core/schemas services/indexa/src/indexa/contracts.py"
   },
   "devDependencies": {
     "@altydetect/billing": "workspace:*",
+    "@altydetect/core": "workspace:*",
     "@types/node": "^22.19.0",
     "@vitest/coverage-v8": "5.1.0",
     "eslint": "^10.14.0",
@@ -30,7 +33,8 @@
     "tsx": "^4.23.15",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.72.1",
-    "vitest": "^5.1.0"
+    "vitest": "^5.1.0",
+    "zod": "^4.6.7"
   },
   "type": "module"
 }
