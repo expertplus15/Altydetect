@@ -35,7 +35,7 @@ select = ["E", "F", "W", "I", "B", "UP", "N", "S", "RUF"]
 allowed-confusables = ["’", "\u00a0", "\u202f"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101"]
+"tests/**" = ["S101", "S105"]
 
 [tool.mypy]
 python_version = "3.12"
