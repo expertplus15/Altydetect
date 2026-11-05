@@ -26,6 +26,11 @@ export default tseslint.config(
     },
   },
   {
+    // Les assertions sur des fonctions simulées (vi.fn) sont des références de méthode.
+    files: ["**/*.test.ts", "**/*.test.tsx"],
+    rules: { "@typescript-eslint/unbound-method": "off" },
+  },
+  {
     files: ["scripts/**"],
     rules: { "no-console": "off" },
   },

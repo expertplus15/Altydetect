@@ -16,12 +16,15 @@
     "lint:py": "uv run ruff check services && uv run ruff format --check services",
     "typecheck:py": "cd services/veritas && uv run mypy && cd ../indexa && uv run mypy",
     "test:py": "uv run pytest services/veritas && uv run pytest services/indexa",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm lint:py && pnpm typecheck:py && pnpm test:py"
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm lint:py && pnpm typecheck:py && pnpm test:py",
+    "stripe:seed": "tsx scripts/stripe-seed.ts"
   },
   "devDependencies": {
+    "@altydetect/billing": "workspace:*",
     "@types/node": "^22.19.0",
     "eslint": "^10.14.0",
     "prettier": "^3.9.10",
+    "stripe": "^23.1.0",
     "tsx": "^4.23.15",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.72.1",

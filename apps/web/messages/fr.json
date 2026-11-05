@@ -58,5 +58,72 @@
     "save": "Enregistrer dans l'historique",
     "dismiss": "Ignorer",
     "saved": "Résultat enregistré dans votre historique."
+  },
+  "publicHeader": {
+    "tools": "Outils",
+    "pricing": "Tarifs",
+    "signIn": "Se connecter",
+    "signUp": "Créer un compte",
+    "workspace": "Mon espace",
+    "nav": "Navigation du site"
+  },
+  "pricing": {
+    "metaTitle": "Tarifs — AltyDetect",
+    "metaDescription": "Gratuit pour commencer, Pro à {yearlyMonthly} par mois en annuel. Sans engagement, résiliable en un clic.",
+    "title": "Des tarifs simples, sans engagement",
+    "subtitle": "Pas d'abonnement à la semaine, pas d'essai facturé. Vous résiliez en un clic depuis votre compte.",
+    "period": "Période de facturation",
+    "monthly": "Mensuel",
+    "yearly": "Annuel · −20 %",
+    "perMonth": "/ mois",
+    "recommended": "Recommandé",
+    "soon": "Bientôt",
+    "billedMonthly": "Facturé chaque mois",
+    "billedYearly": "Facturé {amount} par an",
+    "cancelled": "Paiement annulé : aucun montant n'a été prélevé.",
+    "free": {
+      "name": "Gratuit",
+      "tagline": "Pour découvrir les outils",
+      "cta": "Créer un compte",
+      "rewrites": "{count} réécritures par jour",
+      "write": "Plan, correction, citations et résumé",
+      "detection": "Détection : {words} mots par mois, dès sa sortie",
+      "history": "Historique de {days} jours"
+    },
+    "pro": {
+      "name": "Pro",
+      "tagline": "Pour écrire tous les jours",
+      "cta": "Passer à Pro",
+      "current": "Votre plan actuel",
+      "rewrites": "Réécritures sans limite quotidienne affichée",
+      "variants": "Jusqu'à 3 propositions par réécriture",
+      "detection": "Détection : {words} mots par mois, dès sa sortie",
+      "files": "Import PDF et DOCX, export PDF",
+      "history": "Historique de {months} mois"
+    },
+    "team": {
+      "name": "Équipe",
+      "tagline": "Pour les agences, écoles et services RH",
+      "f1": "Espace partagé et gestion des membres",
+      "f2": "Base privée de documents pour le plagiat",
+      "f3": "Facturation centralisée"
+    },
+    "api": {
+      "name": "API",
+      "tagline": "Pour intégrer AltyDetect à vos outils",
+      "f1": "Détection, plagiat et réécriture par API",
+      "f2": "Paiement à l'usage",
+      "f3": "Documentation publique"
+    },
+    "priceToCome": "Prix à venir",
+    "faqTitle": "Questions fréquentes",
+    "faq": {
+      "cancelQ": "Comment résilier ?",
+      "cancelA": "Depuis la page Compte, en un clic. Pro reste actif jusqu'à la fin de la période déjà payée.",
+      "dataQ": "Mes textes sont-ils conservés ?",
+      "dataA": "Non, sauf si vous choisissez de les enregistrer. Seuls les résultats apparaissent dans votre historique.",
+      "quotaQ": "Que se passe-t-il quand mon quota de détection est atteint ?",
+      "quotaA": "Réécrire et Écrire restent disponibles. Le compteur repart à zéro au début de la période suivante."
+    }
   }
 }

@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@altydetect/billing':
+        specifier: workspace:*
+        version: link:packages/billing
       '@types/node':
         specifier: ^22.19.0
         version: 22.20.5
@@ -17,6 +20,9 @@ importers:
       prettier:
         specifier: ^3.9.10
         version: 3.9.10
+      stripe:
+        specifier: ^23.1.0
+        version: 23.1.0(@types/node@22.20.5)
       tsx:
         specifier: ^4.23.15
         version: 4.23.15
@@ -32,6 +38,12 @@ importers:
 
   apps/web:
     dependencies:
+      '@altydetect/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing
+      '@altydetect/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@auth/prisma-adapter':
         specifier: 2.11.3
         version: 2.11.3(@prisma/client@7.10.1(prisma@7.10.1(@types/node@22.20.5)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3))(typescript@6.0.3))
@@ -68,6 +80,9 @@ importers:
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
+      stripe:
+        specifier: ^23.1.0
+        version: 23.1.0(@types/node@22.20.5)
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.3.4
@@ -88,7 +103,11 @@ importers:
         specifier: ^4.3.4
         version: 4.3.4
 
-  packages/billing: {}
+  packages/billing:
+    dependencies:
+      stripe:
+        specifier: ^23.1.0
+        version: 23.1.0(@types/node@22.20.5)
 
   packages/core: {}
 
@@ -2139,6 +2158,15 @@ packages:
   std-env@4.3.0:
     resolution: {integrity: sha512-OtU/EgQ1kIm5KwqQpBC6ZEMXrZRui11w8zgfTWp8cdO9B8OaPsbA8bTHO2P+HNo1VlUTGMVBwPhydu6poeXiag==}
 
+  stripe@23.1.0:
+    resolution: {integrity: sha512-fVUfMSfTPoukfoV//MUKAx2+YxyKmYaYtnAL9VkfnHfaPNQylFdWZMD+zgUFerI8rjbaiER8Vzj2XEUQ2AhAsQ==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@types/node': '>=20'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+
   styled-jsx@5.1.6:
     resolution: {integrity: sha512-qSVyDTeMotdvQYoHWLNGwRFJHC+i+ZvdBRYosOFgC+Wg1vx4frN2/RG/NA7SYqqvKNLf39P2LSRA2pu6n0XYZA==}
     engines: {node: '>= 12.0.0'}
@@ -4177,6 +4205,10 @@ snapshots:
   std-env@3.10.0: {}
 
   std-env@4.3.0: {}
+
+  stripe@23.1.0(@types/node@22.20.5):
+    optionalDependencies:
+      '@types/node': 22.20.5
 
   styled-jsx@5.1.6(react@19.3.1):
     dependencies:

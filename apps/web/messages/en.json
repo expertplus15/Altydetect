@@ -58,5 +58,72 @@
     "save": "Save to history",
     "dismiss": "Dismiss",
     "saved": "Result saved to your history."
+  },
+  "publicHeader": {
+    "tools": "Tools",
+    "pricing": "Pricing",
+    "signIn": "Sign in",
+    "signUp": "Create an account",
+    "workspace": "My workspace",
+    "nav": "Site navigation"
+  },
+  "pricing": {
+    "metaTitle": "Pricing — AltyDetect",
+    "metaDescription": "Free to start, Pro at {yearlyMonthly} a month billed yearly. No commitment, cancel in one click.",
+    "title": "Simple pricing, no commitment",
+    "subtitle": "No weekly plans, no paid trial. Cancel in one click from your account.",
+    "period": "Billing period",
+    "monthly": "Monthly",
+    "yearly": "Yearly · −20%",
+    "perMonth": "/ month",
+    "recommended": "Recommended",
+    "soon": "Coming soon",
+    "billedMonthly": "Billed monthly",
+    "billedYearly": "Billed {amount} per year",
+    "cancelled": "Payment cancelled: you have not been charged.",
+    "free": {
+      "name": "Free",
+      "tagline": "To try the tools",
+      "cta": "Create an account",
+      "rewrites": "{count} rewrites per day",
+      "write": "Outline, proofreading, citations and summary",
+      "detection": "Detection: {words} words per month, once available",
+      "history": "{days}-day history"
+    },
+    "pro": {
+      "name": "Pro",
+      "tagline": "For writing every day",
+      "cta": "Upgrade to Pro",
+      "current": "Your current plan",
+      "rewrites": "Rewrites with no displayed daily limit",
+      "variants": "Up to 3 suggestions per rewrite",
+      "detection": "Detection: {words} words per month, once available",
+      "files": "PDF and DOCX import, PDF export",
+      "history": "{months}-month history"
+    },
+    "team": {
+      "name": "Team",
+      "tagline": "For agencies, schools and HR teams",
+      "f1": "Shared workspace and member management",
+      "f2": "Private document base for plagiarism checks",
+      "f3": "Centralised billing"
+    },
+    "api": {
+      "name": "API",
+      "tagline": "To bring AltyDetect into your tools",
+      "f1": "Detection, plagiarism and rewriting via API",
+      "f2": "Pay as you go",
+      "f3": "Public documentation"
+    },
+    "priceToCome": "Price to come",
+    "faqTitle": "Frequently asked questions",
+    "faq": {
+      "cancelQ": "How do I cancel?",
+      "cancelA": "From the Account page, in one click. Pro stays active until the end of the period already paid.",
+      "dataQ": "Do you keep my texts?",
+      "dataA": "No, unless you choose to save them. Only results appear in your history.",
+      "quotaQ": "What happens when my detection quota runs out?",
+      "quotaA": "Rewrite and Write stay available. The counter resets at the start of the next period."
+    }
   }
 }
