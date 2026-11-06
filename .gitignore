@@ -39,3 +39,6 @@ apps/web/lib/generated/
 # Playwright
 apps/web/test-results/
 apps/web/playwright-report/
+
+# Instantané Redis local (jamais commité).
+dump.rdb
