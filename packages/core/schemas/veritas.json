@@ -1,0 +1,251 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VeritasContracts",
+  "$defs": {
+    "VerdictBand": {
+      "type": "string",
+      "enum": ["likely_ai", "undetermined", "likely_human"]
+    },
+    "Confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "DetectInput": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60000
+        },
+        "language": {
+          "default": "auto",
+          "type": "string",
+          "enum": ["auto", "fr", "en"]
+        },
+        "mode": {
+          "default": "standard",
+          "type": "string",
+          "enum": ["standard", "deep"]
+        },
+        "keep_text": {
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "required": ["text"]
+    },
+    "VeritasDetectRequest": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60000
+        },
+        "language": {
+          "default": "auto",
+          "type": "string",
+          "enum": ["auto", "fr", "en"]
+        },
+        "mode": {
+          "default": "standard",
+          "type": "string",
+          "enum": ["standard", "deep"]
+        },
+        "plan": {
+          "default": "free",
+          "type": "string",
+          "enum": ["free", "pro"]
+        }
+      },
+      "required": ["text"]
+    },
+    "Overall": {
+      "type": "object",
+      "properties": {
+        "ai": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "undetermined": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "human": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["ai", "undetermined", "human"]
+    },
+    "SentenceScore": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "band": {
+          "$ref": "#/$defs/VerdictBand"
+        }
+      },
+      "required": ["start", "end", "score", "band"]
+    },
+    "DetectSignals": {
+      "type": "object",
+      "properties": {
+        "probable_model": {
+          "type": "string"
+        },
+        "humanization": {
+          "default": "none",
+          "type": "string",
+          "enum": ["none", "weak", "strong"]
+        }
+      }
+    },
+    "DetectEngine": {
+      "type": "object",
+      "properties": {
+        "primary": {
+          "type": "string"
+        },
+        "secondary": {
+          "type": "string"
+        },
+        "agreement": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["primary"]
+    },
+    "DetectOutput": {
+      "type": "object",
+      "properties": {
+        "overall": {
+          "$ref": "#/$defs/Overall"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "verdict_band": {
+          "$ref": "#/$defs/VerdictBand"
+        },
+        "language": {
+          "type": "string"
+        },
+        "sentences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SentenceScore"
+          }
+        },
+        "signals": {
+          "$ref": "#/$defs/DetectSignals"
+        },
+        "engine": {
+          "$ref": "#/$defs/DetectEngine"
+        },
+        "word_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "overall",
+        "confidence",
+        "verdict_band",
+        "language",
+        "sentences",
+        "signals",
+        "engine",
+        "word_count"
+      ]
+    },
+    "DetectError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "enum": ["TEXT_TOO_SHORT", "UNSUPPORTED_LANGUAGE", "DETECTION_UNAVAILABLE"]
+        },
+        "min_words": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": ["error"]
+    },
+    "SegmentAgreement": {
+      "type": "object",
+      "properties": {
+        "segment": {
+          "type": "string"
+        },
+        "veritas_engine": {
+          "type": "string"
+        },
+        "comparisons": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "concordant": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "gate_passed": {
+          "type": "boolean"
+        }
+      },
+      "required": ["segment", "veritas_engine", "comparisons", "concordant", "rate", "gate_passed"]
+    },
+    "AgreementReport": {
+      "type": "object",
+      "properties": {
+        "threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "min_comparisons": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SegmentAgreement"
+          }
+        }
+      },
+      "required": ["threshold", "min_comparisons", "segments"]
+    }
+  }
+}

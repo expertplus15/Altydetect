@@ -39,3 +39,9 @@ apps/web/lib/generated/
 # Playwright
 apps/web/test-results/
 apps/web/playwright-report/
+
+# Instantané Redis local (jamais commité).
+dump.rdb
+
+# Sorties locales de ml/train/pipeline.py (récupérées depuis le workflow).
+ml/train/out/

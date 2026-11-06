@@ -1,3 +1,2 @@
-// @altydetect/detect — Client TypeScript du service de détection (Veritas + fournisseur externe).
-// Aucune logique métier pour l'instant.
-export {};
+// @altydetect/detect — client TypeScript du service de détection Veritas.
+export * from "./client";

@@ -1,6 +1,6 @@
 import "server-only";
 import { renderAnalysisReport, renderRewriteReport } from "@altydetect/reports";
-import type { PlagiarismOutput } from "@altydetect/core";
+import type { DetectOutput, PlagiarismOutput } from "@altydetect/core";
 import { createTranslator } from "next-intl";
 import en from "@/messages/en.json";
 import fr from "@/messages/fr.json";
@@ -14,8 +14,94 @@ interface StoredRewrite {
   output?: { variants?: { text: string; changes_summary: string }[] };
 }
 
-/** Rapport combiné d'une analyse de plagiat (la détection s'y ajoutera en phase 3). */
+/** Libellés communs du rapport d'analyse, dans la langue demandée. */
+function analysisLabels(locale: "fr" | "en") {
+  const messages = locale === "en" ? en : fr;
+  const t = createTranslator({ locale, messages, namespace: "report.analysis" });
+  const td = createTranslator({ locale, messages, namespace: "detect" });
+  return {
+    t,
+    td,
+    labels: {
+      title: t("title"),
+      date: t("date"),
+      timestamp: t("timestamp"),
+      engine: t("engine"),
+      scope: t("scope"),
+      plagiarism: t("plagiarism"),
+      similarity: t("similarity"),
+      sources: t("sources"),
+      source: t("source"),
+      passages: t("passages"),
+      bestScore: t("bestScore"),
+      text: t("text"),
+      textMissing: t("textMissing"),
+      noMatch: t("noMatch"),
+      detection: t("detection"),
+      detectionPending: t("detectionPending"),
+      disclaimer: t("disclaimer"),
+      footer: "AltyDetect · altydetect.com",
+    },
+  };
+}
+
+/** Rapport d'une détection : répartition, résultat, confiance, phrases colorées. */
+async function renderDetection(data: RewriteReportJob): Promise<Buffer | null> {
+  const analysis = await db.analysis.findFirst({
+    where: { id: data.analysisId, type: "detect", document: { userId: data.userId } },
+  });
+  if (!analysis) return null;
+  const output = (analysis.resultJson as { output?: DetectOutput }).output;
+  if (!output) throw new Error("Résultat de détection illisible.");
+  const { t, td, labels } = analysisLabels(data.locale);
+  const original = data.original;
+  // Positions valables seulement pour le texte exact de l'analyse : sinon, pas de texte.
+  const text =
+    original && output.sentences.every((s) => s.end <= original.length) ? original : null;
+  const engineName = (engine: string) => (engine.startsWith("VRT-") ? engine : td("partnerEngine"));
+  const language = output.language === "fr" || output.language === "en" ? output.language : null;
+
+  return renderAnalysisReport(
+    {
+      locale: data.locale,
+      scopeName: null,
+      engine: engineName(output.engine.primary),
+      createdAt: analysis.createdAt,
+      generatedAt: new Date(),
+      detection: {
+        overall: output.overall,
+        verdictBand: output.verdict_band,
+        languageName: language ? td(`languages.${language}`) : output.language,
+        wordCount: output.word_count,
+        text,
+        sentences: output.sentences,
+      },
+    },
+    {
+      ...labels,
+      detect: {
+        bands: {
+          likely_ai: td("bands.likely_ai"),
+          undetermined: td("bands.undetermined"),
+          likely_human: td("bands.likely_human"),
+        },
+        distribution: t("detect.distribution"),
+        verdict: t("detect.verdict"),
+        confidence: t("detect.confidence"),
+        confidenceName: td(`confidenceLevels.${output.confidence}`),
+        language: t("detect.language"),
+        words: t("detect.words"),
+        text: t("detect.text"),
+        disclaimer: td("disclaimer"),
+      },
+    },
+  );
+}
+
+/** Rapport combiné d'une analyse de plagiat. */
 async function renderAnalysis(data: RewriteReportJob): Promise<Buffer> {
+  const detection = await renderDetection(data);
+  if (detection) return detection;
   const analysis = await db.analysis.findFirst({
     where: { id: data.analysisId, type: "plagiarism", document: { userId: data.userId } },
   });
@@ -25,11 +111,7 @@ async function renderAnalysis(data: RewriteReportJob): Promise<Buffer> {
     output?: PlagiarismOutput;
   };
   const output = stored.output ?? { similarity: 0, matches: [], engine: analysis.engine };
-  const t = createTranslator({
-    locale: data.locale,
-    messages: data.locale === "en" ? en : fr,
-    namespace: "report.analysis",
-  });
+  const { t, labels } = analysisLabels(data.locale);
 
   const docIds = [
     ...new Set(
@@ -81,26 +163,7 @@ async function renderAnalysis(data: RewriteReportJob): Promise<Buffer> {
         sources: [...sources.values()].sort((a, b) => b.passages - a.passages),
       },
     },
-    {
-      title: t("title"),
-      date: t("date"),
-      timestamp: t("timestamp"),
-      engine: t("engine"),
-      scope: t("scope"),
-      plagiarism: t("plagiarism"),
-      similarity: t("similarity"),
-      sources: t("sources"),
-      source: t("source"),
-      passages: t("passages"),
-      bestScore: t("bestScore"),
-      text: t("text"),
-      textMissing: t("textMissing"),
-      noMatch: t("noMatch"),
-      detection: t("detection"),
-      detectionPending: t("detectionPending"),
-      disclaimer: t("disclaimer"),
-      footer: "AltyDetect · altydetect.com",
-    },
+    labels,
   );
 }
 

@@ -14,6 +14,9 @@ WORKDIR /app
 COPY pyproject.toml uv.lock .python-version ./
 COPY services/veritas/pyproject.toml services/veritas/pyproject.toml
 COPY services/veritas/src services/veritas/src
+# Seuils et règles d'aiguillage, relus à chaud : montables en volume pour les modifier sans
+# redéploiement (VERITAS_CONFIG_DIR).
+COPY services/veritas/config services/veritas/config
 
 RUN uv sync --frozen --no-dev --package veritas --no-install-workspace \
  && uv sync --frozen --no-dev --package veritas

@@ -11,7 +11,7 @@ const bodySchema = z.object({
   locale: z.enum(["fr", "en"]).default("fr"),
 });
 
-// Export PDF d'une réécriture ou d'une analyse de plagiat (Pro) : mis en file, la requête répond tout de suite (CLAUDE.md §4.9).
+// Export PDF d'une réécriture ou d'une analyse de plagiat ou de détection (Pro) : mis en file, la requête répond tout de suite (CLAUDE.md §4.9).
 export async function POST(request: Request): Promise<Response> {
   const session = await auth();
   if (!session?.user?.id) return Response.json({ error: "UNAUTHENTICATED" }, { status: 401 });
@@ -23,15 +23,15 @@ export async function POST(request: Request): Promise<Response> {
   const analysis = await db.analysis.findFirst({
     where: {
       id: parsed.data.analysisId,
-      type: { in: ["rewrite", "plagiarism"] },
+      type: { in: ["rewrite", "plagiarism", "detect"] },
       document: { userId: session.user.id },
     },
     select: { type: true },
   });
   if (!analysis) return Response.json({ error: "NOT_FOUND" }, { status: 404 });
 
-  // Plagiat : rapport combiné (la détection s'y ajoutera en phase 3).
-  const kind = analysis.type === "plagiarism" ? "analysis" : "rewrite";
+  // Plagiat et détection : rapport d'analyse combiné.
+  const kind = analysis.type === "rewrite" ? "rewrite" : "analysis";
   const job = await reportsQueue().add(`${kind}-report`, {
     userId: session.user.id,
     kind,

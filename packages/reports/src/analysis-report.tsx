@@ -1,6 +1,6 @@
 /** @jsxRuntime automatic */
 /** @jsxImportSource react */
-// Rapport PDF combiné d'une analyse : plagiat (phase 2), détection (phase 3, section prévue).
+// Rapport PDF combiné d'une analyse : plagiat (phase 2) et détection de texte IA (phase 3).
 import { Document, Page, StyleSheet, Text, View, renderToBuffer } from "@react-pdf/renderer";
 import { registerFonts } from "./fonts";
 
@@ -23,20 +23,48 @@ export interface AnalysisReportLabels {
   detectionPending: string;
   disclaimer: string;
   footer: string;
+  /** Libellés de la section détection (présents si data.detection l'est). */
+  detect?: DetectionReportLabels;
 }
+
+export interface DetectionReportLabels {
+  /** « Probablement IA », « Indéterminé », « Probablement humain ». */
+  bands: Record<DetectionBand, string>;
+  distribution: string;
+  verdict: string;
+  confidence: string;
+  confidenceName: string;
+  language: string;
+  words: string;
+  text: string;
+  /** « Un détecteur donne une probabilité, pas une preuve… » (clé detect.disclaimer). */
+  disclaimer: string;
+}
+
+export type DetectionBand = "likely_ai" | "undetermined" | "likely_human";
 
 export interface AnalysisReportData {
   locale: "fr" | "en";
-  scopeName: string;
+  /** Périmètre du plagiat ; null pour un rapport de détection seule. */
+  scopeName: string | null;
   engine: string;
   createdAt: Date;
   generatedAt: Date;
-  plagiarism: {
+  plagiarism?: {
     similarity: number;
     /** Texte analysé, transmis pour l'export seulement (jamais stocké) ; null s'il est absent. */
     text: string | null;
     matches: { start: number; end: number; sourceLabel: string }[];
     sources: { label: string; url: string | null; passages: number; bestScore: number }[];
+  };
+  detection?: {
+    overall: { ai: number; undetermined: number; human: number };
+    verdictBand: DetectionBand;
+    languageName: string;
+    wordCount: number;
+    /** Texte analysé (export seulement, jamais stocké) ; null s'il est absent. */
+    text: string | null;
+    sentences: { start: number; end: number; band: DetectionBand }[];
   };
 }
 
@@ -77,6 +105,8 @@ const styles = StyleSheet.create({
   cell: { flex: 1, textAlign: "right" },
   muted: { color: "#586174" },
   mark: { backgroundColor: "#fde4d6" },
+  bar: { flexDirection: "row", height: 10, borderRadius: 3, overflow: "hidden", marginBottom: 6 },
+  legend: { flexDirection: "row", gap: 14, marginBottom: 14, fontSize: 9 },
   note: { padding: 10, borderRadius: 4, backgroundColor: "#f3f6fd", marginTop: 8 },
   footer: {
     position: "absolute",
@@ -126,6 +156,105 @@ export function highlightSegments(
   return segments;
 }
 
+// Trois états qui diffèrent par la luminosité, pas seulement par la teinte (CLAUDE.md §8).
+const BAND_BAR: Record<DetectionBand, string> = {
+  likely_ai: "#c2410c",
+  undetermined: "#9aa3b2",
+  likely_human: "#1d4ed8",
+};
+const BAND_MARK: Record<DetectionBand, string> = {
+  likely_ai: "#fde4d6",
+  undetermined: "#eceff4",
+  likely_human: "#dbe6ff",
+};
+const BANDS: DetectionBand[] = ["likely_ai", "undetermined", "likely_human"];
+const SHARE_KEY = { likely_ai: "ai", undetermined: "undetermined", likely_human: "human" } as const;
+
+/** Texte découpé par phrase, chaque phrase avec sa bande (null entre les phrases). */
+export function bandSegments(
+  text: string,
+  sentences: { start: number; end: number; band: DetectionBand }[],
+): { text: string; band: DetectionBand | null }[] {
+  const segments: { text: string; band: DetectionBand | null }[] = [];
+  let cursor = 0;
+  for (const s of [...sentences].sort((a, b) => a.start - b.start)) {
+    if (s.end <= cursor || s.start >= text.length) continue;
+    const start = Math.max(s.start, cursor);
+    if (start > cursor) segments.push({ text: text.slice(cursor, start), band: null });
+    const end = Math.min(s.end, text.length);
+    segments.push({ text: text.slice(start, end), band: s.band });
+    cursor = end;
+  }
+  if (cursor < text.length) segments.push({ text: text.slice(cursor), band: null });
+  return segments;
+}
+
+function DetectionSection({
+  detection,
+  labels,
+  locale,
+}: {
+  detection: NonNullable<AnalysisReportData["detection"]>;
+  labels: DetectionReportLabels;
+  locale: "fr" | "en";
+}) {
+  return (
+    <>
+      <Text style={styles.label}>{labels.verdict}</Text>
+      <Text style={[styles.big, { color: BAND_BAR[detection.verdictBand] }]}>
+        {labels.bands[detection.verdictBand]}
+      </Text>
+      <View style={styles.meta}>
+        {[
+          [labels.confidence, labels.confidenceName],
+          [labels.language, detection.languageName],
+          [labels.words, String(detection.wordCount)],
+        ].map(([label, value]) => (
+          <View key={label}>
+            <Text style={styles.metaLabel}>{label}</Text>
+            <Text>{value}</Text>
+          </View>
+        ))}
+      </View>
+      <Text style={styles.label}>{labels.distribution}</Text>
+      <View style={styles.bar}>
+        {BANDS.map((band) => (
+          <View
+            key={band}
+            style={{
+              width: `${detection.overall[SHARE_KEY[band]] * 100}%`,
+              backgroundColor: BAND_BAR[band],
+            }}
+          />
+        ))}
+      </View>
+      <View style={styles.legend}>
+        {BANDS.map((band) => (
+          <Text key={band}>
+            {labels.bands[band]} : {percent(detection.overall[SHARE_KEY[band]], locale)}
+          </Text>
+        ))}
+      </View>
+      {detection.text && (
+        <>
+          <Text style={styles.label}>{labels.text}</Text>
+          <Text>
+            {bandSegments(pdfText(detection.text), detection.sentences).map((segment, i) => (
+              <Text
+                key={i}
+                style={segment.band ? { backgroundColor: BAND_MARK[segment.band] } : {}}
+              >
+                {segment.text}
+              </Text>
+            ))}
+          </Text>
+        </>
+      )}
+      <Text style={styles.note}>{pdfText(labels.disclaimer)}</Text>
+    </>
+  );
+}
+
 function AnalysisReport({
   data,
   labels,
@@ -143,7 +272,7 @@ function AnalysisReport({
           {[
             [labels.date, date(data.createdAt, data.locale, false)],
             [labels.timestamp, date(data.generatedAt, data.locale, true)],
-            [labels.scope, data.scopeName],
+            ...(data.scopeName ? [[labels.scope, data.scopeName]] : []),
             [labels.engine, data.engine],
           ].map(([label, value]) => (
             <View key={label}>
@@ -153,44 +282,58 @@ function AnalysisReport({
           ))}
         </View>
 
-        <Text style={styles.h2}>{labels.plagiarism}</Text>
-        <Text style={styles.label}>{labels.similarity}</Text>
-        <Text style={styles.big}>{percent(plagiarism.similarity, data.locale)}</Text>
-        <Text style={styles.label}>{labels.sources}</Text>
-        {plagiarism.sources.length === 0 ? (
-          <Text style={styles.muted}>{labels.noMatch}</Text>
-        ) : (
-          <View style={{ marginBottom: 14 }}>
-            <View style={[styles.row, { borderBottom: "1 solid #dfe4ee" }]}>
-              <Text style={[styles.cellWide, styles.muted]}>{labels.source}</Text>
-              <Text style={[styles.cell, styles.muted]}>{labels.passages}</Text>
-              <Text style={[styles.cell, styles.muted]}>{labels.bestScore}</Text>
-            </View>
-            {plagiarism.sources.map((source) => (
-              <View key={source.label + (source.url ?? "")} style={styles.row} wrap={false}>
-                <Text style={styles.cellWide}>{pdfText(source.url ?? source.label)}</Text>
-                <Text style={styles.cell}>{source.passages}</Text>
-                <Text style={styles.cell}>{percent(source.bestScore, data.locale)}</Text>
+        {plagiarism && (
+          <>
+            <Text style={styles.h2}>{labels.plagiarism}</Text>
+            <Text style={styles.label}>{labels.similarity}</Text>
+            <Text style={styles.big}>{percent(plagiarism.similarity, data.locale)}</Text>
+            <Text style={styles.label}>{labels.sources}</Text>
+            {plagiarism.sources.length === 0 ? (
+              <Text style={styles.muted}>{labels.noMatch}</Text>
+            ) : (
+              <View style={{ marginBottom: 14 }}>
+                <View style={[styles.row, { borderBottom: "1 solid #dfe4ee" }]}>
+                  <Text style={[styles.cellWide, styles.muted]}>{labels.source}</Text>
+                  <Text style={[styles.cell, styles.muted]}>{labels.passages}</Text>
+                  <Text style={[styles.cell, styles.muted]}>{labels.bestScore}</Text>
+                </View>
+                {plagiarism.sources.map((source) => (
+                  <View key={source.label + (source.url ?? "")} style={styles.row} wrap={false}>
+                    <Text style={styles.cellWide}>{pdfText(source.url ?? source.label)}</Text>
+                    <Text style={styles.cell}>{source.passages}</Text>
+                    <Text style={styles.cell}>{percent(source.bestScore, data.locale)}</Text>
+                  </View>
+                ))}
               </View>
-            ))}
-          </View>
-        )}
-        <Text style={styles.label}>{labels.text}</Text>
-        {plagiarism.text ? (
-          <Text>
-            {highlightSegments(pdfText(plagiarism.text), plagiarism.matches).map((segment, i) => (
-              <Text key={i} style={segment.marked ? styles.mark : {}}>
-                {segment.text}
+            )}
+            <Text style={styles.label}>{labels.text}</Text>
+            {plagiarism.text ? (
+              <Text>
+                {highlightSegments(pdfText(plagiarism.text), plagiarism.matches).map(
+                  (segment, i) => (
+                    <Text key={i} style={segment.marked ? styles.mark : {}}>
+                      {segment.text}
+                    </Text>
+                  ),
+                )}
               </Text>
-            ))}
-          </Text>
-        ) : (
-          <Text style={styles.muted}>{labels.textMissing}</Text>
+            ) : (
+              <Text style={styles.muted}>{labels.textMissing}</Text>
+            )}
+            <Text style={styles.note}>{pdfText(labels.disclaimer)}</Text>
+          </>
         )}
 
         <Text style={[styles.h2, { marginTop: 18 }]}>{labels.detection}</Text>
-        <Text style={styles.muted}>{labels.detectionPending}</Text>
-        <Text style={styles.note}>{pdfText(labels.disclaimer)}</Text>
+        {data.detection && labels.detect ? (
+          <DetectionSection
+            detection={data.detection}
+            labels={labels.detect}
+            locale={data.locale}
+          />
+        ) : (
+          <Text style={styles.muted}>{labels.detectionPending}</Text>
+        )}
 
         <View style={styles.footer} fixed>
           <Text>{labels.footer}</Text>

@@ -13,14 +13,14 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "lint:py": "uv run ruff check services ml/eval && uv run ruff format --check services ml/eval",
+    "lint:py": "uv run ruff check services ml/eval ml/corpus ml/train && uv run ruff format --check services ml/eval ml/corpus ml/train",
     "typecheck:py": "cd services/veritas && uv run mypy && cd ../indexa && uv run mypy",
-    "test:py": "uv run pytest services/veritas && uv run pytest services/indexa && cd ml/eval && uv run --no-sync pytest -q",
+    "test:py": "uv run pytest services/veritas && uv run pytest services/indexa && cd ml/eval && uv run --no-sync pytest -q && cd ../corpus && uv run --no-sync pytest -q && cd ../train && uv run --no-sync pytest -q",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm lint:py && pnpm typecheck:py && pnpm test:py",
     "stripe:seed": "tsx scripts/stripe-seed.ts",
     "test:coverage": "vitest run --coverage",
-    "contracts:generate": "tsx scripts/export-contracts.ts && prettier --write --log-level warn packages/core/schemas/indexa.json && uv run --no-sync ruff format services/indexa/src/indexa/contracts.py",
-    "contracts:check": "pnpm contracts:generate && git diff --exit-code -- packages/core/schemas services/indexa/src/indexa/contracts.py",
+    "contracts:generate": "tsx scripts/export-contracts.ts && prettier --write --log-level warn packages/core/schemas && uv run --no-sync ruff format services/indexa/src/indexa/contracts.py services/veritas/src/veritas/contracts.py",
+    "contracts:check": "pnpm contracts:generate && git diff --exit-code -- packages/core/schemas services/indexa/src/indexa/contracts.py services/veritas/src/veritas/contracts.py && test -z \"$(git ls-files --others --exclude-standard packages/core/schemas services/veritas/src/veritas/contracts.py)\"",
     "benchmark:plagiarism": "cd ml/eval && uv run --no-sync python -m plagiarism.benchmark"
   },
   "devDependencies": {

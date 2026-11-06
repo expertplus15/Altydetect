@@ -85,7 +85,28 @@ DATABASE_URL=… pnpm -C apps/web db:migrate
 - Mesurer le rappel réel avec Brave sur un échantillon de pages avant d'annoncer la fonction
   (le benchmark du dépôt simule la recherche web).
 
-## 7. Vérification de la porte de sortie
+## 7. Veritas (phase 3, ADR-0008)
+
+- **API** : image `services/veritas/Dockerfile` (uvicorn sur le port 8001). Variables :
+  `VERITAS_INTERNAL_TOKEN`, `DATABASE_URL`, `REDIS_URL`, `DETECTION_PROVIDER`,
+  `DETECTION_FALLBACK_PROVIDER` et les clés du ou des fournisseurs (`PANGRAM_API_KEY`,
+  `COPYLEAKS_EMAIL`, `COPYLEAKS_API_KEY`), `VERITAS_ENV=production`, et `VERITAS_MODEL_DIR`
+  quand un modèle Veritas est livré, avec `MODAL_TOKEN_ID` et `MODAL_TOKEN_SECRET` si son
+  paquet utilise la couche 2. Accessible seulement depuis l'application web.
+- **Worker du mode fantôme** : même image, commande
+  `/app/.venv/bin/rq worker veritas-shadow --url "$REDIS_URL"`, mêmes variables. Inutile tant
+  qu'aucun modèle Veritas n'est livré.
+- **Couche 2** : `modal deploy services/veritas/modal/encoder_app.py` (ou le workflow
+  « Entraînement Veritas », étape `deploy`). GPU à la demande, arrêt après deux minutes sans
+  requête.
+- **Web** : `VERITAS_URL` (adresse privée de l'API) et le même `VERITAS_INTERNAL_TOKEN`.
+- **Seuils et aiguillage** : `services/veritas/config/*.yaml`, relus à chaque modification.
+  Pour les changer sans redéploiement, monter ce dossier en volume et le désigner par
+  `VERITAS_CONFIG_DIR`.
+- **Accord** : `GET /internal/v1/detect/agreement` (jeton interne) donne le taux d'accord par
+  segment et par modèle ; la porte est franchie à 85 % sur un échantillon suffisant.
+
+## 8. Vérification de la porte de sortie
 
 En production, en français puis en anglais :
 

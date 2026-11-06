@@ -17,7 +17,7 @@ const TOOLS: {
   href: AppPathname;
   soon?: boolean;
 }[] = [
-  { key: "detect", href: "/app/detecter", soon: true },
+  { key: "detect", href: "/app/detecter" },
   { key: "plagiarism", href: "/app/plagiat" },
   { key: "rewrite", href: "/app/reecrire" },
   { key: "write", href: "/app/ecrire" },

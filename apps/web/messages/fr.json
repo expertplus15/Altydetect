@@ -136,18 +136,6 @@
       "quotaA": "Réécrire et Écrire restent disponibles. Le compteur repart à zéro au début de la période suivante."
     }
   },
-  "comingSoon": {
-    "detect": {
-      "title": "Détecter arrive bientôt",
-      "body": "La détection de texte IA sera disponible en phase 3. Elle donnera une probabilité avec un niveau de confiance et une zone « Indéterminé », jamais un verdict."
-    },
-    "plagiarism": {
-      "title": "Plagiat arrive bientôt",
-      "body": "La recherche de plagiat sera disponible en phase 2, sur le web et dans votre base privée de documents."
-    },
-    "meanwhile": "En attendant, vous pouvez réécrire ou corriger vos textes.",
-    "toRewrite": "Ouvrir Réécrire"
-  },
   "editor": {
     "label": "Éditeur de texte",
     "placeholder": "Collez ou saisissez votre texte ici…",
@@ -352,24 +340,34 @@
       "textMissing": "Le texte analysé n'est pas conservé par AltyDetect et n'a pas été joint à cet export.",
       "noMatch": "Aucun passage retrouvé dans les sources consultées.",
       "detection": "Détection de texte IA",
-      "detectionPending": "La détection de texte IA sera ajoutée à ce rapport dès qu'elle sera disponible.",
+      "detectionPending": "Aucune détection de texte IA n'a été demandée pour ce document.",
       "disclaimer": "Une similarité n'est pas une preuve. Chaque passage doit être vérifié dans sa source avant toute décision.",
       "scopes": {
         "web": "Web",
         "private": "Base privée",
         "both": "Web et base privée"
       },
-      "privateDoc": "Document de la base privée"
+      "privateDoc": "Document de la base privée",
+      "detect": {
+        "distribution": "Répartition du texte",
+        "verdict": "Résultat",
+        "confidence": "Confiance",
+        "language": "Langue du texte",
+        "words": "Mots",
+        "text": "Texte analysé (chaque phrase colorée selon son état)"
+      }
     }
   },
   "history": {
     "title": "Historique",
-    "subtitle": "Vos réécritures et outils d'écriture. Le texte d'origine n'est conservé que si vous l'avez demandé.",
+    "subtitle": "Vos analyses, réécritures et outils d'écriture. Le texte d'origine n'est conservé que si vous l'avez demandé.",
     "retentionFree": "Conservé {days} jours avec le plan Gratuit.",
     "retentionPro": "Conservé {months} mois avec Pro.",
     "type": "Type",
     "types": {
       "all": "Tous",
+      "detect": "Détection",
+      "plagiarism": "Plagiat",
       "rewrite": "Réécriture",
       "write": "Écriture"
     },
@@ -390,7 +388,8 @@
     "variant": "Proposition {n}",
     "correctionsCount": "{count, plural, =0 {Aucune faute relevée} one {# correction} other {# corrections}}",
     "back": "Retour à l'historique",
-    "notFound": "Ce document n'existe plus ou a dépassé la durée de conservation."
+    "notFound": "Ce document n'existe plus ou a dépassé la durée de conservation.",
+    "similarity": "Similarité : {value}"
   },
   "home": {
     "metaTitle": "AltyDetect — Réécrire et écrire mieux, en français comme en anglais",
@@ -585,6 +584,62 @@
       "full": "Votre base privée est pleine ({max} documents).",
       "proOnly": "La base privée est incluse dans Pro.",
       "failed": "L'opération n'a pas abouti. Réessayez."
+    }
+  },
+  "detect": {
+    "title": "Détecter",
+    "subtitle": "Estime, phrase par phrase, la probabilité qu'un texte ait été généré par une IA.",
+    "panel": "Résultat de la détection",
+    "language": "Langue du texte",
+    "languages": {
+      "auto": "Automatique",
+      "fr": "Français",
+      "en": "Anglais"
+    },
+    "mode": "Analyse",
+    "modes": {
+      "standard": "Standard",
+      "deep": "Approfondie"
+    },
+    "deepHint": "L'analyse approfondie compare deux moteurs. Elle est incluse dans Pro.",
+    "keepText": "Conserver le texte dans mon historique",
+    "analyze": "Analyser",
+    "analyzing": "Analyse en cours…",
+    "edit": "Modifier le texte",
+    "quota": "Mots de détection et de plagiat ce mois-ci : {used} / {limit}",
+    "result": "Résultat",
+    "bands": {
+      "likely_ai": "Probablement IA",
+      "undetermined": "Indéterminé",
+      "likely_human": "Probablement humain"
+    },
+    "confidence": "Confiance : {level}",
+    "confidenceLevels": {
+      "high": "élevée",
+      "medium": "moyenne",
+      "low": "faible"
+    },
+    "lowConfidence": "Les indices sont faibles ou contradictoires : le résultat reste indéterminé.",
+    "distribution": "Répartition du texte",
+    "share": "{band} : {share}",
+    "textLabel": "Texte analysé, chaque phrase colorée selon son état",
+    "sentence": "{band}, probabilité IA de {score}",
+    "engine": "Moteur",
+    "partnerEngine": "Moteur partenaire",
+    "secondEngine": "Second avis",
+    "agreement": "Accord entre les moteurs",
+    "probableModel": "Modèle probable",
+    "languageDetected": "Langue détectée",
+    "length": "Longueur",
+    "words": "{count, plural, one {# mot} other {# mots}}",
+    "disclaimer": "Un détecteur donne une probabilité, pas une preuve. Ce résultat doit être croisé avec d'autres éléments avant toute décision.",
+    "errors": {
+      "TEXT_TOO_SHORT": "Il faut au moins 150 mots pour une détection. En dessous, aucun score n'est fiable.",
+      "QUOTA_EXCEEDED": "Votre quota de mots du mois est atteint. Il repart à zéro le {date}.",
+      "UPGRADE_REQUIRED": "L'analyse approfondie est incluse dans Pro.",
+      "TEXT_TOO_LONG": "Ce texte est trop long. Analysez-le par parties.",
+      "DETECTION_UNAVAILABLE": "Le service de détection ne répond pas. Vos mots ont été rendus ; réessayez dans un instant.",
+      "default": "L'analyse n'a pas abouti. Réessayez dans un instant."
     }
   }
 }

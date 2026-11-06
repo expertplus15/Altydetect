@@ -1,0 +1,20 @@
+# Seuils de notation de Veritas (ADR-0008, CLAUDE.md §5).
+# Relus à chaque modification du fichier : aucun redéploiement nécessaire.
+# Valeurs provisoires jusqu'à la calibration sur le jeu de test gelé ; tout changement est
+# consigné dans docs/models/CHANGELOG.md.
+version: 1
+
+# En dessous de ce nombre de mots : erreur TEXT_TOO_SHORT, jamais de score.
+min_words: 150
+
+# Bandes, sur la probabilité calibrée (phrase ou document).
+bands:
+  likely_ai: 0.70 # probabilité ≥ seuil → « Probablement IA »
+  likely_human: 0.30 # probabilité ≤ seuil → « Probablement humain »
+
+# Confiance : écart entre la probabilité du document et 0,5.
+confidence:
+  high_margin: 0.35
+  medium_margin: 0.20
+  # En dessous de ce nombre de mots, la confiance ne dépasse pas « medium ».
+  min_words_for_high: 300
