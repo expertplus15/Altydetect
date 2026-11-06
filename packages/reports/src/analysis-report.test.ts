@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { highlightSegments, renderAnalysisReport } from "./analysis-report";
+import { bandSegments, highlightSegments, renderAnalysisReport } from "./analysis-report";
 
 const LABELS = {
   title: "Rapport d'analyse",
@@ -58,6 +58,64 @@ describe("rapport d'analyse", () => {
         },
       },
       LABELS,
+    );
+    expect(pdf.subarray(0, 5).toString()).toBe("%PDF-");
+  });
+
+  it("découpe le texte par phrase avec sa bande", () => {
+    expect(
+      bandSegments("Une. Deux. Trois", [
+        { start: 0, end: 4, band: "likely_ai" },
+        { start: 5, end: 10, band: "likely_human" },
+        { start: 11, end: 99, band: "undetermined" },
+      ]),
+    ).toEqual([
+      { text: "Une.", band: "likely_ai" },
+      { text: " ", band: null },
+      { text: "Deux.", band: "likely_human" },
+      { text: " ", band: null },
+      { text: "Trois", band: "undetermined" },
+    ]);
+  });
+
+  it("produit un PDF de détection seule, sans périmètre de plagiat", async () => {
+    const pdf = await renderAnalysisReport(
+      {
+        locale: "en",
+        scopeName: null,
+        engine: "pangram",
+        createdAt: new Date("2026-11-06T10:00:00Z"),
+        generatedAt: new Date("2026-11-06T10:05:00Z"),
+        detection: {
+          overall: { ai: 0.62, undetermined: 0.14, human: 0.24 },
+          verdictBand: "likely_ai",
+          languageName: "French",
+          wordCount: 320,
+          text: "Une phrase. Une autre.",
+          sentences: [
+            { start: 0, end: 11, band: "likely_ai" },
+            { start: 12, end: 22, band: "likely_human" },
+          ],
+        },
+      },
+      {
+        ...LABELS,
+        detect: {
+          bands: {
+            likely_ai: "Likely AI",
+            undetermined: "Undetermined",
+            likely_human: "Likely human",
+          },
+          distribution: "Distribution",
+          verdict: "Result",
+          confidence: "Confidence",
+          confidenceName: "Medium",
+          language: "Language",
+          words: "Words",
+          text: "Text",
+          disclaimer: "A detector gives a probability, not proof.",
+        },
+      },
     );
     expect(pdf.subarray(0, 5).toString()).toBe("%PDF-");
   });
