@@ -1,0 +1,34 @@
+# Dépendances
+node_modules/
+.venv/
+
+# Builds et caches
+.next/
+next-env.d.ts
+dist/
+build/
+*.tsbuildinfo
+coverage/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Secrets : seul .env.example est commité
+.env
+.env.*
+!.env.example
+
+# Données ML : jamais de données brutes commitées (seuls scripts et manifestes)
+ml/**/data/
+ml/**/raw/
+ml/**/checkpoints/
+*.parquet
+*.safetensors
+
+# Système et éditeurs
+.DS_Store
+.idea/
+.vscode/
+*.log

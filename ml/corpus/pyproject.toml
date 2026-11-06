@@ -1,0 +1,9 @@
+[project]
+name = "altydetect-ml-corpus"
+version = "0.0.0"
+description = "Scripts de constitution des corpus (jamais de données brutes commitées)."
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[tool.uv]
+package = false

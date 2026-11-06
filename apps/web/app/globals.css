@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+/* Fond clair, une seule couleur d'accent. Les trois états diffèrent aussi par la luminosité. */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --color-accent: #1d4ed8;
+  --color-state-ai: #c2410c;
+  --color-state-undetermined: #6b7280;
+  --color-state-human: #1e40af;
+}
+
+:root {
+  --accent: var(--color-accent);
+}
+
+body {
+  background: #ffffff;
+  color: #111827;
+}

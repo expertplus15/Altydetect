@@ -1,0 +1,39 @@
+[project]
+name = "indexa"
+version = "0.0.0"
+description = "Indexa — moteur de plagiat (n-grammes, recherche web, alignement, base privée)."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi>=0.120",
+  "uvicorn>=0.38",
+]
+
+[dependency-groups]
+dev = [
+  "httpx2>=2.16",
+  "mypy>=1.18",
+  "pytest>=8.4",
+  "ruff>=0.14",
+]
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "S", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

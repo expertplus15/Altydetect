@@ -1,0 +1,31 @@
+{
+  "name": "altydetect",
+  "private": true,
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "typecheck": "tsc --noEmit -p tsconfig.json && pnpm -r --if-present typecheck",
+    "lint": "eslint . && pnpm lint:vocabulary",
+    "lint:vocabulary": "tsx scripts/lint-vocabulary.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "lint:py": "uv run ruff check services && uv run ruff format --check services",
+    "typecheck:py": "cd services/veritas && uv run mypy && cd ../indexa && uv run mypy",
+    "test:py": "uv run pytest services/veritas && uv run pytest services/indexa",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm lint:py && pnpm typecheck:py && pnpm test:py"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "eslint": "^10.14.0",
+    "prettier": "^3.9.10",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.1.0"
+  },
+  "type": "module"
+}

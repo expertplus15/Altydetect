@@ -1,0 +1,13 @@
+{
+  "name": "@altydetect/plagiarism",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Client TypeScript du service Indexa.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  }
+}

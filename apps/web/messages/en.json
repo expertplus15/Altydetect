@@ -1,0 +1,19 @@
+{
+  "header": {
+    "brand": "AltyDetect",
+    "openSidebar": "Open sidebar",
+    "closeSidebar": "Close sidebar",
+    "languageSwitcher": "Interface language",
+    "signIn": "Sign in"
+  },
+  "sidebar": {
+    "navigation": "Main navigation",
+    "tools": "Tools",
+    "detect": "Detect",
+    "plagiarism": "Plagiarism",
+    "rewrite": "Rewrite",
+    "write": "Write",
+    "recent": "Recent",
+    "noRecent": "No recent documents"
+  }
+}
