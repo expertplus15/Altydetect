@@ -29,6 +29,15 @@ describe.skipIf(!process.env.DATABASE_URL)("deleteAccountData", () => {
         },
       },
     });
+    await db.privateSource.create({
+      data: {
+        workspaceId: user.id,
+        title: "Réf",
+        text: "Texte",
+        wordCount: 1,
+        fingerprints: { create: { hash: 1n, position: 0 } },
+      },
+    });
     const del = vi.fn(() => Promise.resolve({}));
     await deleteAccountData(user.id, { customers: { del } } as never);
 
@@ -39,6 +48,7 @@ describe.skipIf(!process.env.DATABASE_URL)("deleteAccountData", () => {
       db.usage.count({ where: { userId: user.id } }),
       db.document.count({ where: { userId: user.id } }),
       db.session.count({ where: { userId: user.id } }),
+      db.privateSource.count({ where: { workspaceId: user.id } }),
     ])) {
       expect(count).toBe(0);
     }

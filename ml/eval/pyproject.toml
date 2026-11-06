@@ -3,7 +3,25 @@ name = "altydetect-ml-eval"
 version = "0.0.0"
 description = "Jeu de test gelé, benchmark, rapports."
 requires-python = ">=3.12,<3.13"
-dependencies = []
+dependencies = ["indexa"]
 
 [tool.uv]
 package = false
+
+[tool.uv.sources]
+indexa = { workspace = true }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "RUF"]
+allowed-confusables = ["’", " ", " "]
+
+[tool.ruff.lint.per-file-ignores]
+"plagiarism/sources.py" = ["E501"]

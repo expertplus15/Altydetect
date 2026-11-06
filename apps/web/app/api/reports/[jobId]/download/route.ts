@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { getRedis } from "@/lib/server/redis";
-import { pdfRedisKey } from "@/lib/reports/queue";
+import { pdfRedisKey, reportsQueue } from "@/lib/reports/queue";
 import { verifyReportLink } from "@/lib/reports/signed-link";
 
 // Téléchargement d'un rapport : lien signé, expirant, réservé à son auteur.
@@ -25,10 +25,12 @@ export async function GET(
   const pdf = await getRedis().getBuffer(pdfRedisKey(jobId));
   if (!pdf) return Response.json({ error: "LINK_EXPIRED" }, { status: 410 });
   const date = new Date().toISOString().slice(0, 10);
+  const job = await reportsQueue().getJob(jobId);
+  const name = job?.data.kind === "analysis" ? "analyse" : "reecriture";
   return new Response(new Uint8Array(pdf), {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="altydetect-reecriture-${date}.pdf"`,
+      "Content-Disposition": `attachment; filename="altydetect-${name}-${date}.pdf"`,
       "Cache-Control": "private, no-store",
     },
   });

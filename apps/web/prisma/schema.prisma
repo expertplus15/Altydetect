@@ -133,6 +133,40 @@ model Analysis {
   @@map("analyses")
 }
 
+// --- Base privée du plagiat (Indexa, phase 2) ---
+// Documents de référence ajoutés volontairement par l'utilisateur pour être comparés à ses
+// analyses. Ce ne sont pas des textes analysés : leur texte est conservé jusqu'à leur suppression.
+
+model PrivateSource {
+  id          String   @id @default(cuid())
+  /// Espace de la base privée : l'identifiant de l'utilisateur en phase 2, d'une équipe ensuite.
+  workspaceId String   @map("workspace_id")
+  title       String
+  text        String
+  wordCount   Int      @map("word_count")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  fingerprints SourceFingerprint[]
+
+  @@index([workspaceId, createdAt])
+  @@map("private_sources")
+}
+
+model SourceFingerprint {
+  id       BigInt @id @default(autoincrement())
+  sourceId String @map("source_id")
+  /// Empreinte d'un n-gramme de 5 mots (winnowing), voir services/indexa.
+  hash     BigInt
+  /// Position du n-gramme dans la source (en mots).
+  position Int
+
+  source PrivateSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@index([hash])
+  @@index([sourceId])
+  @@map("source_fingerprints")
+}
+
 // --- Tables Auth.js (adaptateur Prisma) ---
 
 model Account {

@@ -72,7 +72,20 @@ DATABASE_URL=… pnpm -C apps/web db:migrate
 - Un seul exemplaire suffit au lancement ; la tâche de rétention est planifiée par BullMQ
   (03:15 UTC) et ne s'exécute qu'une fois même avec plusieurs workers.
 
-## 6. Vérification de la porte de sortie
+## 6. Indexa (phase 2)
+
+- **API** : image `services/indexa/Dockerfile` (commande par défaut : uvicorn sur le port 8002).
+  Variables : `DATABASE_URL`, `REDIS_URL`, `INDEXA_INTERNAL_TOKEN`. Accessible seulement depuis
+  l'application web (réseau privé ou liste d'adresses autorisées).
+- **Worker** : même image, commande `/app/.venv/bin/rq worker indexa --url "$REDIS_URL"`.
+  Variables : celles de l'API, plus `BRAVE_SEARCH_API_KEY`, `INDEXA_MAX_QUERIES`,
+  `INDEXA_MAX_PAGES`.
+- **Web** : `INDEXA_URL` (adresse privée de l'API) et le même `INDEXA_INTERNAL_TOKEN`.
+- Les tables de la base privée sont créées par `pnpm -C apps/web db:migrate`.
+- Mesurer le rappel réel avec Brave sur un échantillon de pages avant d'annoncer la fonction
+  (le benchmark du dépôt simule la recherche web).
+
+## 7. Vérification de la porte de sortie
 
 En production, en français puis en anglais :
 

@@ -97,7 +97,7 @@
       "cta": "Create an account",
       "rewrites": "{count} requests per day, shared between Rewrite and Write",
       "write": "Outline, proofreading and summary (counted in daily requests); unlimited citations",
-      "detection": "Detection: {words} words per month, once available",
+      "detection": "Detection and web plagiarism checks: {words} words per month",
       "history": "{days}-day history"
     },
     "pro": {
@@ -107,7 +107,7 @@
       "current": "Your current plan",
       "rewrites": "Rewrite and Write with no displayed daily limit",
       "variants": "Up to 3 suggestions per rewrite",
-      "detection": "Detection: {words} words per month, once available",
+      "detection": "Detection and plagiarism: {words} words per month, with your private document base",
       "files": "PDF and DOCX import, PDF export",
       "history": "{months}-month history"
     },
@@ -115,7 +115,7 @@
       "name": "Team",
       "tagline": "For agencies, schools and HR teams",
       "f1": "Shared workspace and member management",
-      "f2": "Private document base for plagiarism checks",
+      "f2": "Private base shared between members",
       "f3": "Centralised billing"
     },
     "api": {
@@ -335,7 +335,32 @@
     "exporting": "Preparing the PDF…",
     "ready": "PDF ready: the download is starting.",
     "failed": "The PDF couldn't be generated. Try again.",
-    "proOnly": "PDF export is included in Pro."
+    "proOnly": "PDF export is included in Pro.",
+    "analysis": {
+      "title": "Analysis report",
+      "date": "Analysis date",
+      "timestamp": "Report generated on",
+      "engine": "Engine",
+      "scope": "Scope",
+      "plagiarism": "Plagiarism",
+      "similarity": "Similarity",
+      "sources": "Sources",
+      "source": "Source",
+      "passages": "Passages",
+      "bestScore": "Best score",
+      "text": "Text checked (matching passages highlighted)",
+      "textMissing": "AltyDetect doesn't keep the text checked and it wasn't attached to this export.",
+      "noMatch": "No passages found in the sources checked.",
+      "detection": "AI text detection",
+      "detectionPending": "AI text detection will be added to this report as soon as it is available.",
+      "disclaimer": "Similarity is not proof. Each passage must be checked against its source before any decision.",
+      "scopes": {
+        "web": "Web",
+        "private": "Private base",
+        "both": "Web and private base"
+      },
+      "privateDoc": "Private base document"
+    }
   },
   "history": {
     "title": "History",
@@ -505,5 +530,61 @@
     "deleteConfirm": "To confirm, type your email address: {email}",
     "deleteButton": "Delete permanently",
     "deleteMismatch": "The address doesn't match the account's."
+  },
+  "plagiarism": {
+    "title": "Plagiarism",
+    "subtitle": "Passages found elsewhere are highlighted. Similarity is not proof: check each source.",
+    "panel": "Plagiarism check",
+    "tabs": {
+      "analysis": "Check",
+      "base": "Private base"
+    },
+    "scope": "Where to look",
+    "scopes": {
+      "web": "Web",
+      "private": "Private base",
+      "both": "Both"
+    },
+    "scopePro": "The private base is included in Pro.",
+    "analyze": "Check",
+    "edit": "Edit text",
+    "needText": "Type or paste at least 150 words.",
+    "status": {
+      "queued": "Waiting…",
+      "running": "Checking…",
+      "done": "Check complete",
+      "failed": "The check didn't go through. Your words were refunded."
+    },
+    "similarity": "Similarity",
+    "similarityHint": "Share of the text found in sources.",
+    "sources": "{count, plural, =0 {No sources} one {# source} other {# sources}}",
+    "passages": "{count, plural, one {# passage} other {# passages}}",
+    "score": "{score}% identical",
+    "noMatch": "No passages found in the sources checked.",
+    "privateDoc": "Private base",
+    "quota": "Detection and plagiarism words this month: {used} / {limit}",
+    "errors": {
+      "TEXT_TOO_SHORT": "A check needs at least 150 words.",
+      "QUOTA_EXCEEDED": "Your monthly word quota is used up. It resets on {date}.",
+      "UPGRADE_REQUIRED": "The private base is included in Pro.",
+      "TEXT_TOO_LONG": "This text is too long. Check it in parts.",
+      "INDEXA_UNAVAILABLE": "The checking service isn't responding. Your words were refunded; try again in a moment.",
+      "default": "The check didn't go through. Try again in a moment."
+    },
+    "base": {
+      "intro": "Add your own reference documents (past assignments, theses, reports): every check compares them with the text.",
+      "titleLabel": "Document title",
+      "textLabel": "Document text",
+      "add": "Add to my private base",
+      "fromEditor": "Use the editor's text",
+      "empty": "Your private base is empty.",
+      "delete": "Delete",
+      "deleteLabel": "Delete {title}",
+      "words": "{count, plural, one {# word} other {# words}}",
+      "added": "Document added to your private base.",
+      "full": "Your private base is full ({max} documents).",
+      "proOnly": "The private base is included in Pro.",
+      "failed": "That didn't go through. Try again."
+    }
   }
 }

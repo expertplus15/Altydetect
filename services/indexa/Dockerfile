@@ -1,3 +1,5 @@
+# Image du service Indexa. Le worker RQ utilise la même image avec une autre commande :
+#   /app/.venv/bin/rq worker indexa --url "$REDIS_URL"
 # Image du service Indexa. À construire depuis la racine du dépôt :
 #   docker build -f services/indexa/Dockerfile -t altydetect-indexa .
 FROM python:3.12-slim

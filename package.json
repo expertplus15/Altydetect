@@ -13,15 +13,19 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "lint:py": "uv run ruff check services && uv run ruff format --check services",
+    "lint:py": "uv run ruff check services ml/eval && uv run ruff format --check services ml/eval",
     "typecheck:py": "cd services/veritas && uv run mypy && cd ../indexa && uv run mypy",
-    "test:py": "uv run pytest services/veritas && uv run pytest services/indexa",
+    "test:py": "uv run pytest services/veritas && uv run pytest services/indexa && cd ml/eval && uv run --no-sync pytest -q",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm lint:py && pnpm typecheck:py && pnpm test:py",
     "stripe:seed": "tsx scripts/stripe-seed.ts",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "contracts:generate": "tsx scripts/export-contracts.ts && prettier --write --log-level warn packages/core/schemas/indexa.json && uv run --no-sync ruff format services/indexa/src/indexa/contracts.py",
+    "contracts:check": "pnpm contracts:generate && git diff --exit-code -- packages/core/schemas services/indexa/src/indexa/contracts.py",
+    "benchmark:plagiarism": "cd ml/eval && uv run --no-sync python -m plagiarism.benchmark"
   },
   "devDependencies": {
     "@altydetect/billing": "workspace:*",
+    "@altydetect/core": "workspace:*",
     "@types/node": "^22.19.0",
     "@vitest/coverage-v8": "5.1.0",
     "eslint": "^10.14.0",
@@ -30,7 +34,8 @@
     "tsx": "^4.23.15",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.72.1",
-    "vitest": "^5.1.0"
+    "vitest": "^5.1.0",
+    "zod": "^4.6.7"
   },
   "type": "module"
 }

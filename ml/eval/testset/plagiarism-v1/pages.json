@@ -1,0 +1,50 @@
+{
+  "https://revue-pedagogie.example/evaluation-formative": {
+    "title": "L'évaluation formative au collège",
+    "html": "<article><h1>L'évaluation formative au collège</h1><p>L'évaluation formative transforme la relation des élèves à l'erreur. Dans les classes observées, les enseignants donnent un retour régulier et précis, ce qui permet à chacun de corriger ses méthodes avant l'examen final. Les résultats montrent un gain moyen de trente-deux pour cent sur l'année scolaire, avec un effet plus marqué chez les élèves qui rencontraient des difficultés en début de trimestre.</p></article>"
+  },
+  "https://climat-info.example/glaciers-alpins": {
+    "title": "Le recul des glaciers alpins",
+    "html": "<article><h1>Le recul des glaciers alpins</h1><p>Les glaciers alpins ont perdu près de la moitié de leur volume depuis le milieu du vingtième siècle. Les relevés effectués chaque automne montrent une accélération nette de la fonte depuis deux décennies, liée à des étés plus chauds et à des hivers moins enneigés. Les communes de montagne adaptent déjà leurs ressources en eau potable et leurs activités touristiques à cette évolution rapide du paysage.</p></article>"
+  },
+  "https://histoire-france.example/canal-du-midi": {
+    "title": "Le canal du Midi",
+    "html": "<article><h1>Le canal du Midi</h1><p>Construit au dix-septième siècle sous la direction de Pierre-Paul Riquet, le canal du Midi relie Toulouse à la mer Méditerranée sur plus de deux cent quarante kilomètres. Son système d'alimentation en eau, conçu à partir des rivières de la Montagne Noire, reste considéré comme une prouesse technique remarquable pour son époque. Le canal est inscrit au patrimoine mondial de l'humanité depuis la fin du vingtième siècle.</p></article>"
+  },
+  "https://sante-publique.example/sommeil-adolescents": {
+    "title": "Le sommeil des adolescents",
+    "html": "<article><h1>Le sommeil des adolescents</h1><p>Les adolescents dorment en moyenne une heure et demie de moins que ce que recommandent les spécialistes du sommeil. L'usage des écrans en soirée retarde l'endormissement et réduit la qualité du repos, ce qui se traduit par une baisse de la concentration en classe le lendemain. Plusieurs établissements expérimentent un début des cours plus tardif afin de mieux respecter le rythme biologique des élèves.</p></article>"
+  },
+  "https://economie-locale.example/circuits-courts": {
+    "title": "Les circuits courts alimentaires",
+    "html": "<article><h1>Les circuits courts alimentaires</h1><p>Les circuits courts permettent aux producteurs agricoles de vendre directement leurs produits aux consommateurs, sans intermédiaire ou avec un seul intermédiaire. Cette organisation améliore la rémunération des agriculteurs et renforce le lien entre la ville et la campagne environnante. Les marchés de producteurs et les paniers hebdomadaires se sont fortement développés dans les communes moyennes ces dernières années.</p></article>"
+  },
+  "https://numerique.example/donnees-personnelles": {
+    "title": "Protéger ses données personnelles",
+    "html": "<article><h1>Protéger ses données personnelles</h1><p>Le règlement général sur la protection des données impose aux entreprises d'expliquer clairement quelles informations elles collectent et dans quel but. Chaque personne peut demander à consulter, corriger ou supprimer les données qui la concernent, et une autorité de contrôle veille au respect de ces droits. Les sanctions financières prévues en cas de manquement grave peuvent atteindre plusieurs millions d'euros.</p></article>"
+  },
+  "https://litterature.example/roman-epistolaire": {
+    "title": "Le roman épistolaire",
+    "html": "<article><h1>Le roman épistolaire</h1><p>Le roman épistolaire raconte une histoire à travers une suite de lettres échangées entre les personnages. Ce genre, très apprécié au dix-huitième siècle, donne au lecteur l'impression d'accéder directement à l'intimité des protagonistes. La multiplicité des points de vue permet à l'auteur de jouer sur les malentendus et sur ce que chacun choisit de dire ou de taire.</p></article>"
+  },
+  "https://science-daily.example/urban-heat-islands": {
+    "title": "Urban heat islands",
+    "html": "<article><h1>Urban heat islands</h1><p>Cities are often several degrees warmer than the surrounding countryside, a phenomenon known as the urban heat island. Dark roofs, asphalt roads and the lack of vegetation absorb heat during the day and release it slowly at night. Planting trees and painting roofs in light colours are among the most effective ways to reduce summer temperatures in dense neighbourhoods.</p></article>"
+  },
+  "https://business-review.example/remote-work-productivity": {
+    "title": "Remote work and productivity",
+    "html": "<article><h1>Remote work and productivity</h1><p>Studies of remote work show that productivity depends less on location than on the clarity of goals and the quality of communication within the team. Employees who receive regular feedback and clear priorities tend to perform as well at home as in the office. However, newcomers often struggle to build relationships and learn informal rules when most of their colleagues work remotely.</p></article>"
+  },
+  "https://history-today.example/printing-press": {
+    "title": "The printing press",
+    "html": "<article><h1>The printing press</h1><p>The invention of the movable type printing press in the fifteenth century dramatically reduced the cost of producing books. Within a few decades, printed texts spread across Europe, encouraging literacy and the rapid circulation of new scientific ideas. Many historians consider this technology one of the main conditions for the religious and intellectual changes of the following century.</p></article>"
+  },
+  "https://ocean-watch.example/coral-reefs": {
+    "title": "Coral reefs under pressure",
+    "html": "<article><h1>Coral reefs under pressure</h1><p>Coral reefs cover less than one percent of the ocean floor but shelter around a quarter of all marine species. Rising water temperatures cause coral bleaching, a stress response in which corals expel the algae that give them both colour and food. Reefs can recover from a single bleaching event, but repeated episodes leave them too little time to regenerate.</p></article>"
+  },
+  "https://learning-lab.example/spaced-repetition": {
+    "title": "Spaced repetition",
+    "html": "<article><h1>Spaced repetition</h1><p>Spaced repetition is a learning technique in which information is reviewed at increasing intervals over time. Each review takes place just before the learner is likely to forget, which strengthens long-term memory far more than intensive cramming the night before an exam. Language learners and medical students widely use flashcard applications built on this principle.</p></article>"
+  }
+}

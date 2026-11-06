@@ -5,3 +5,5 @@ pnpm-lock.yaml
 uv.lock
 CLAUDE.md
 apps/web/lib/generated/
+# Jeux de test gelés : octets figés par MANIFEST.json
+ml/eval/testset/

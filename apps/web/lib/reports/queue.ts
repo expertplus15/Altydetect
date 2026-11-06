@@ -8,6 +8,8 @@ export const REPORTS_QUEUE = "reports";
 
 export interface RewriteReportJob {
   userId: string;
+  /** rewrite : rapport de réécriture ; analysis : rapport combiné (plagiat, puis détection). */
+  kind?: "rewrite" | "analysis";
   analysisId: string;
   variantIndex: number;
   /** Texte d'origine fourni par le navigateur pour ce rapport ; jamais stocké en base. */

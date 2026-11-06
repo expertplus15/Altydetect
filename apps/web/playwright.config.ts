@@ -1,7 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
 // Parcours de bout en bout sur l'application construite (next build) :
-// Stripe simulé (e2e/stripe-mock.mjs), modèle simulé (ALTY_LLM=fake), e-mails déposés dans Redis.
+// Stripe simulé (e2e/stripe-mock.mjs), modèle simulé (ALTY_LLM=fake), e-mails déposés dans Redis,
+// Indexa avec une recherche web simulée.
 // Prérequis : PostgreSQL migré et Redis (DATABASE_URL, REDIS_URL).
 const PORT = 3200;
 const env = {
@@ -17,6 +18,13 @@ const env = {
   STRIPE_WEBHOOK_SECRET: "whsec_e2e",
   STRIPE_API_BASE: "http://localhost:12111",
   APP_URL: `http://localhost:${PORT}`,
+  INDEXA_URL: "http://localhost:8002",
+  INDEXA_INTERNAL_TOKEN: "e2e-indexa-token",
+  INDEXA_SEARCH_PROVIDER: "fixtures",
+  INDEXA_FIXTURES_PATH: new URL(
+    "../../services/indexa/tests/fixtures/web-pages.json",
+    import.meta.url,
+  ).pathname,
   DATABASE_URL: process.env.DATABASE_URL ?? "",
   REDIS_URL: process.env.REDIS_URL ?? "redis://localhost:6379",
 };
@@ -37,6 +45,19 @@ export default defineConfig({
       reuseExistingServer: false,
     },
     { command: "pnpm worker", env, reuseExistingServer: false, wait: { stderr: /prêt/ } },
+    // Indexa (plagiat) : API et worker RQ, recherche web simulée sur un corpus local.
+    {
+      command: "uv run --no-sync --package indexa uvicorn indexa.main:app --port 8002",
+      url: "http://localhost:8002/health",
+      env,
+      reuseExistingServer: false,
+    },
+    {
+      command: "uv run --no-sync --package indexa rq worker indexa --url $REDIS_URL",
+      env,
+      reuseExistingServer: false,
+      wait: { stdout: /Listening on|indexa/ },
+    },
     {
       command: `pnpm start -p ${PORT}`,
       url: `http://localhost:${PORT}/fr`,

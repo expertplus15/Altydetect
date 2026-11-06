@@ -1,0 +1,10 @@
+{
+  "https://revue.example/evaluation-formative": {
+    "title": "L'évaluation formative au collège",
+    "html": "<html><head><title>x</title><script>var a=1;</script></head><body><nav>Menu Accueil</nav><article><h1>L'évaluation formative</h1><p>Dans les classes observées, les enseignants donnent un retour régulier et précis, ce qui permet à chacun de corriger ses méthodes avant l'examen final.</p><p>Les résultats montrent un gain moyen de trente-deux pour cent sur l'année scolaire, selon l'enquête nationale.</p></article><footer>Mentions</footer></body></html>"
+  },
+  "https://blog.example/cuisine": {
+    "title": "Recette",
+    "html": "<p>Faites revenir les oignons dans une poêle avec un peu d'huile d'olive pendant cinq minutes.</p>"
+  }
+}

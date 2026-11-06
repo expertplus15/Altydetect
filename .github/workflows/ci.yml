@@ -56,6 +56,8 @@ jobs:
           pnpm -C apps/web exec prisma migrate diff \
             --from-migrations ../../infra/migrations --to-schema prisma/schema.prisma --exit-code
       - run: pnpm check
+      - name: Vérifier que les modèles Pydantic d'Indexa suivent les contrats zod
+        run: pnpm contracts:check
       - run: pnpm build
 
   e2e:
@@ -86,7 +88,11 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
       - run: pnpm install --frozen-lockfile
+      - run: uv sync --all-packages --frozen
       - run: pnpm -C apps/web db:migrate
       - name: Construire l'application (Stripe et Claude simulés, aucune clé réelle)
         run: pnpm -C apps/web build
