@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
-import { AppShell } from "@/components/AppShell";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
@@ -41,9 +40,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={inter.variable}>
       <body className="font-sans antialiased">
-        <NextIntlClientProvider>
-          <AppShell>{children}</AppShell>
-        </NextIntlClientProvider>
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
   );

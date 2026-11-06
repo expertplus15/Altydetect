@@ -5,9 +5,15 @@
   "description": "Types partagés, contrats d'API internes (zod), clés i18n.",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./llm": "./src/llm/index.ts",
+    "./llm/testing": "./src/llm/testing.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.5.0",
+    "zod": "^4.6.7"
   }
 }

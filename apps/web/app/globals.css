@@ -17,3 +17,39 @@ body {
   background: #ffffff;
   color: #111827;
 }
+
+/* Éditeur (Tiptap) */
+.prose-alty p {
+  margin: 0 0 0.9em;
+}
+.prose-alty p:last-child {
+  margin-bottom: 0;
+}
+.prose-alty h2 {
+  font-size: 1.35em;
+  font-weight: 650;
+  margin: 1em 0 0.5em;
+}
+.prose-alty h3 {
+  font-size: 1.15em;
+  font-weight: 600;
+  margin: 0.9em 0 0.4em;
+}
+.prose-alty ul,
+.prose-alty ol {
+  padding-left: 1.4em;
+  margin: 0 0 0.9em;
+}
+.prose-alty ul {
+  list-style: disc;
+}
+.prose-alty ol {
+  list-style: decimal;
+}
+.prose-alty p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #6b7280;
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

@@ -9,5 +9,9 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@altydetect/core": "workspace:*",
+    "zod": "^4.6.7"
   }
 }

@@ -1,3 +1,6 @@
-// @altydetect/core — Types partagés, contrats d'API internes (zod), clés i18n.
-// Aucune logique métier pour l'instant.
-export {};
+// @altydetect/core — types partagés, contrats d'API internes, utilitaires de texte.
+export * from "./config/llm";
+export * from "./contracts/rewrite";
+export * from "./text/language";
+export * from "./text/words";
+export * from "./contracts/write";

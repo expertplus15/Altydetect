@@ -1,19 +1,509 @@
 {
   "header": {
     "brand": "AltyDetect",
-    "openSidebar": "Open sidebar",
-    "closeSidebar": "Close sidebar",
+    "workspace": "Workspace",
+    "pricing": "Pricing",
     "languageSwitcher": "Interface language",
+    "quota": "{used} / {limit} words",
+    "quotaLabel": "Detection words used this month: {used} of {limit}",
+    "upgrade": "Upgrade to Pro",
+    "proBadge": "Pro",
+    "account": "My account",
+    "accountMenu": "Account menu",
+    "history": "History",
     "signIn": "Sign in"
   },
   "sidebar": {
-    "navigation": "Main navigation",
+    "navigation": "Tools",
     "tools": "Tools",
     "detect": "Detect",
     "plagiarism": "Plagiarism",
     "rewrite": "Rewrite",
     "write": "Write",
+    "correct": "Proofread",
     "recent": "Recent",
-    "noRecent": "No recent documents"
+    "noRecent": "No recent documents",
+    "soon": "Soon",
+    "allHistory": "Full history"
+  },
+  "email": {
+    "magicLink": {
+      "subject": "Your AltyDetect sign-in link ({host})",
+      "intro": "Click the button below to sign in to AltyDetect. This link is valid for 30 minutes and works only once.",
+      "button": "Sign in",
+      "ignore": "Didn't request this link? Ignore this email: no account will be created or changed."
+    }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign in",
+      "subtitle": "Get a sign-in link by email, no password needed.",
+      "noAccount": "No account yet?",
+      "toSignUp": "Create an account"
+    },
+    "signUp": {
+      "title": "Create an account",
+      "subtitle": "Free, no credit card. We'll email you a confirmation link.",
+      "hasAccount": "Already have an account?",
+      "toSignIn": "Sign in",
+      "consent": "By creating an account, you accept the <terms>terms of use</terms> and the <privacy>privacy policy</privacy>."
+    },
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@example.com",
+    "sendLink": "Send me the link",
+    "or": "or",
+    "google": "Continue with Google",
+    "invalidEmail": "Enter a valid email address, for example name@example.com.",
+    "error": "Sign-in didn't go through. Try again or request a new link.",
+    "verify": {
+      "title": "Check your inbox",
+      "body": "We've just sent you a sign-in link. It's valid for 30 minutes. Check your spam folder too.",
+      "back": "Use another address"
+    },
+    "signOut": "Sign out"
+  },
+  "trial": {
+    "saveTitle": "Your trial result is ready",
+    "saveBody": "Save it to your history to find it later.",
+    "save": "Save to history",
+    "dismiss": "Dismiss",
+    "saved": "Result saved to your history."
+  },
+  "publicHeader": {
+    "tools": "Tools",
+    "pricing": "Pricing",
+    "signIn": "Sign in",
+    "signUp": "Create an account",
+    "workspace": "My workspace",
+    "nav": "Site navigation"
+  },
+  "pricing": {
+    "metaTitle": "Pricing — AltyDetect",
+    "metaDescription": "Free to start, Pro at {yearlyMonthly} a month billed yearly. No commitment, cancel in one click.",
+    "title": "Simple pricing, no commitment",
+    "subtitle": "No weekly plans, no paid trial. Cancel in one click from your account.",
+    "period": "Billing period",
+    "monthly": "Monthly",
+    "yearly": "Yearly · −20%",
+    "perMonth": "/ month",
+    "recommended": "Recommended",
+    "soon": "Coming soon",
+    "billedMonthly": "Billed monthly",
+    "billedYearly": "Billed {amount} per year",
+    "cancelled": "Payment cancelled: you have not been charged.",
+    "free": {
+      "name": "Free",
+      "tagline": "To try the tools",
+      "cta": "Create an account",
+      "rewrites": "{count} requests per day, shared between Rewrite and Write",
+      "write": "Outline, proofreading and summary (counted in daily requests); unlimited citations",
+      "detection": "Detection: {words} words per month, once available",
+      "history": "{days}-day history"
+    },
+    "pro": {
+      "name": "Pro",
+      "tagline": "For writing every day",
+      "cta": "Upgrade to Pro",
+      "current": "Your current plan",
+      "rewrites": "Rewrite and Write with no displayed daily limit",
+      "variants": "Up to 3 suggestions per rewrite",
+      "detection": "Detection: {words} words per month, once available",
+      "files": "PDF and DOCX import, PDF export",
+      "history": "{months}-month history"
+    },
+    "team": {
+      "name": "Team",
+      "tagline": "For agencies, schools and HR teams",
+      "f1": "Shared workspace and member management",
+      "f2": "Private document base for plagiarism checks",
+      "f3": "Centralised billing"
+    },
+    "api": {
+      "name": "API",
+      "tagline": "To bring AltyDetect into your tools",
+      "f1": "Detection, plagiarism and rewriting via API",
+      "f2": "Pay as you go",
+      "f3": "Public documentation"
+    },
+    "priceToCome": "Price to come",
+    "faqTitle": "Frequently asked questions",
+    "faq": {
+      "cancelQ": "How do I cancel?",
+      "cancelA": "From the Account page, in one click. Pro stays active until the end of the period already paid.",
+      "dataQ": "Do you keep my texts?",
+      "dataA": "No, unless you choose to save them. Only results appear in your history.",
+      "quotaQ": "What happens when my detection quota runs out?",
+      "quotaA": "Rewrite and Write stay available. The counter resets at the start of the next period."
+    }
+  },
+  "comingSoon": {
+    "detect": {
+      "title": "Detect is coming soon",
+      "body": "AI text detection will be available in phase 3. It will give a probability with a confidence level and an \"Undetermined\" zone, never a verdict."
+    },
+    "plagiarism": {
+      "title": "Plagiarism is coming soon",
+      "body": "Plagiarism checking will be available in phase 2, across the web and your private document base."
+    },
+    "meanwhile": "Meanwhile, you can rewrite or proofread your texts.",
+    "toRewrite": "Open Rewrite"
+  },
+  "editor": {
+    "label": "Text editor",
+    "placeholder": "Paste or type your text here…",
+    "words": "{count, plural, =0 {0 words} one {# word} other {# words}}",
+    "minWords": "{missing, plural, one {# more word} other {# more words}} to reach the {min}-word minimum for detection.",
+    "import": "Import PDF or DOCX",
+    "importHint": "10 MB max",
+    "importing": "Importing…",
+    "importProOnly": "File import is included in Pro.",
+    "importErrors": {
+      "FILE_TOO_LARGE": "This file is over 10 MB. Shrink it or copy its text.",
+      "UNSUPPORTED_TYPE": "Only PDF and DOCX files are accepted.",
+      "EMPTY_TEXT": "No text found: this PDF may be a scanned image.",
+      "EXTRACTION_FAILED": "The file couldn't be read. Check it isn't password-protected.",
+      "UPGRADE_REQUIRED": "File import is included in Pro.",
+      "UNAUTHENTICATED": "Sign in to import a file.",
+      "default": "Import failed. Try again."
+    },
+    "imported": "Text imported: {words} words."
+  },
+  "rewrite": {
+    "title": "Rewrite",
+    "subtitle": "Style, register and clarity change; the meaning stays the same.",
+    "original": "Original",
+    "proposition": "Suggestion {current} / {total}",
+    "propositionSingle": "Suggestion",
+    "previous": "Previous suggestion",
+    "next": "Next suggestion",
+    "empty": "Your suggestion will appear here.",
+    "writing": "Writing…",
+    "copy": "Copy",
+    "copied": "Copied",
+    "replace": "Replace in document",
+    "replaced": "Text replaced in the document.",
+    "settings": "Rewrite settings",
+    "register": "Register",
+    "registers": {
+      "academic": "Academic",
+      "professional": "Professional",
+      "simple": "Plain",
+      "faithful": "Faithful"
+    },
+    "registerHints": {
+      "academic": "Precise sentences, subject vocabulary, neutral tone.",
+      "professional": "Direct and clear, suited to a report or an email.",
+      "simple": "Short sentences and everyday words.",
+      "faithful": "Fixes the form without touching the style."
+    },
+    "intensity": "Intensity",
+    "intensities": {
+      "1": "Light",
+      "2": "Medium",
+      "3": "Strong"
+    },
+    "preserve": "Keep quotations",
+    "preserveHint": "Quotations, references, figures and URLs stay intact (highlighted in blue).",
+    "variants": "Number of suggestions",
+    "variantsPro": "Several suggestions: included in Pro.",
+    "submit": "Rewrite",
+    "stop": "Stop",
+    "remaining": "{count, plural, =0 {No requests left today} one {# request left today} other {# requests left today}} (Rewrite and Write) · resets at midnight (UTC).",
+    "needText": "Type or paste a text to rewrite.",
+    "errors": {
+      "QUOTA_EXCEEDED": "You've used today's requests (Rewrite and Write). The counter resets at midnight (UTC).",
+      "QUOTA_EXCEEDED_PRO": "Today's fair-use limit is reached. It resets at midnight (UTC).",
+      "SIGN_UP_REQUIRED": "Your trial is over. Create a free account to continue.",
+      "TRIAL_LIMIT": "Too many trials from this network today. Create a free account to continue.",
+      "TEXT_TOO_LONG": "This text is over {maxWords} words. Rewrite it in parts.",
+      "REFUSED": "This text couldn't be rewritten. Edit it or try another register.",
+      "INVALID_INPUT": "The request is incomplete. Check the text and settings.",
+      "default": "The rewrite didn't go through. Try again in a moment."
+    },
+    "upgrade": "Upgrade to Pro",
+    "signUp": "Create a free account",
+    "trialSaved": "Create a free account to save this result to your history."
+  },
+  "write": {
+    "title": "Write",
+    "correctTitle": "Proofread",
+    "tools": "Writing tools",
+    "tabs": {
+      "outline": "Outline",
+      "correct": "Proofread",
+      "cite": "Cite",
+      "summarize": "Summarise"
+    },
+    "run": "Run",
+    "running": "Working…",
+    "copy": "Copy",
+    "copied": "Copied",
+    "insert": "Insert into document",
+    "inserted": "Inserted into the document.",
+    "needText": "First type or paste a text in the editor.",
+    "outline": {
+      "subject": "Topic",
+      "subjectPlaceholder": "E.g. formative assessment in middle school",
+      "level": "Level",
+      "levels": {
+        "secondary": "Secondary",
+        "bachelor": "Undergraduate",
+        "master": "Master's",
+        "professional": "Professional"
+      },
+      "generate": "Suggest an outline",
+      "insert": "Insert outline"
+    },
+    "correct": {
+      "check": "Proofread the text",
+      "none": "No mistakes found.",
+      "count": "{count, plural, one {# correction} other {# corrections}}",
+      "acceptAll": "Accept all",
+      "accept": "Accept",
+      "ignore": "Ignore",
+      "stale": "The text changed since proofreading: run it again.",
+      "kinds": {
+        "spelling": "Spelling",
+        "grammar": "Grammar",
+        "punctuation": "Punctuation",
+        "typography": "Typography"
+      }
+    },
+    "cite": {
+      "style": "Style",
+      "from": "Source",
+      "fromUrl": "URL or DOI",
+      "fromFields": "Manual entry",
+      "url": "Page address",
+      "type": "Type",
+      "types": {
+        "article": "Article",
+        "book": "Book",
+        "web": "Web page"
+      },
+      "authors": "Authors",
+      "authorsHint": "One author per line, as \"Last name, First name\".",
+      "titleField": "Title",
+      "year": "Year",
+      "container": "Journal or site",
+      "volume": "Volume",
+      "issue": "Issue",
+      "pages": "Pages",
+      "publisher": "Publisher",
+      "doi": "DOI",
+      "accessed": "Accessed on",
+      "generate": "Create reference",
+      "missing": "To complete: {fields}.",
+      "fieldNames": {
+        "authors": "authors",
+        "year": "year",
+        "container": "journal or site",
+        "publisher": "publisher",
+        "url": "address",
+        "accessed": "access date"
+      }
+    },
+    "summarize": {
+      "length": "Length",
+      "lengths": {
+        "short": "Short",
+        "medium": "Medium",
+        "long": "Detailed"
+      },
+      "generate": "Summarise the text"
+    },
+    "errors": {
+      "QUOTA_EXCEEDED": "You've used today's requests (Rewrite and Write). The counter resets at midnight (UTC).",
+      "BLOCKED_ADDRESS": "This address can't be read. Enter the reference by hand.",
+      "FETCH_FAILED": "The page couldn't be read. Check the address or enter the reference by hand.",
+      "NOT_HTML": "This address doesn't return a web page. Enter the reference by hand.",
+      "TEXT_TOO_LONG": "This text is too long. Process it in parts.",
+      "REFUSED": "This text couldn't be processed. Edit it and try again.",
+      "INVALID_INPUT": "Check the fields you filled in.",
+      "default": "The request didn't go through. Try again in a moment."
+    }
+  },
+  "report": {
+    "title": "Rewrite report",
+    "original": "Original text",
+    "proposal": "Selected suggestion",
+    "date": "Rewrite date",
+    "timestamp": "Report generated on",
+    "originalMissing": "AltyDetect doesn't keep the original text and it wasn't attached to this export.",
+    "footer": "AltyDetect · altydetect.com",
+    "export": "Export as PDF",
+    "exporting": "Preparing the PDF…",
+    "ready": "PDF ready: the download is starting.",
+    "failed": "The PDF couldn't be generated. Try again.",
+    "proOnly": "PDF export is included in Pro."
+  },
+  "history": {
+    "title": "History",
+    "subtitle": "Your rewrites and writing tools. The original text is kept only if you asked for it.",
+    "retentionFree": "Kept for {days} days on the Free plan.",
+    "retentionPro": "Kept for {months} months with Pro.",
+    "type": "Type",
+    "types": {
+      "all": "All",
+      "rewrite": "Rewrite",
+      "write": "Writing"
+    },
+    "from": "From",
+    "to": "To",
+    "filter": "Filter",
+    "reset": "Clear filters",
+    "empty": "No documents match these criteria.",
+    "words": "{count, plural, one {# word} other {# words}}",
+    "open": "Open",
+    "openInRewrite": "Open in Rewrite",
+    "detail": "Details",
+    "tools": {
+      "outline": "Outline",
+      "correct": "Proofreading",
+      "summarize": "Summary"
+    },
+    "variant": "Suggestion {n}",
+    "correctionsCount": "{count, plural, =0 {No mistakes found} one {# correction} other {# corrections}}",
+    "back": "Back to history",
+    "notFound": "This document no longer exists or is past its retention period."
+  },
+  "home": {
+    "metaTitle": "AltyDetect — Rewrite and write better, in English and French",
+    "metaDescription": "Improve the style, register and clarity of your texts. Rewriting, proofreading, APA, MLA, Chicago and ISO 690 citations. Try without an account.",
+    "eyebrow": "Rewrite · Write · Proofread",
+    "promise": "Improve the style, register and clarity of your texts, in English and French.",
+    "lead": "Paste a paragraph below and see the result right away. Try without an account.",
+    "commitments": "Our commitments",
+    "c1Title": "A probability, not a verdict",
+    "c1Body": "When detection arrives, every result will be a probability with a confidence level and an \"Undetermined\" zone. Never proof.",
+    "c2Title": "Built for French",
+    "c2Body": "Registers, agreement, typography, APA, MLA, Chicago and ISO 690 citation styles: the tool knows how written French works, and English too.",
+    "c3Title": "Your texts stay yours",
+    "c3Body": "Nothing is kept without your consent, and nothing trains a model unless you switch it on yourself in your account.",
+    "pricingTitle": "Free to start. Pro at {price} a month billed yearly.",
+    "pricingBody": "No commitment, cancel in one click.",
+    "pricingCta": "See pricing"
+  },
+  "footer": {
+    "rights": "© {year} AltyDetect",
+    "terms": "Terms of use",
+    "privacy": "Privacy",
+    "legal": "Legal notice"
+  },
+  "legal": {
+    "draft": "Draft version: this text must be approved before going live.",
+    "terms": {
+      "title": "Terms of use",
+      "sections": [
+        {
+          "h": "Purpose",
+          "p": "These terms govern the use of AltyDetect (altydetect.com), an online rewriting and writing assistance service published by [COMPANY NAME]."
+        },
+        {
+          "h": "Account and trial",
+          "p": "A trial without an account is available. Ongoing use requires an account, created with an email sign-in link or with Google."
+        },
+        {
+          "h": "Pro subscription",
+          "p": "Pro is a monthly or yearly subscription, paid in advance through Stripe. There is no commitment and you can cancel at any time from the Account page; it stays active until the end of the paid period. [REFUND AND WITHDRAWAL TERMS TO BE DEFINED]."
+        },
+        {
+          "h": "Acceptable use",
+          "p": "The service improves the style, register and clarity of your texts. You remain responsible for the texts you submit and how you use them. A fair-use limit applies to the Pro plan."
+        },
+        {
+          "h": "Results",
+          "p": "Suggestions are generated automatically and must be reviewed. Detection results, once available, will be probabilities, not proof."
+        },
+        {
+          "h": "Governing law",
+          "p": "[GOVERNING LAW, JURISDICTION AND CONSUMER MEDIATOR TO BE DEFINED]."
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "sections": [
+        {
+          "h": "Data controller",
+          "p": "[COMPANY NAME], [ADDRESS]. Contact: [CONTACT EMAIL]."
+        },
+        {
+          "h": "Your texts",
+          "p": "The texts you submit are processed in memory and then deleted. Only results (suggestions, corrections, outlines, summaries) are saved in your history. The original text is kept only if you ask for it."
+        },
+        {
+          "h": "Retention",
+          "p": "History: 7 days on the Free plan, 12 months with Pro, then automatic deletion. Account: until you delete it, which you can do at any time from the Account page."
+        },
+        {
+          "h": "Model training",
+          "p": "Your texts are never used to train a model unless you tick the corresponding option in your account yourself. It is off by default."
+        },
+        {
+          "h": "Processors",
+          "p": "Hosting: [HOSTING PROVIDER]. Payments: Stripe. Sign-in emails: Resend. Sign-in with Google: Google. Rewriting and writing assistance: Anthropic (Claude API). [TRANSFERS OUTSIDE THE EU AND SAFEGUARDS TO BE SPECIFIED]."
+        },
+        {
+          "h": "Your rights",
+          "p": "You have the rights of access, rectification, erasure, restriction, objection and portability. Write to [CONTACT EMAIL]. You can also contact the CNIL (cnil.fr)."
+        },
+        {
+          "h": "Cookies",
+          "p": "AltyDetect only uses necessary cookies: sign-in session, interface language and the no-account trial. No advertising or analytics cookies."
+        }
+      ]
+    },
+    "notice": {
+      "title": "Legal notice",
+      "sections": [
+        {
+          "h": "Publisher",
+          "p": "[COMPANY NAME], [LEGAL FORM] with a share capital of [CAPITAL], registered under number [REGISTRATION NUMBER], head office: [ADDRESS]. Contact: [CONTACT EMAIL]."
+        },
+        {
+          "h": "Publication director",
+          "p": "[NAME OF THE PUBLICATION DIRECTOR]."
+        },
+        {
+          "h": "Hosting",
+          "p": "[HOSTING PROVIDER, ADDRESS AND PHONE]."
+        }
+      ]
+    }
+  },
+  "account": {
+    "title": "Account",
+    "plan": "Current plan",
+    "planFree": "Free",
+    "planPro": "Pro",
+    "interval": {
+      "monthly": "monthly",
+      "yearly": "yearly"
+    },
+    "renews": "Renews on {date}.",
+    "ends": "Cancelled: Pro stays active until {date}, then the account returns to Free.",
+    "pastDue": "The last payment failed. Update your payment method to keep Pro.",
+    "checkoutSuccess": "Welcome to Pro! Your subscription is active.",
+    "checkoutPending": "Payment received: Pro may take a few seconds to activate. Reload the page if needed.",
+    "manage": "Manage subscription and invoices",
+    "upgrade": "Upgrade to Pro",
+    "usage": "Usage",
+    "detectionWords": "Detection words this month",
+    "rewritesToday": "Rewrite and Write requests today",
+    "fairUse": "fair use",
+    "resets": "Resets on {date}.",
+    "language": "Interface language",
+    "languageHint": "Used for the interface and emails. The language of your texts is detected automatically.",
+    "save": "Save",
+    "saved": "Preferences saved.",
+    "training": "Model improvement",
+    "trainingLabel": "I agree that my texts may be used to improve AltyDetect's models",
+    "trainingHint": "Off by default. When on, excerpts of your texts may be included, anonymised, in our models' training corpora. You can switch it off at any time; this doesn't remove what has already been used.",
+    "delete": "Delete account",
+    "deleteBody": "Your account, history and preferences are permanently erased. An active Pro subscription is cancelled immediately, with no refund for the current period.",
+    "deleteConfirm": "To confirm, type your email address: {email}",
+    "deleteButton": "Delete permanently",
+    "deleteMismatch": "The address doesn't match the account's."
   }
 }

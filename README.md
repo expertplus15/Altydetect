@@ -27,6 +27,7 @@ uv run pre-commit install
 cp .env.example .env
 docker compose up -d        # PostgreSQL 16 + pgvector, Redis
 pnpm -C apps/web dev        # http://localhost:3000
+pnpm -C apps/web worker     # exports PDF et rétention de l'historique (BullMQ)
 ```
 
 Services Python :

@@ -1,19 +1,509 @@
 {
   "header": {
     "brand": "AltyDetect",
-    "openSidebar": "Ouvrir la barre latérale",
-    "closeSidebar": "Fermer la barre latérale",
+    "workspace": "Espace de travail",
+    "pricing": "Tarifs",
     "languageSwitcher": "Langue de l'interface",
+    "quota": "{used} / {limit} mots",
+    "quotaLabel": "Mots de détection utilisés ce mois-ci : {used} sur {limit}",
+    "upgrade": "Passer à Pro",
+    "proBadge": "Pro",
+    "account": "Mon compte",
+    "accountMenu": "Menu du compte",
+    "history": "Historique",
     "signIn": "Se connecter"
   },
   "sidebar": {
-    "navigation": "Navigation principale",
+    "navigation": "Outils",
     "tools": "Outils",
     "detect": "Détecter",
     "plagiarism": "Plagiat",
     "rewrite": "Réécrire",
     "write": "Écrire",
+    "correct": "Corriger",
     "recent": "Récents",
-    "noRecent": "Aucun document récent"
+    "noRecent": "Aucun document récent",
+    "soon": "Bientôt",
+    "allHistory": "Tout l'historique"
+  },
+  "email": {
+    "magicLink": {
+      "subject": "Votre lien de connexion à AltyDetect ({host})",
+      "intro": "Cliquez sur le bouton ci-dessous pour vous connecter à AltyDetect. Ce lien est valable 30 minutes et ne fonctionne qu'une fois.",
+      "button": "Me connecter",
+      "ignore": "Vous n'avez pas demandé ce lien ? Ignorez cet e-mail : aucun compte ne sera créé ni modifié."
+    }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Connexion",
+      "subtitle": "Recevez un lien de connexion par e-mail, sans mot de passe.",
+      "noAccount": "Pas encore de compte ?",
+      "toSignUp": "Créer un compte"
+    },
+    "signUp": {
+      "title": "Créer un compte",
+      "subtitle": "Gratuit, sans carte bancaire. Un lien de confirmation vous est envoyé par e-mail.",
+      "hasAccount": "Déjà un compte ?",
+      "toSignIn": "Se connecter",
+      "consent": "En créant un compte, vous acceptez les <terms>conditions d'utilisation</terms> et la <privacy>politique de confidentialité</privacy>."
+    },
+    "emailLabel": "Adresse e-mail",
+    "emailPlaceholder": "vous@exemple.fr",
+    "sendLink": "Recevoir le lien",
+    "or": "ou",
+    "google": "Continuer avec Google",
+    "invalidEmail": "Saisissez une adresse e-mail valide, par exemple prenom@exemple.fr.",
+    "error": "La connexion n'a pas abouti. Réessayez ou demandez un nouveau lien.",
+    "verify": {
+      "title": "Vérifiez votre boîte de réception",
+      "body": "Un lien de connexion vient de vous être envoyé. Il est valable 30 minutes. Pensez à regarder dans les courriers indésirables.",
+      "back": "Utiliser une autre adresse"
+    },
+    "signOut": "Se déconnecter"
+  },
+  "trial": {
+    "saveTitle": "Le résultat de votre essai est prêt",
+    "saveBody": "Enregistrez-le dans votre historique pour le retrouver plus tard.",
+    "save": "Enregistrer dans l'historique",
+    "dismiss": "Ignorer",
+    "saved": "Résultat enregistré dans votre historique."
+  },
+  "publicHeader": {
+    "tools": "Outils",
+    "pricing": "Tarifs",
+    "signIn": "Se connecter",
+    "signUp": "Créer un compte",
+    "workspace": "Mon espace",
+    "nav": "Navigation du site"
+  },
+  "pricing": {
+    "metaTitle": "Tarifs — AltyDetect",
+    "metaDescription": "Gratuit pour commencer, Pro à {yearlyMonthly} par mois en annuel. Sans engagement, résiliable en un clic.",
+    "title": "Des tarifs simples, sans engagement",
+    "subtitle": "Pas d'abonnement à la semaine, pas d'essai facturé. Vous résiliez en un clic depuis votre compte.",
+    "period": "Période de facturation",
+    "monthly": "Mensuel",
+    "yearly": "Annuel · −20 %",
+    "perMonth": "/ mois",
+    "recommended": "Recommandé",
+    "soon": "Bientôt",
+    "billedMonthly": "Facturé chaque mois",
+    "billedYearly": "Facturé {amount} par an",
+    "cancelled": "Paiement annulé : aucun montant n'a été prélevé.",
+    "free": {
+      "name": "Gratuit",
+      "tagline": "Pour découvrir les outils",
+      "cta": "Créer un compte",
+      "rewrites": "{count} demandes par jour, partagées entre Réécrire et Écrire",
+      "write": "Plan, correction et résumé (inclus dans les demandes du jour) ; citations sans limite",
+      "detection": "Détection : {words} mots par mois, dès sa sortie",
+      "history": "Historique de {days} jours"
+    },
+    "pro": {
+      "name": "Pro",
+      "tagline": "Pour écrire tous les jours",
+      "cta": "Passer à Pro",
+      "current": "Votre plan actuel",
+      "rewrites": "Réécrire et Écrire sans limite quotidienne affichée",
+      "variants": "Jusqu'à 3 propositions par réécriture",
+      "detection": "Détection : {words} mots par mois, dès sa sortie",
+      "files": "Import PDF et DOCX, export PDF",
+      "history": "Historique de {months} mois"
+    },
+    "team": {
+      "name": "Équipe",
+      "tagline": "Pour les agences, écoles et services RH",
+      "f1": "Espace partagé et gestion des membres",
+      "f2": "Base privée de documents pour le plagiat",
+      "f3": "Facturation centralisée"
+    },
+    "api": {
+      "name": "API",
+      "tagline": "Pour intégrer AltyDetect à vos outils",
+      "f1": "Détection, plagiat et réécriture par API",
+      "f2": "Paiement à l'usage",
+      "f3": "Documentation publique"
+    },
+    "priceToCome": "Prix à venir",
+    "faqTitle": "Questions fréquentes",
+    "faq": {
+      "cancelQ": "Comment résilier ?",
+      "cancelA": "Depuis la page Compte, en un clic. Pro reste actif jusqu'à la fin de la période déjà payée.",
+      "dataQ": "Mes textes sont-ils conservés ?",
+      "dataA": "Non, sauf si vous choisissez de les enregistrer. Seuls les résultats apparaissent dans votre historique.",
+      "quotaQ": "Que se passe-t-il quand mon quota de détection est atteint ?",
+      "quotaA": "Réécrire et Écrire restent disponibles. Le compteur repart à zéro au début de la période suivante."
+    }
+  },
+  "comingSoon": {
+    "detect": {
+      "title": "Détecter arrive bientôt",
+      "body": "La détection de texte IA sera disponible en phase 3. Elle donnera une probabilité avec un niveau de confiance et une zone « Indéterminé », jamais un verdict."
+    },
+    "plagiarism": {
+      "title": "Plagiat arrive bientôt",
+      "body": "La recherche de plagiat sera disponible en phase 2, sur le web et dans votre base privée de documents."
+    },
+    "meanwhile": "En attendant, vous pouvez réécrire ou corriger vos textes.",
+    "toRewrite": "Ouvrir Réécrire"
+  },
+  "editor": {
+    "label": "Éditeur de texte",
+    "placeholder": "Collez ou saisissez votre texte ici…",
+    "words": "{count, plural, =0 {0 mot} one {# mot} other {# mots}}",
+    "minWords": "Encore {missing, plural, one {# mot} other {# mots}} pour atteindre le minimum de {min} mots demandé par la détection.",
+    "import": "Importer PDF ou DOCX",
+    "importHint": "10 Mo maximum",
+    "importing": "Import en cours…",
+    "importProOnly": "L'import de fichiers est inclus dans Pro.",
+    "importErrors": {
+      "FILE_TOO_LARGE": "Ce fichier dépasse 10 Mo. Réduisez-le ou copiez son texte.",
+      "UNSUPPORTED_TYPE": "Seuls les fichiers PDF et DOCX sont acceptés.",
+      "EMPTY_TEXT": "Aucun texte trouvé : ce PDF est peut-être une image scannée.",
+      "EXTRACTION_FAILED": "Le fichier n'a pas pu être lu. Vérifiez qu'il n'est pas protégé par un mot de passe.",
+      "UPGRADE_REQUIRED": "L'import de fichiers est inclus dans Pro.",
+      "UNAUTHENTICATED": "Connectez-vous pour importer un fichier.",
+      "default": "L'import n'a pas abouti. Réessayez."
+    },
+    "imported": "Texte importé : {words} mots."
+  },
+  "rewrite": {
+    "title": "Réécrire",
+    "subtitle": "Le style, le registre et la clarté changent ; le sens reste le même.",
+    "original": "Original",
+    "proposition": "Proposition {current} / {total}",
+    "propositionSingle": "Proposition",
+    "previous": "Proposition précédente",
+    "next": "Proposition suivante",
+    "empty": "Votre proposition apparaîtra ici.",
+    "writing": "Rédaction en cours…",
+    "copy": "Copier",
+    "copied": "Copié",
+    "replace": "Remplacer dans le document",
+    "replaced": "Texte remplacé dans le document.",
+    "settings": "Réglages de réécriture",
+    "register": "Registre",
+    "registers": {
+      "academic": "Académique",
+      "professional": "Professionnel",
+      "simple": "Simple",
+      "faithful": "Fidèle"
+    },
+    "registerHints": {
+      "academic": "Phrases précises, vocabulaire disciplinaire, ton neutre.",
+      "professional": "Direct et clair, adapté à un rapport ou un e-mail.",
+      "simple": "Phrases courtes et mots courants.",
+      "faithful": "Corrige la forme sans toucher au style."
+    },
+    "intensity": "Intensité",
+    "intensities": {
+      "1": "Légère",
+      "2": "Moyenne",
+      "3": "Forte"
+    },
+    "preserve": "Conserver les citations",
+    "preserveHint": "Citations, références, chiffres et URL restent intacts (surlignés en bleu).",
+    "variants": "Nombre de propositions",
+    "variantsPro": "Plusieurs propositions : inclus dans Pro.",
+    "submit": "Réécrire",
+    "stop": "Arrêter",
+    "remaining": "{count, plural, =0 {Plus de demande aujourd'hui} one {# demande restante aujourd'hui} other {# demandes restantes aujourd'hui}} (Réécrire et Écrire) · remise à zéro à minuit (UTC).",
+    "needText": "Saisissez ou collez un texte à réécrire.",
+    "errors": {
+      "QUOTA_EXCEEDED": "Vous avez utilisé vos demandes du jour (Réécrire et Écrire). Le compteur repart à zéro à minuit (UTC).",
+      "QUOTA_EXCEEDED_PRO": "Limite d'usage du jour atteinte. Elle repart à zéro à minuit (UTC).",
+      "SIGN_UP_REQUIRED": "Votre essai est terminé. Créez un compte gratuit pour continuer.",
+      "TRIAL_LIMIT": "Trop d'essais depuis ce réseau aujourd'hui. Créez un compte gratuit pour continuer.",
+      "TEXT_TOO_LONG": "Ce texte dépasse {maxWords} mots. Réécrivez-le par parties.",
+      "REFUSED": "Ce texte n'a pas pu être réécrit. Modifiez-le ou essayez un autre registre.",
+      "INVALID_INPUT": "La demande est incomplète. Vérifiez le texte et les réglages.",
+      "default": "La réécriture n'a pas abouti. Réessayez dans un instant."
+    },
+    "upgrade": "Passer à Pro",
+    "signUp": "Créer un compte gratuit",
+    "trialSaved": "Créez un compte gratuit pour enregistrer ce résultat dans votre historique."
+  },
+  "write": {
+    "title": "Écrire",
+    "correctTitle": "Corriger",
+    "tools": "Outils d'écriture",
+    "tabs": {
+      "outline": "Plan",
+      "correct": "Corriger",
+      "cite": "Citer",
+      "summarize": "Résumer"
+    },
+    "run": "Lancer",
+    "running": "En cours…",
+    "copy": "Copier",
+    "copied": "Copié",
+    "insert": "Insérer dans le document",
+    "inserted": "Inséré dans le document.",
+    "needText": "Saisissez ou collez d'abord un texte dans l'éditeur.",
+    "outline": {
+      "subject": "Sujet",
+      "subjectPlaceholder": "Ex. : l'évaluation formative au collège",
+      "level": "Niveau",
+      "levels": {
+        "secondary": "Lycée",
+        "bachelor": "Licence",
+        "master": "Master",
+        "professional": "Professionnel"
+      },
+      "generate": "Proposer un plan",
+      "insert": "Insérer le plan"
+    },
+    "correct": {
+      "check": "Corriger le texte",
+      "none": "Aucune faute relevée.",
+      "count": "{count, plural, one {# correction} other {# corrections}}",
+      "acceptAll": "Tout accepter",
+      "accept": "Accepter",
+      "ignore": "Ignorer",
+      "stale": "Le texte a changé depuis la correction : relancez-la.",
+      "kinds": {
+        "spelling": "Orthographe",
+        "grammar": "Grammaire",
+        "punctuation": "Ponctuation",
+        "typography": "Typographie"
+      }
+    },
+    "cite": {
+      "style": "Norme",
+      "from": "Source",
+      "fromUrl": "URL ou DOI",
+      "fromFields": "Saisie manuelle",
+      "url": "Adresse de la page",
+      "type": "Type",
+      "types": {
+        "article": "Article",
+        "book": "Livre",
+        "web": "Page web"
+      },
+      "authors": "Auteurs",
+      "authorsHint": "Un auteur par ligne, sous la forme « Nom, Prénom ».",
+      "titleField": "Titre",
+      "year": "Année",
+      "container": "Revue ou site",
+      "volume": "Volume",
+      "issue": "Numéro",
+      "pages": "Pages",
+      "publisher": "Éditeur",
+      "doi": "DOI",
+      "accessed": "Consulté le",
+      "generate": "Générer la référence",
+      "missing": "À compléter : {fields}.",
+      "fieldNames": {
+        "authors": "auteurs",
+        "year": "année",
+        "container": "revue ou site",
+        "publisher": "éditeur",
+        "url": "adresse",
+        "accessed": "date de consultation"
+      }
+    },
+    "summarize": {
+      "length": "Longueur",
+      "lengths": {
+        "short": "Court",
+        "medium": "Moyen",
+        "long": "Détaillé"
+      },
+      "generate": "Résumer le texte"
+    },
+    "errors": {
+      "QUOTA_EXCEEDED": "Vous avez utilisé vos demandes du jour (Réécrire et Écrire). Le compteur repart à zéro à minuit (UTC).",
+      "BLOCKED_ADDRESS": "Cette adresse ne peut pas être consultée. Saisissez la référence à la main.",
+      "FETCH_FAILED": "La page n'a pas pu être lue. Vérifiez l'adresse ou saisissez la référence à la main.",
+      "NOT_HTML": "Cette adresse ne renvoie pas une page web. Saisissez la référence à la main.",
+      "TEXT_TOO_LONG": "Ce texte est trop long. Traitez-le par parties.",
+      "REFUSED": "Ce texte n'a pas pu être traité. Modifiez-le et réessayez.",
+      "INVALID_INPUT": "Vérifiez les champs remplis.",
+      "default": "La demande n'a pas abouti. Réessayez dans un instant."
+    }
+  },
+  "report": {
+    "title": "Rapport de réécriture",
+    "original": "Texte d'origine",
+    "proposal": "Proposition retenue",
+    "date": "Date de la réécriture",
+    "timestamp": "Rapport généré le",
+    "originalMissing": "Le texte d'origine n'est pas conservé par AltyDetect et n'a pas été joint à cet export.",
+    "footer": "AltyDetect · altydetect.com",
+    "export": "Exporter en PDF",
+    "exporting": "Préparation du PDF…",
+    "ready": "PDF prêt : le téléchargement démarre.",
+    "failed": "Le PDF n'a pas pu être généré. Réessayez.",
+    "proOnly": "L'export PDF est inclus dans Pro."
+  },
+  "history": {
+    "title": "Historique",
+    "subtitle": "Vos réécritures et outils d'écriture. Le texte d'origine n'est conservé que si vous l'avez demandé.",
+    "retentionFree": "Conservé {days} jours avec le plan Gratuit.",
+    "retentionPro": "Conservé {months} mois avec Pro.",
+    "type": "Type",
+    "types": {
+      "all": "Tous",
+      "rewrite": "Réécriture",
+      "write": "Écriture"
+    },
+    "from": "Du",
+    "to": "Au",
+    "filter": "Filtrer",
+    "reset": "Effacer les filtres",
+    "empty": "Aucun document pour ces critères.",
+    "words": "{count, plural, one {# mot} other {# mots}}",
+    "open": "Rouvrir",
+    "openInRewrite": "Ouvrir dans Réécrire",
+    "detail": "Détail",
+    "tools": {
+      "outline": "Plan",
+      "correct": "Correction",
+      "summarize": "Résumé"
+    },
+    "variant": "Proposition {n}",
+    "correctionsCount": "{count, plural, =0 {Aucune faute relevée} one {# correction} other {# corrections}}",
+    "back": "Retour à l'historique",
+    "notFound": "Ce document n'existe plus ou a dépassé la durée de conservation."
+  },
+  "home": {
+    "metaTitle": "AltyDetect — Réécrire et écrire mieux, en français comme en anglais",
+    "metaDescription": "Améliorez le style, le registre et la clarté de vos textes. Réécriture, correction, citations APA, MLA, Chicago et ISO 690. Essayez sans compte.",
+    "eyebrow": "Réécrire · Écrire · Corriger",
+    "promise": "Améliorez le style, le registre et la clarté de vos textes, en français comme en anglais.",
+    "lead": "Collez un paragraphe ci-dessous et voyez le résultat tout de suite. Essayez sans compte.",
+    "commitments": "Nos engagements",
+    "c1Title": "Une probabilité, pas un verdict",
+    "c1Body": "Quand la détection arrivera, chaque résultat sera une probabilité avec un niveau de confiance et une zone « Indéterminé ». Jamais une preuve.",
+    "c2Title": "Pensé pour le français",
+    "c2Body": "Registres, accords, typographie, normes de citation APA, MLA, Chicago et ISO 690 : l'outil connaît les usages du français écrit.",
+    "c3Title": "Vos textes restent vos textes",
+    "c3Body": "Rien n'est conservé sans votre accord, et rien ne sert à entraîner un modèle sauf si vous l'activez vous-même dans votre compte.",
+    "pricingTitle": "Gratuit pour commencer. Pro à {price} par mois en annuel.",
+    "pricingBody": "Sans engagement, résiliable en un clic.",
+    "pricingCta": "Voir les tarifs"
+  },
+  "footer": {
+    "rights": "© {year} AltyDetect",
+    "terms": "Conditions d'utilisation",
+    "privacy": "Confidentialité",
+    "legal": "Mentions légales"
+  },
+  "legal": {
+    "draft": "Version provisoire : ce texte doit être validé avant la mise en ligne.",
+    "terms": {
+      "title": "Conditions d'utilisation",
+      "sections": [
+        {
+          "h": "Objet",
+          "p": "Les présentes conditions encadrent l'utilisation d'AltyDetect (altydetect.com), service en ligne d'aide à la réécriture et à l'écriture édité par [RAISON SOCIALE]."
+        },
+        {
+          "h": "Compte et essai",
+          "p": "Un essai sans compte est proposé. L'utilisation suivie du service demande un compte, créé par lien de connexion envoyé par e-mail ou par Google."
+        },
+        {
+          "h": "Abonnement Pro",
+          "p": "Pro est un abonnement mensuel ou annuel, payé d'avance par Stripe. Il est sans engagement et résiliable à tout moment depuis la page Compte ; il reste actif jusqu'à la fin de la période payée. [CONDITIONS DE REMBOURSEMENT ET DROIT DE RÉTRACTATION À DÉFINIR]."
+        },
+        {
+          "h": "Usage acceptable",
+          "p": "Le service améliore le style, le registre et la clarté de vos textes. Vous restez responsable des textes que vous soumettez et de leur usage. Une limite d'usage équitable s'applique au plan Pro."
+        },
+        {
+          "h": "Résultats",
+          "p": "Les propositions sont produites automatiquement et doivent être relues. Les résultats de détection, quand ils seront disponibles, seront des probabilités et non des preuves."
+        },
+        {
+          "h": "Droit applicable",
+          "p": "[DROIT APPLICABLE, JURIDICTION ET MÉDIATEUR DE LA CONSOMMATION À DÉFINIR]."
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "sections": [
+        {
+          "h": "Responsable du traitement",
+          "p": "[RAISON SOCIALE], [ADRESSE]. Contact : [E-MAIL DE CONTACT]."
+        },
+        {
+          "h": "Vos textes",
+          "p": "Les textes que vous soumettez sont traités en mémoire puis supprimés. Seuls les résultats (propositions, corrections, plans, résumés) sont enregistrés dans votre historique. Le texte d'origine n'est conservé que si vous le demandez."
+        },
+        {
+          "h": "Durée de conservation",
+          "p": "Historique : 7 jours avec le plan Gratuit, 12 mois avec Pro, puis suppression automatique. Compte : jusqu'à sa suppression, que vous pouvez faire à tout moment depuis la page Compte."
+        },
+        {
+          "h": "Entraînement des modèles",
+          "p": "Vos textes ne servent jamais à entraîner un modèle, sauf si vous cochez vous-même l'option correspondante dans votre compte. Elle est désactivée par défaut."
+        },
+        {
+          "h": "Sous-traitants",
+          "p": "Hébergement : [HÉBERGEUR]. Paiement : Stripe. E-mails de connexion : Resend. Connexion avec Google : Google. Réécriture et écriture assistée : Anthropic (API Claude). [TRANSFERTS HORS UE ET GARANTIES À PRÉCISER]."
+        },
+        {
+          "h": "Vos droits",
+          "p": "Vous disposez des droits d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité. Écrivez à [E-MAIL DE CONTACT]. Vous pouvez aussi saisir la CNIL (cnil.fr)."
+        },
+        {
+          "h": "Cookies",
+          "p": "AltyDetect n'utilise que des cookies nécessaires : session de connexion, langue de l'interface et essai sans compte. Aucun cookie publicitaire ni de mesure d'audience."
+        }
+      ]
+    },
+    "notice": {
+      "title": "Mentions légales",
+      "sections": [
+        {
+          "h": "Éditeur",
+          "p": "[RAISON SOCIALE], [FORME JURIDIQUE] au capital de [CAPITAL], immatriculée sous le numéro [SIREN], siège : [ADRESSE]. Contact : [E-MAIL DE CONTACT]."
+        },
+        {
+          "h": "Directeur de la publication",
+          "p": "[NOM DU DIRECTEUR DE LA PUBLICATION]."
+        },
+        {
+          "h": "Hébergement",
+          "p": "[HÉBERGEUR, ADRESSE ET TÉLÉPHONE]."
+        }
+      ]
+    }
+  },
+  "account": {
+    "title": "Compte",
+    "plan": "Plan actuel",
+    "planFree": "Gratuit",
+    "planPro": "Pro",
+    "interval": {
+      "monthly": "mensuel",
+      "yearly": "annuel"
+    },
+    "renews": "Renouvellement le {date}.",
+    "ends": "Résilié : Pro reste actif jusqu'au {date}, puis le compte repasse en Gratuit.",
+    "pastDue": "Le dernier paiement a échoué. Mettez à jour votre moyen de paiement pour garder Pro.",
+    "checkoutSuccess": "Bienvenue dans Pro ! Votre abonnement est actif.",
+    "checkoutPending": "Paiement reçu : l'activation de Pro peut prendre quelques secondes. Rechargez la page si besoin.",
+    "manage": "Gérer l'abonnement et les factures",
+    "upgrade": "Passer à Pro",
+    "usage": "Consommation",
+    "detectionWords": "Mots de détection ce mois-ci",
+    "rewritesToday": "Demandes Réécrire et Écrire aujourd'hui",
+    "fairUse": "usage équitable",
+    "resets": "Remise à zéro le {date}.",
+    "language": "Langue de l'interface",
+    "languageHint": "Utilisée pour l'interface et les e-mails. La langue de vos textes est détectée automatiquement.",
+    "save": "Enregistrer",
+    "saved": "Préférences enregistrées.",
+    "training": "Amélioration des modèles",
+    "trainingLabel": "J'accepte que mes textes servent à améliorer les modèles d'AltyDetect",
+    "trainingHint": "Désactivé par défaut. Activé, des extraits de vos textes peuvent entrer, de façon anonymisée, dans les corpus d'entraînement de nos modèles. Vous pouvez le désactiver à tout moment ; cela ne retire pas ce qui a déjà été utilisé.",
+    "delete": "Supprimer le compte",
+    "deleteBody": "Votre compte, votre historique et vos préférences sont effacés définitivement. Un abonnement Pro en cours est résilié immédiatement, sans remboursement de la période entamée.",
+    "deleteConfirm": "Pour confirmer, saisissez votre adresse e-mail : {email}",
+    "deleteButton": "Supprimer définitivement",
+    "deleteMismatch": "L'adresse saisie ne correspond pas à celle du compte."
   }
 }

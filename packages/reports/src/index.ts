@@ -1,3 +1,2 @@
-// @altydetect/reports — Génération PDF des rapports.
-// Aucune logique métier pour l'instant.
-export {};
+// @altydetect/reports — génération PDF des rapports.
+export * from "./rewrite-report";
