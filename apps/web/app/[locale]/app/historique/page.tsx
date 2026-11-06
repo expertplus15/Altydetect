@@ -18,8 +18,17 @@ interface StoredResult {
     sections?: { heading: string; points: string[] }[];
     corrections?: { original: string; replacement: string; explanation: string }[];
     summary?: string;
+    // Détection
+    verdict_band?: "likely_ai" | "undetermined" | "likely_human";
+    confidence?: "high" | "medium" | "low";
+    overall?: { ai: number; undetermined: number; human: number };
+    // Plagiat
+    similarity?: number;
   };
 }
+
+const TYPES = ["all", "detect", "plagiarism", "rewrite", "write"] as const;
+type HistoryType = (typeof TYPES)[number];
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -33,11 +42,14 @@ export default async function HistoryPage({
   const params = await searchParams;
   const t = await getTranslations("history");
   const tr = await getTranslations("rewrite");
+  const td = await getTranslations("detect");
   const format = await getFormatter();
   const { plan } = await getUserPlan(user.id);
   const cutoff = retentionCutoff(plan);
 
-  const type = params.type === "rewrite" || params.type === "write" ? params.type : "all";
+  const type: HistoryType = TYPES.includes(params.type as HistoryType)
+    ? (params.type as HistoryType)
+    : "all";
   const createdAt: Prisma.DateTimeFilter = { gte: cutoff };
   if (params.from && DATE.test(params.from)) {
     const from = new Date(`${params.from}T00:00:00Z`);
@@ -84,7 +96,7 @@ export default async function HistoryPage({
           <label className="flex flex-col gap-1.5">
             <span className={label}>{t("type")}</span>
             <select name="type" defaultValue={type} className={field}>
-              {(["all", "rewrite", "write"] as const).map((value) => (
+              {TYPES.map((value) => (
                 <option key={value} value={value}>
                   {t(`types.${value}`)}
                 </option>
@@ -127,7 +139,7 @@ export default async function HistoryPage({
                   const kind =
                     analysis?.type === "write"
                       ? t(`tools.${result?.tool ?? "outline"}`)
-                      : t("types.rewrite");
+                      : t(`types.${analysis?.type ?? "rewrite"}`);
                   return (
                     <tr
                       key={doc.id}
@@ -200,6 +212,41 @@ export default async function HistoryPage({
                   ));
                 }
                 const output = result.output ?? {};
+                if (analysis.type === "detect" || analysis.type === "plagiarism") {
+                  return (
+                    <div
+                      key={analysis.id}
+                      className="flex flex-col gap-2 rounded-xl border border-gray-200 p-3.5 text-sm"
+                    >
+                      <span className="text-xs font-semibold uppercase tracking-wide text-accent">
+                        {t(`types.${analysis.type}`)}
+                      </span>
+                      {analysis.type === "detect" && output.verdict_band && (
+                        <>
+                          <b>{td(`bands.${output.verdict_band}`)}</b>
+                          {output.confidence && (
+                            <span className="text-gray-700">
+                              {td("confidence", {
+                                level: td(`confidenceLevels.${output.confidence}`),
+                              })}
+                            </span>
+                          )}
+                          <p className="text-[13px] text-gray-600">{td("disclaimer")}</p>
+                        </>
+                      )}
+                      {analysis.type === "plagiarism" && output.similarity !== undefined && (
+                        <b>
+                          {t("similarity", {
+                            value: format.number(output.similarity, {
+                              style: "percent",
+                              maximumFractionDigits: 0,
+                            }),
+                          })}
+                        </b>
+                      )}
+                    </div>
+                  );
+                }
                 return (
                   <div
                     key={analysis.id}
