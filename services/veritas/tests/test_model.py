@@ -6,6 +6,7 @@ import pytest
 from conftest import french_text
 
 from veritas.engine.features import FEATURES, extract
+from veritas.engine.modal_encoder import ModalEncoder
 from veritas.engine.model import ModelUnavailableError, VeritasModel, VeritasModels
 
 
@@ -92,3 +93,24 @@ def test_models_load_one_package_per_language(tmp_path: Path) -> None:
     with pytest.raises(ModelUnavailableError):
         models.detect("x", "en")
     assert not VeritasModels.load(tmp_path / "absent").available("fr")
+
+
+def test_modal_layer2_is_wired_without_calling_modal(tmp_path: Path) -> None:
+    (tmp_path / "fr").mkdir()
+    layer2 = {"runtime": "modal", "reference": "VRT-DET-FR-0.1"}
+    (tmp_path / "fr" / "manifest.json").write_text(json.dumps(manifest(layer2=layer2)))
+    models = VeritasModels.load(tmp_path)
+    assert models.available("fr")
+    encoder = models._models["fr"].encoder
+    assert isinstance(encoder, ModalEncoder) and encoder._reference == "VRT-DET-FR-0.1"
+
+
+def test_layer2_combines_with_layer1() -> None:
+    class Fixed:
+        def logits(self, passages: list[str]) -> list[float]:
+            return [4.0] * len(passages)
+
+    raw = manifest(combine={"layer1": 0.0, "layer2": 1.0, "bias": 0.0})
+    raw["layer2"] = {"runtime": "modal", "reference": "x"}
+    model = VeritasModel.from_manifest(raw, Fixed())
+    assert model.detect(french_text(200), "fr").probability > 0.98

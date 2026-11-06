@@ -1,0 +1,76 @@
+# Entraînement de Veritas sur Modal (ADR-0009) : lancement manuel uniquement.
+# Secrets du dépôt : MODAL_TOKEN_ID, MODAL_TOKEN_SECRET, ANTHROPIC_API_KEY.
+name: Entraînement Veritas (Modal)
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Étape : all, corpus, train, deploy (application d'inférence)"
+        type: choice
+        options: [all, corpus, train, deploy]
+        default: all
+      run:
+        description: "pilot (essai isolé) ou v1 (corpus et modèles 0.1, jeu de test gelé)"
+        type: choice
+        options: [pilot, v1]
+        default: pilot
+      languages:
+        description: "Langues, séparées par des virgules"
+        default: "fr,en"
+      train_size:
+        description: "Textes humains pour l'entraînement et la calibration, par langue"
+        default: "4400"
+      test_size:
+        description: "Textes humains du jeu de test, par langue"
+        default: "1000"
+      use_encoder:
+        description: "Entraîner la couche 2 (GPU)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: veritas-train
+  cancel-in-progress: false
+
+jobs:
+  modal:
+    name: Modal — ${{ inputs.stage }} (${{ inputs.run }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+      MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - run: uv sync --all-packages --frozen
+      - name: Secret Modal de l'API Claude
+        if: inputs.stage == 'all' || inputs.stage == 'corpus'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: uv run --no-sync modal secret create altydetect-anthropic ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" --force
+      - name: Corpus, entraînement, évaluation
+        if: inputs.stage != 'deploy'
+        run: >-
+          uv run --no-sync modal run ml/train/pipeline.py
+          --stage ${{ inputs.stage }} --run ${{ inputs.run }} --languages ${{ inputs.languages }}
+          --train-size ${{ inputs.train_size }} --test-size ${{ inputs.test_size }}
+          ${{ inputs.use_encoder && '--use-encoder' || '--no-use-encoder' }}
+          --out ml/train/out
+      - name: Déployer l'inférence de la couche 2 (mise à l'échelle jusqu'à zéro)
+        if: inputs.stage == 'deploy'
+        run: uv run --no-sync modal deploy services/veritas/modal/encoder_app.py
+      - name: Manifestes, paquets et rapports (sans texte)
+        if: always() && inputs.stage != 'deploy'
+        uses: actions/upload-artifact@v4
+        with:
+          name: veritas-${{ inputs.run }}-${{ inputs.stage }}
+          path: ml/train/out/
+          if-no-files-found: warn
+          retention-days: 30

@@ -17,6 +17,7 @@ Sans paquet pour une langue, Veritas est indisponible pour cette langue.
 """
 
 import json
+import logging
 import math
 import os
 from collections.abc import Mapping
@@ -29,6 +30,8 @@ from veritas.providers.base import RawDetection, ScoredSpan
 from veritas.text import split_sentences
 
 MANIFEST_FORMAT = 1
+
+log = logging.getLogger("veritas.model")
 
 
 class Encoder(Protocol):
@@ -138,6 +141,19 @@ class VeritasModel:
         )
 
 
+def encoder_for(layer2: Mapping[str, Any] | None) -> Encoder | None:
+    """Encodeur de la couche 2 décrit par le paquet ; None si le paquet n'en a pas."""
+    if layer2 is None:
+        return None
+    if layer2.get("runtime") != "modal":
+        raise ModelUnavailableError(
+            f"exécution de la couche 2 inconnue : {layer2.get('runtime')!r}"
+        )
+    from veritas.engine.modal_encoder import ModalEncoder
+
+    return ModalEncoder(str(layer2["reference"]))
+
+
 class VeritasModels:
     """Modèles chargés, par langue."""
 
@@ -165,9 +181,11 @@ class VeritasModels:
         if root and Path(root).is_dir():
             for manifest in sorted(Path(root).glob("*/manifest.json")):
                 raw = json.loads(manifest.read_text(encoding="utf-8"))
-                if raw.get("layer2") is not None:
-                    # L'encodeur Modal arrive avec l'entraînement (étape 6) : paquet ignoré.
+                try:
+                    model = VeritasModel.from_manifest(raw, encoder_for(raw.get("layer2")))
+                except (ModelUnavailableError, KeyError, TypeError, ValueError):
+                    # Un paquet invalide ne doit pas couper la détection : l'externe répond.
+                    log.exception("paquet Veritas ignoré : %s", manifest)
                     continue
-                model = VeritasModel.from_manifest(raw)
                 models[model.language] = model
         return cls(models)
