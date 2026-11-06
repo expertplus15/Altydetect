@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 // Parcours de bout en bout sur l'application construite (next build) :
 // Stripe simulé (e2e/stripe-mock.mjs), modèle simulé (ALTY_LLM=fake), e-mails déposés dans Redis,
-// Indexa avec une recherche web simulée.
+// Indexa avec une recherche web simulée, Veritas avec un fournisseur simulé et un paquet de test.
 // Prérequis : PostgreSQL migré et Redis (DATABASE_URL, REDIS_URL).
 const PORT = 3200;
 const env = {
@@ -25,6 +25,11 @@ const env = {
     "../../services/indexa/tests/fixtures/web-pages.json",
     import.meta.url,
   ).pathname,
+  VERITAS_URL: "http://localhost:8001",
+  VERITAS_INTERNAL_TOKEN: "e2e-veritas-token",
+  DETECTION_PROVIDER: "simulated",
+  VERITAS_ALLOW_SIMULATED: "1",
+  VERITAS_MODEL_DIR: new URL("./e2e/fixtures/veritas-models", import.meta.url).pathname,
   DATABASE_URL: process.env.DATABASE_URL ?? "",
   REDIS_URL: process.env.REDIS_URL ?? "redis://localhost:6379",
 };
@@ -57,6 +62,13 @@ export default defineConfig({
       env,
       reuseExistingServer: false,
       wait: { stdout: /Listening on|indexa/ },
+    },
+    // Veritas (détection) : fournisseur simulé ; le mode fantôme n'a pas de worker ici.
+    {
+      command: "uv run --no-sync --package veritas uvicorn veritas.main:app --port 8001",
+      url: "http://localhost:8001/health",
+      env,
+      reuseExistingServer: false,
     },
     {
       command: `pnpm start -p ${PORT}`,
