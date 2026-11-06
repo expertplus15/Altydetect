@@ -1,0 +1,30 @@
+# Règles de l'aiguillage (services/veritas/router.py, ADR-0008, CLAUDE.md §4.4).
+# Relues à chaque modification du fichier : aucun redéploiement nécessaire.
+version: 1
+
+# Porte de sortie de la phase 3 : accord Veritas / fournisseur externe sur un segment.
+agreement:
+  threshold: 0.85
+  # TODO : taille d'échantillon minimale avant de juger un segment (à confirmer).
+  min_comparisons: 200
+
+# Mode fantôme : Veritas tourne en arrière-plan quand l'externe répond seul.
+shadow:
+  enabled: true
+  sample_rate: 1.0 # part des requêtes comparées, de 0 à 1
+
+# Premier segment qui correspond. Champs : languages, plans, min_words, max_words (facultatifs) ;
+# serve : external | veritas | both ; primary (pour both) : external | veritas ;
+# veritas_min_confidence (pour veritas) : high | medium | low.
+segments:
+  - name: fr
+    languages: [fr]
+    serve: external
+  - name: en
+    languages: [en]
+    serve: external
+
+# Si aucun segment ne correspond.
+default:
+  name: other
+  serve: external

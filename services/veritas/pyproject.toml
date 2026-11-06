@@ -5,6 +5,11 @@ description = "Veritas — moteur de détection IA (couches 1-3, aiguillage, ada
 requires-python = ">=3.12,<3.13"
 dependencies = [
   "fastapi>=0.120",
+  "httpx2>=2.16",
+  "psycopg[binary]>=3.2",
+  "pyyaml>=6.0",
+  "redis>=6",
+  "rq>=2.6",
   "uvicorn>=0.38",
 ]
 
@@ -14,6 +19,7 @@ dev = [
   "mypy>=1.18",
   "pytest>=8.4",
   "ruff>=0.14",
+  "types-pyyaml>=6.0",
 ]
 
 [build-system]
@@ -31,7 +37,7 @@ select = ["E", "F", "W", "I", "B", "UP", "N", "S", "RUF"]
 allowed-confusables = ["’", "\u00a0", "\u202f"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101"]
+"tests/**" = ["S101", "S105", "S106"]
 
 [tool.mypy]
 python_version = "3.12"

@@ -167,6 +167,33 @@ model SourceFingerprint {
   @@map("source_fingerprints")
 }
 
+// --- Comparaisons de la détection (Veritas, phase 3, ADR-0008) ---
+// Un enregistrement par texte analysé par Veritas et par le fournisseur externe : probabilités,
+// bandes et accord. Jamais le texte. Alimente la porte de sortie (accord ≥ 85 % par segment).
+
+model DetectionComparison {
+  id                  BigInt   @id @default(autoincrement())
+  /// sync (les deux avis demandés) ou shadow (Veritas en arrière-plan).
+  source              String
+  segment             String
+  language            String
+  plan                String
+  wordCount           Int      @map("word_count")
+  externalEngine      String   @map("external_engine")
+  externalProbability Float    @map("external_probability")
+  externalBand        String   @map("external_band")
+  veritasEngine       String   @map("veritas_engine")
+  veritasProbability  Float    @map("veritas_probability")
+  veritasBand         String   @map("veritas_band")
+  agreement           Float
+  concordant          Boolean
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  @@index([segment, veritasEngine])
+  @@index([createdAt])
+  @@map("detection_comparisons")
+}
+
 // --- Tables Auth.js (adaptateur Prisma) ---
 
 model Account {

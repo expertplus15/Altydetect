@@ -93,6 +93,8 @@ export const detectErrorSchema = z.object({
 /** Accord entre Veritas et le fournisseur externe, par segment (mode fantôme). */
 export const segmentAgreementSchema = z.object({
   segment: z.string(),
+  /** Modèle Veritas comparé : un nouveau modèle repart d'une mesure vierge. */
+  veritas_engine: z.string(),
   comparisons: z.number().int().min(0),
   concordant: z.number().int().min(0),
   /** Part des comparaisons où les deux avis tombent dans la même bande. */

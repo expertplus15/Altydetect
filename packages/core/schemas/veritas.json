@@ -201,6 +201,9 @@
         "segment": {
           "type": "string"
         },
+        "veritas_engine": {
+          "type": "string"
+        },
         "comparisons": {
           "type": "integer",
           "minimum": 0,
@@ -220,7 +223,7 @@
           "type": "boolean"
         }
       },
-      "required": ["segment", "comparisons", "concordant", "rate", "gate_passed"]
+      "required": ["segment", "veritas_engine", "comparisons", "concordant", "rate", "gate_passed"]
     },
     "AgreementReport": {
       "type": "object",

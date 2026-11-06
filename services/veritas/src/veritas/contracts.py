@@ -109,6 +109,7 @@ class DetectError(BaseModel):
 
 class SegmentAgreement(BaseModel):
     segment: str
+    veritas_engine: str
     comparisons: Annotated[int, Field(ge=0, le=9007199254740991)]
     concordant: Annotated[int, Field(ge=0, le=9007199254740991)]
     rate: Annotated[float, Field(ge=0.0, le=1.0)]
