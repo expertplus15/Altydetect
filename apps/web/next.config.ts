@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   transpilePackages: [
     "@altydetect/billing",
     "@altydetect/core",
+    "@altydetect/detect",
     "@altydetect/rewrite",
     "@altydetect/write",
   ],
