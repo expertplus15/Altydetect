@@ -1,7 +1,8 @@
-# Mise en production — phase 1
+# Mise en production
 
-Ce guide mène à la porte de sortie de la phase 1 : un abonnement Pro souscrit, utilisé pour
-réécrire, exporté en PDF et résilié, en production, en français et en anglais.
+Ce guide couvre les phases 1 à 3. Il mène d'abord à la porte de sortie de la phase 1 : un
+abonnement Pro souscrit, utilisé pour réécrire, exporté en PDF et résilié, en production, en
+français et en anglais. La section 8 donne la recette concrète Vercel + Neon + Upstash + Railway.
 
 ## Architecture
 
@@ -11,8 +12,10 @@ réécrire, exporté en PDF et résilié, en production, en français et en angl
 | Worker (`pnpm -C apps/web worker`) | Exports PDF, rétention quotidienne de l'historique        | Railway ou Render (service toujours actif)                 |
 | PostgreSQL 16 + pgvector           | Données                                                   | Railway, Render, Neon ou Supabase                          |
 | Redis 7                            | Files BullMQ, essais sans compte, PDF temporaires         | Railway, Render ou Upstash (connexion TCP, pas l'API REST) |
+| Indexa (API + worker RQ)           | Plagiat                                                   | Railway (image Docker)                                     |
+| Veritas (API + worker RQ)          | Détection                                                 | Railway (image Docker), couche 2 sur Modal                 |
 
-Le web et le worker utilisent la **même** base et le **même** Redis.
+Le web, le worker, Indexa et Veritas utilisent la **même** base et le **même** Redis.
 
 ## 1. Comptes et clés
 
@@ -75,12 +78,12 @@ DATABASE_URL=… pnpm -C apps/web db:migrate
 ## 6. Indexa (phase 2)
 
 - **API** : image `services/indexa/Dockerfile` (commande par défaut : uvicorn sur le port 8002).
-  Variables : `DATABASE_URL`, `REDIS_URL`, `INDEXA_INTERNAL_TOKEN`. Accessible seulement depuis
-  l'application web (réseau privé ou liste d'adresses autorisées).
+  Variables : `DATABASE_URL`, `REDIS_URL`, `INDEXA_INTERNAL_TOKEN`. Routes internes protégées par
+  ce jeton ; domaine public nécessaire si le web est sur Vercel (section 8).
 - **Worker** : même image, commande `/app/.venv/bin/rq worker indexa --url "$REDIS_URL"`.
   Variables : celles de l'API, plus `BRAVE_SEARCH_API_KEY`, `INDEXA_MAX_QUERIES`,
   `INDEXA_MAX_PAGES`.
-- **Web** : `INDEXA_URL` (adresse privée de l'API) et le même `INDEXA_INTERNAL_TOKEN`.
+- **Web** : `INDEXA_URL` (adresse de l'API) et le même `INDEXA_INTERNAL_TOKEN`.
 - Les tables de la base privée sont créées par `pnpm -C apps/web db:migrate`.
 - Mesurer le rappel réel avec Brave sur un échantillon de pages avant d'annoncer la fonction
   (le benchmark du dépôt simule la recherche web).
@@ -92,21 +95,84 @@ DATABASE_URL=… pnpm -C apps/web db:migrate
   `DETECTION_FALLBACK_PROVIDER` et les clés du ou des fournisseurs (`PANGRAM_API_KEY`,
   `COPYLEAKS_EMAIL`, `COPYLEAKS_API_KEY`), `VERITAS_ENV=production`, et `VERITAS_MODEL_DIR`
   quand un modèle Veritas est livré, avec `MODAL_TOKEN_ID` et `MODAL_TOKEN_SECRET` si son
-  paquet utilise la couche 2. Accessible seulement depuis l'application web.
+  paquet utilise la couche 2. Routes internes protégées par `VERITAS_INTERNAL_TOKEN`.
 - **Worker du mode fantôme** : même image, commande
   `/app/.venv/bin/rq worker veritas-shadow --url "$REDIS_URL"`, mêmes variables. Inutile tant
   qu'aucun modèle Veritas n'est livré.
 - **Couche 2** : `modal deploy services/veritas/modal/encoder_app.py` (ou le workflow
   « Entraînement Veritas », étape `deploy`). GPU à la demande, arrêt après deux minutes sans
   requête.
-- **Web** : `VERITAS_URL` (adresse privée de l'API) et le même `VERITAS_INTERNAL_TOKEN`.
+- **Web** : `VERITAS_URL` (adresse de l'API) et le même `VERITAS_INTERNAL_TOKEN`.
 - **Seuils et aiguillage** : `services/veritas/config/*.yaml`, relus à chaque modification.
   Pour les changer sans redéploiement, monter ce dossier en volume et le désigner par
   `VERITAS_CONFIG_DIR`.
 - **Accord** : `GET /internal/v1/detect/agreement` (jeton interne) donne le taux d'accord par
   segment et par modèle ; la porte est franchie à 85 % sur un échantillon suffisant.
 
-## 8. Vérification de la porte de sortie
+## 8. Recette Vercel + Neon + Upstash + Railway
+
+### Ordre
+
+1. **Neon** (PostgreSQL) et **Upstash** (Redis). Garder deux adresses Neon : la directe pour
+   les migrations, celle du pooler (hôte en `-pooler`, `?sslmode=require`) pour les services.
+   Pour Upstash, l'adresse `rediss://…` (TCP), jamais l'API REST : BullMQ et RQ en ont besoin.
+2. **Migrations**, depuis un poste : `DATABASE_URL="<adresse directe>" pnpm -C apps/web db:migrate`.
+3. **Railway** : `indexa-api` et `veritas-api`, pour obtenir leurs adresses publiques.
+4. **Vercel**, avec ces adresses.
+5. **Railway** : `worker` et `indexa-worker` (puis `veritas-shadow` quand un modèle est livré).
+6. **Stripe** : webhook sur le domaine définitif (section 3).
+
+Générer un jeton distinct pour Indexa et pour Veritas (`openssl rand -base64 32`) et reporter
+chacun des deux côtés (Vercel et le service).
+
+### Vercel (`apps/web`)
+
+- Répertoire racine : `apps/web` ; laisser cochée l'inclusion des fichiers hors du répertoire
+  racine (le site utilise `packages/*`). Build par défaut (`postinstall` lance `prisma generate`).
+- Variables, en Production et en Preview :
+
+| Variable                                | Valeur                                                         |
+| --------------------------------------- | -------------------------------------------------------------- |
+| `DATABASE_URL`                          | Neon, adresse du pooler                                        |
+| `REDIS_URL`                             | Upstash, `rediss://…`                                          |
+| `NEXT_PUBLIC_APP_URL`                   | domaine public ; fixé au build : redéployer après modification |
+| `AUTH_SECRET`                           | identique sur le worker (signe aussi les liens des PDF)        |
+| `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`  | redirection `https://<domaine>/api/auth/callback/google`       |
+| `AUTH_RESEND_KEY`, `AUTH_EMAIL_FROM`    | Resend, domaine vérifié                                        |
+| `ANTHROPIC_API_KEY`                     | Réécrire et Écrire                                             |
+| `STRIPE_SECRET_KEY`                     | `sk_live_…` en Production, `sk_test_…` en Preview              |
+| `STRIPE_WEBHOOK_SECRET`                 | `whsec_…` du point de terminaison `/api/webhooks/stripe`       |
+| `STRIPE_PORTAL_CONFIGURATION_ID`        | affiché par `pnpm stripe:seed` (une fois par mode Stripe)      |
+| `INDEXA_URL`, `INDEXA_INTERNAL_TOKEN`   | domaine public de `indexa-api` ; même jeton que le service     |
+| `VERITAS_URL`, `VERITAS_INTERNAL_TOKEN` | domaine public de `veritas-api` ; même jeton que le service    |
+
+Ne jamais définir sur Vercel : `AUTH_EMAIL_TRANSPORT`, `ALTY_LLM`, `ALTY_E2E`, `STRIPE_API_BASE`,
+`SHADOW_DATABASE_URL` (CI), `NODE_ENV` (fixé par Vercel), ni les variables des services.
+
+### Railway
+
+Tous les services viennent du dépôt, branche `main`. `DATABASE_URL` (Neon, pooler) et
+`REDIS_URL` (Upstash) sont des variables partagées du projet. Les images Docker se construisent
+depuis la racine du dépôt ; elles écoutent sur un port fixe, indiqué à Railway par `PORT` (ou
+par le port cible du domaine public).
+
+| Service          | Source et commande                                                                | Variables propres                                                                                                                                                                                     | Domaine public |
+| ---------------- | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `worker`         | build automatique (pnpm) ; démarrage `pnpm -C apps/web worker`                    | `AUTH_SECRET` (identique à Vercel)                                                                                                                                                                    | non            |
+| `indexa-api`     | `RAILWAY_DOCKERFILE_PATH=services/indexa/Dockerfile`                              | `INDEXA_INTERNAL_TOKEN`, `PORT=8002`                                                                                                                                                                  | oui            |
+| `indexa-worker`  | même image ; démarrage `/app/.venv/bin/rq worker indexa --url $REDIS_URL`         | celles de `indexa-api`, `BRAVE_SEARCH_API_KEY`, `INDEXA_MAX_QUERIES=8`, `INDEXA_MAX_PAGES=10`                                                                                                         | non            |
+| `veritas-api`    | `RAILWAY_DOCKERFILE_PATH=services/veritas/Dockerfile`                             | `VERITAS_INTERNAL_TOKEN`, `PORT=8001`, `VERITAS_ENV=production`, `DETECTION_PROVIDER`, `DETECTION_FALLBACK_PROVIDER`, clés du fournisseur (`PANGRAM_API_KEY`, `COPYLEAKS_EMAIL`, `COPYLEAKS_API_KEY`) | oui            |
+| `veritas-shadow` | même image ; démarrage `/app/.venv/bin/rq worker veritas-shadow --url $REDIS_URL` | celles de `veritas-api`, plus `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET`, `VERITAS_MODEL_DIR`                                                                                                             | non            |
+
+- `veritas-shadow`, `VERITAS_MODEL_DIR` et les jetons Modal ne servent qu'une fois un modèle
+  Veritas livré ; avant, l'externe répond seul.
+- Tant qu'aucun contrat de fournisseur n'est signé (ADR-0001), Détecter répond
+  `DETECTION_UNAVAILABLE`. Ne jamais définir en production `VERITAS_ALLOW_SIMULATED`,
+  `INDEXA_SEARCH_PROVIDER=fixtures` ni `INDEXA_FIXTURES_PATH`.
+- Sans `worker`, les exports PDF restent en attente ; sans Indexa ou Veritas, Plagiat ou
+  Détecter indiquent que le service ne répond pas. Le reste du site fonctionne.
+
+## 9. Vérification de la porte de sortie
 
 En production, en français puis en anglais :
 
