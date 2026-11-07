@@ -24,7 +24,9 @@ sans `training_opt_in` ; le modèle LLM n'est écrit que dans `packages/core/src
   dans `altydetect-veritas-models`. La couche 2 s'entraîne sur un GPU L4 loué le temps du
   calcul ; en production, l'inférence est l'application `altydetect-veritas-encoder`, qui
   s'arrête après deux minutes sans requête.
-- **Lancement** : le workflow manuel `.github/workflows/veritas-train.yml`. Le client Modal
+- **Lancement** : le workflow `.github/workflows/veritas-train.yml`, à la main ou par un commit
+  sur `main` qui modifie `ml/train/requests/run.json` (paramètres dans le fichier, vérifiés avant
+  usage). Chaque lancement laisse ainsi une trace dans l'historique. Le client Modal
   utilise gRPC, que l'environnement de développement infonuagique ne laisse pas passer ; un
   exécuteur GitHub le peut. Clés : secrets GitHub `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET`,
   `ANTHROPIC_API_KEY` (recopiée dans le secret Modal `altydetect-anthropic`).
