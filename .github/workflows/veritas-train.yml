@@ -1,4 +1,7 @@
-# Entraînement de Veritas sur Modal (ADR-0009) : lancement manuel uniquement.
+# Entraînement de Veritas sur Modal (ADR-0009).
+# Deux façons de lancer :
+# - à la main (Actions → Run workflow) ;
+# - par un commit sur main qui modifie ml/train/requests/run.json (paramètres dans le fichier).
 # Secrets du dépôt : MODAL_TOKEN_ID, MODAL_TOKEN_SECRET, ANTHROPIC_API_KEY.
 name: Entraînement Veritas (Modal)
 
@@ -28,6 +31,9 @@ on:
         description: "Entraîner la couche 2 (GPU)"
         type: boolean
         default: true
+  push:
+    branches: [main]
+    paths: ["ml/train/requests/run.json"]
 
 permissions:
   contents: read
@@ -38,7 +44,7 @@ concurrency:
 
 jobs:
   modal:
-    name: Modal — ${{ inputs.stage }} (${{ inputs.run }})
+    name: Modal (Veritas)
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
@@ -46,31 +52,75 @@ jobs:
       MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
     steps:
       - uses: actions/checkout@v4
+
+      # Paramètres : saisis à la main, ou lus dans la demande commitée. Chaque valeur est
+      # vérifiée avant usage (aucune valeur libre n'atteint une commande).
+      - name: Paramètres
+        id: p
+        env:
+          EVENT: ${{ github.event_name }}
+          IN_STAGE: ${{ inputs.stage }}
+          IN_RUN: ${{ inputs.run }}
+          IN_LANGUAGES: ${{ inputs.languages }}
+          IN_TRAIN: ${{ inputs.train_size }}
+          IN_TEST: ${{ inputs.test_size }}
+          IN_ENCODER: ${{ inputs.use_encoder }}
+        run: |
+          if [ "$EVENT" = "push" ]; then
+            f=ml/train/requests/run.json
+            stage=$(jq -r '.stage' "$f"); run=$(jq -r '.run' "$f")
+            languages=$(jq -r '.languages' "$f"); train=$(jq -r '.train_size' "$f")
+            test=$(jq -r '.test_size' "$f"); encoder=$(jq -r '.use_encoder' "$f")
+          else
+            stage=$IN_STAGE; run=$IN_RUN; languages=$IN_LANGUAGES
+            train=$IN_TRAIN; test=$IN_TEST; encoder=$IN_ENCODER
+          fi
+          [[ "$stage" =~ ^(all|corpus|train|deploy)$ ]] || { echo "stage invalide"; exit 1; }
+          [[ "$run" =~ ^(pilot|v1)$ ]] || { echo "run invalide"; exit 1; }
+          [[ "$languages" =~ ^(fr|en)(,(fr|en))?$ ]] || { echo "languages invalide"; exit 1; }
+          [[ "$train" =~ ^[0-9]{1,5}$ && "$test" =~ ^[0-9]{1,5}$ ]] || { echo "tailles invalides"; exit 1; }
+          [[ "$encoder" =~ ^(true|false)$ ]] || { echo "use_encoder invalide"; exit 1; }
+          if [ "$encoder" = true ]; then flag=--use-encoder; else flag=--no-use-encoder; fi
+          {
+            echo "stage=$stage"; echo "run=$run"; echo "languages=$languages"
+            echo "train=$train"; echo "test=$test"; echo "encoder_flag=$flag"
+          } >> "$GITHUB_OUTPUT"
+          echo "Étape $stage, essai $run, langues $languages, tailles $train / $test, $flag"
+
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: "3.12"
       - run: uv sync --all-packages --frozen
+
       - name: Secret Modal de l'API Claude
-        if: inputs.stage == 'all' || inputs.stage == 'corpus'
+        if: steps.p.outputs.stage == 'all' || steps.p.outputs.stage == 'corpus'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: uv run --no-sync modal secret create altydetect-anthropic ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" --force
+
       - name: Corpus, entraînement, évaluation
-        if: inputs.stage != 'deploy'
+        if: steps.p.outputs.stage != 'deploy'
+        env:
+          STAGE: ${{ steps.p.outputs.stage }}
+          RUN: ${{ steps.p.outputs.run }}
+          LANGUAGES: ${{ steps.p.outputs.languages }}
+          TRAIN: ${{ steps.p.outputs.train }}
+          TEST: ${{ steps.p.outputs.test }}
+          ENCODER_FLAG: ${{ steps.p.outputs.encoder_flag }}
         run: >-
           uv run --no-sync modal run ml/train/pipeline.py
-          --stage ${{ inputs.stage }} --run ${{ inputs.run }} --languages ${{ inputs.languages }}
-          --train-size ${{ inputs.train_size }} --test-size ${{ inputs.test_size }}
-          ${{ inputs.use_encoder && '--use-encoder' || '--no-use-encoder' }}
-          --out ml/train/out
+          --stage "$STAGE" --run "$RUN" --languages "$LANGUAGES"
+          --train-size "$TRAIN" --test-size "$TEST" "$ENCODER_FLAG" --out ml/train/out
+
       - name: Déployer l'inférence de la couche 2 (mise à l'échelle jusqu'à zéro)
-        if: inputs.stage == 'deploy'
+        if: steps.p.outputs.stage == 'deploy'
         run: uv run --no-sync modal deploy services/veritas/modal/encoder_app.py
+
       - name: Manifestes, paquets et rapports (sans texte)
-        if: always() && inputs.stage != 'deploy'
+        if: always() && steps.p.outputs.stage != 'deploy'
         uses: actions/upload-artifact@v4
         with:
-          name: veritas-${{ inputs.run }}-${{ inputs.stage }}
+          name: veritas-${{ steps.p.outputs.run }}-${{ steps.p.outputs.stage }}-${{ github.run_id }}
           path: ml/train/out/
           if-no-files-found: warn
           retention-days: 30
