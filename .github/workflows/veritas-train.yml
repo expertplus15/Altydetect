@@ -87,6 +87,26 @@ jobs:
           } >> "$GITHUB_OUTPUT"
           echo "Étape $stage, essai $run, langues $languages, tailles $train / $test, $flag"
 
+      # Arrêt immédiat, avec un message clair, si un secret du dépôt manque.
+      - name: Secrets du dépôt
+        env:
+          STAGE: ${{ steps.p.outputs.stage }}
+          HAS_MODAL_ID: ${{ secrets.MODAL_TOKEN_ID != '' }}
+          HAS_MODAL_SECRET: ${{ secrets.MODAL_TOKEN_SECRET != '' }}
+          HAS_ANTHROPIC: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+        run: |
+          missing=()
+          [ "$HAS_MODAL_ID" = true ] || missing+=(MODAL_TOKEN_ID)
+          [ "$HAS_MODAL_SECRET" = true ] || missing+=(MODAL_TOKEN_SECRET)
+          if [ "$STAGE" = all ] || [ "$STAGE" = corpus ]; then
+            [ "$HAS_ANTHROPIC" = true ] || missing+=(ANTHROPIC_API_KEY)
+          fi
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Secrets absents du dépôt : ${missing[*]}. Les ajouter dans Settings → Secrets and variables → Actions → Repository secrets."
+            exit 1
+          fi
+          echo "Secrets présents."
+
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: "3.12"
