@@ -58,7 +58,12 @@ jobs:
       - run: pnpm check
       - name: Vérifier que les modèles Pydantic d'Indexa suivent les contrats zod
         run: pnpm contracts:check
-      - run: pnpm build
+      # Comme sur Vercel : le build ne doit dépendre ni de la base ni de Redis.
+      - name: Construire sans base ni Redis (comme Vercel)
+        run: pnpm build
+        env:
+          DATABASE_URL: ""
+          REDIS_URL: ""
 
   e2e:
     name: Parcours de bout en bout (Playwright)

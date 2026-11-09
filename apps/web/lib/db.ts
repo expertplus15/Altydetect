@@ -13,8 +13,20 @@ function createClient(): PrismaClient {
   return new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
 }
 
-export const db: PrismaClient = globalForPrisma.prisma ?? createClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = db;
+function client(): PrismaClient {
+  globalForPrisma.prisma ??= createClient();
+  return globalForPrisma.prisma;
 }
+
+/**
+ * Client créé à la première requête, pas à l'import : `next build` importe toutes les routes
+ * pour collecter leur configuration, sans base de données (Vercel, CI).
+ */
+export const db = new Proxy({} as PrismaClient, {
+  get(_target, property): unknown {
+    const value: unknown = Reflect.get(client(), property);
+    return typeof value === "function"
+      ? (value as (...args: unknown[]) => unknown).bind(client())
+      : value;
+  },
+});
