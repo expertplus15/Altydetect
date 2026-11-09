@@ -47,9 +47,6 @@ jobs:
     name: Modal (Veritas)
     runs-on: ubuntu-latest
     timeout-minutes: 360
-    env:
-      MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
-      MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
     steps:
       - uses: actions/checkout@v4
 
@@ -107,6 +104,36 @@ jobs:
           fi
           echo "Secrets présents."
 
+      # Espaces et retours à la ligne collés avec les valeurs retirés ; préfixes vérifiés
+      # (jamais les valeurs, qui restent masquées). Les valeurs nettoyées remplacent celles de
+      # l'environnement pour les étapes suivantes.
+      - name: Format des secrets
+        env:
+          STAGE: ${{ steps.p.outputs.stage }}
+          RAW_MODAL_ID: ${{ secrets.MODAL_TOKEN_ID }}
+          RAW_MODAL_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+          RAW_ANTHROPIC: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          clean() { printf '%s' "$1" | tr -d '[:space:]'; }
+          id=$(clean "$RAW_MODAL_ID"); secret=$(clean "$RAW_MODAL_SECRET")
+          key=$(clean "$RAW_ANTHROPIC")
+          for v in "$id" "$secret" "$key"; do [ -n "$v" ] && echo "::add-mask::$v"; done
+          bad=()
+          [[ "$id" == ak-* ]] || bad+=("MODAL_TOKEN_ID (doit commencer par ak-)")
+          [[ "$secret" == as-* ]] || bad+=("MODAL_TOKEN_SECRET (doit commencer par as-)")
+          if [ "$STAGE" = all ] || [ "$STAGE" = corpus ]; then
+            [[ "$key" == sk-ant-api* ]] || bad+=("ANTHROPIC_API_KEY (doit commencer par sk-ant-api)")
+          fi
+          if [ ${#bad[@]} -gt 0 ]; then
+            for b in "${bad[@]}"; do echo "::error::Secret au mauvais format : $b"; done
+            exit 1
+          fi
+          {
+            echo "MODAL_TOKEN_ID=$id"; echo "MODAL_TOKEN_SECRET=$secret"
+            echo "ANTHROPIC_API_KEY_CLEAN=$key"
+          } >> "$GITHUB_ENV"
+          echo "Format des secrets correct."
+
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: "3.12"
@@ -114,9 +141,7 @@ jobs:
 
       - name: Secret Modal de l'API Claude
         if: steps.p.outputs.stage == 'all' || steps.p.outputs.stage == 'corpus'
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: uv run --no-sync modal secret create altydetect-anthropic ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" --force
+        run: uv run --no-sync modal secret create altydetect-anthropic ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY_CLEAN" --force
 
       - name: Corpus, entraînement, évaluation
         if: steps.p.outputs.stage != 'deploy'
