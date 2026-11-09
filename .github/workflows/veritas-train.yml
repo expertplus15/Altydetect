@@ -104,9 +104,9 @@ jobs:
           fi
           echo "Secrets présents."
 
-      # Espaces et retours à la ligne collés avec les valeurs retirés ; préfixes vérifiés
-      # (jamais les valeurs, qui restent masquées). Les valeurs nettoyées remplacent celles de
-      # l'environnement pour les étapes suivantes.
+      # Espaces et retours à la ligne collés avec les valeurs retirés ; préfixes Modal vérifiés,
+      # clé Claude essayée auprès de l'API. Les valeurs ne sont jamais affichées (masquées) ; les
+      # valeurs nettoyées servent aux étapes suivantes.
       - name: Format des secrets
         env:
           STAGE: ${{ steps.p.outputs.stage }}
@@ -122,10 +122,14 @@ jobs:
           [[ "$id" == ak-* ]] || bad+=("MODAL_TOKEN_ID (doit commencer par ak-)")
           [[ "$secret" == as-* ]] || bad+=("MODAL_TOKEN_SECRET (doit commencer par as-)")
           if [ "$STAGE" = all ] || [ "$STAGE" = corpus ]; then
-            [[ "$key" == sk-ant-api* ]] || bad+=("ANTHROPIC_API_KEY (doit commencer par sk-ant-api)")
+            # Vérification auprès de l'API (gratuite, aucun texte généré) plutôt que par préfixe :
+            # plusieurs formats de clé existent.
+            code=$(curl -s -o /dev/null -w '%{http_code}' https://api.anthropic.com/v1/models \
+              -H "x-api-key: $key" -H "anthropic-version: 2023-06-01")
+            [ "$code" = 200 ] || bad+=("ANTHROPIC_API_KEY refusée par l'API Claude (HTTP $code)")
           fi
           if [ ${#bad[@]} -gt 0 ]; then
-            for b in "${bad[@]}"; do echo "::error::Secret au mauvais format : $b"; done
+            for b in "${bad[@]}"; do echo "::error::Secret refusé ou mal formé : $b"; done
             exit 1
           fi
           {
