@@ -149,6 +149,8 @@ jobs:
 
       - name: Corpus, entraînement, évaluation
         if: steps.p.outputs.stage != 'deploy'
+        # Coupure de l'étape (et de l'application Modal éphémère) : 60 min pour le pilote.
+        timeout-minutes: ${{ steps.p.outputs.run == 'pilot' && 60 || 330 }}
         env:
           STAGE: ${{ steps.p.outputs.stage }}
           RUN: ${{ steps.p.outputs.run }}

@@ -23,7 +23,7 @@ sans `training_opt_in` ; le modèle LLM n'est écrit que dans `packages/core/src
 - **Calcul** : tout tourne sur Modal. Corpus dans le volume `altydetect-veritas-corpus`, poids
   dans `altydetect-veritas-models`. La couche 2 s'entraîne sur un GPU L4 loué le temps du
   calcul ; en production, l'inférence est l'application `altydetect-veritas-encoder`, qui
-  s'arrête après deux minutes sans requête.
+  s'arrête après une minute sans requête, deux conteneurs au plus.
 - **Lancement** : le workflow `.github/workflows/veritas-train.yml`, à la main ou par un commit
   sur `main` qui modifie `ml/train/requests/run.json` (paramètres dans le fichier, vérifiés avant
   usage). Chaque lancement laisse ainsi une trace dans l'historique. Le client Modal
