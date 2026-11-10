@@ -149,9 +149,12 @@ jobs:
 
       - name: Corpus, entraînement, évaluation
         if: steps.p.outputs.stage != 'deploy'
-        # Coupure de l'étape (et de l'application Modal éphémère) : 60 min pour le pilote.
-        timeout-minutes: ${{ steps.p.outputs.run == 'pilot' && 60 || 330 }}
+        # Coupure de l'étape (et de l'application Modal éphémère) : 120 min pour le pilote (le lot
+        # Claude seul peut prendre près d'une heure), 330 min pour v1. Un seul GPU à la fois.
+        timeout-minutes: ${{ steps.p.outputs.run == 'pilot' && 120 || 330 }}
         env:
+          # Suivi visible au fil de l'eau (sans cela, la sortie Python reste en mémoire tampon).
+          PYTHONUNBUFFERED: "1"
           STAGE: ${{ steps.p.outputs.stage }}
           RUN: ${{ steps.p.outputs.run }}
           LANGUAGES: ${{ steps.p.outputs.languages }}

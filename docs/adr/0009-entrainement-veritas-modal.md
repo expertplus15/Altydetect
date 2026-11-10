@@ -24,6 +24,9 @@ sans `training_opt_in` ; le modèle LLM n'est écrit que dans `packages/core/src
   dans `altydetect-veritas-models`. La couche 2 s'entraîne sur un GPU L4 loué le temps du
   calcul ; en production, l'inférence est l'application `altydetect-veritas-encoder`, qui
   s'arrête après une minute sans requête, deux conteneurs au plus.
+  Les corpus des langues se construisent en parallèle ; l'entraînement se fait une langue
+  après l'autre, jamais plus d'un GPU à la fois. Coupure du lancement : 120 min pour le
+  pilote, 330 min pour v1.
 - **Lancement** : le workflow `.github/workflows/veritas-train.yml`, à la main ou par un commit
   sur `main` qui modifie `ml/train/requests/run.json` (paramètres dans le fichier, vérifiés avant
   usage). Chaque lancement laisse ainsi une trace dans l'historique. Le client Modal
