@@ -65,6 +65,11 @@ models_volume = modal.Volume.from_name("altydetect-veritas-models", create_if_mi
 app = modal.App("altydetect-veritas-train", image=image)
 
 
+def _log(message: str) -> None:
+    """Ligne de suivi horodatée, envoyée tout de suite (journal du lancement GitHub)."""
+    print(f"[{time.strftime('%H:%M:%S')}] {message}", flush=True)
+
+
 def _read(path: str) -> list[dict[str, Any]]:
     if not os.path.exists(path):
         return []
@@ -80,7 +85,7 @@ def _write(path: str, documents: list[dict[str, Any]]) -> None:
 
 
 # Garde-fous de coût (estimation du 10/11/2026) : délais au plus juste, aucun conteneur gardé
-# actif. Le lancement GitHub coupe aussi l'étape au-delà de 60 min (pilote) ou 330 min (v1).
+# actif. Le lancement GitHub coupe aussi l'étape au-delà de 120 min (pilote) ou 330 min (v1).
 @app.function(volumes={CORPUS: corpus_volume}, timeout=45 * 60, cpu=2)
 def build_human(run: str, language: str, train_size: int, test_size: int) -> dict[str, Any]:
     """Textes humains. Le jeu de test, une fois écrit, n'est plus jamais régénéré (gelé)."""
@@ -101,9 +106,12 @@ def build_human(run: str, language: str, train_size: int, test_size: int) -> dic
         plan.append((source.test_shard, test_size, True, frozen))
     for shard, size, is_test, target in plan:
         if len(target) >= size:
+            _log(f"{language} : textes humains déjà présents ({len(target)}, fragment {shard})")
             continue
+        _log(f"{language} : collecte de {size} textes humains (fragment {shard})")
         with urllib.request.urlopen(source.url(shard), timeout=120) as response:
             collected = collect(iter_records(response), source, shard, size)
+        _log(f"{language} : {len(collected)} textes humains retenus (fragment {shard})")
         target.clear()
         for document in collected:
             document["split"] = assign_split(document, test=is_test)
@@ -139,6 +147,7 @@ def generate_ai(run: str, language: str, model: str) -> dict[str, Any]:
     else:
         todo = [h for h in humans.values() if h["id"] not in done]
         if not todo:
+            _log(f"{language} : textes générés déjà présents ({len(ai)})")
             return {"language": language, "ai": len(ai), "submitted": 0}
         batch = client.messages.batches.create(
             requests=[batch_request(h, model) for h in todo]  # type: ignore[misc]
@@ -147,8 +156,19 @@ def generate_ai(run: str, language: str, model: str) -> dict[str, Any]:
         with open(state_path, "w", encoding="utf-8") as f:
             json.dump({"batch_id": batch_id, "requests": len(todo)}, f)
         corpus_volume.commit()
+        _log(f"{language} : lot {batch_id} soumis ({len(todo)} demandes)")
 
-    while client.messages.batches.retrieve(batch_id).processing_status != "ended":
+    # Attente du lot (le plus souvent moins d'une heure) : un conteneur CPU minimal, une ligne
+    # de suivi par minute.
+    while True:
+        batch = client.messages.batches.retrieve(batch_id)
+        counts = batch.request_counts
+        _log(
+            f"{language} : lot {batch.processing_status}, {counts.succeeded} réussies, "
+            f"{counts.processing} en cours, {counts.errored} en erreur"
+        )
+        if batch.processing_status == "ended":
+            break
         time.sleep(60)
     failed = 0
     for result in client.messages.batches.results(batch_id):
@@ -166,6 +186,7 @@ def generate_ai(run: str, language: str, model: str) -> dict[str, Any]:
         ai.append(document)
         done.add(human["id"])
     _write(ai_path, ai)
+    _log(f"{language} : {len(ai)} textes générés, {failed} rejetés")
     os.remove(state_path)
     corpus_volume.commit()
     return {"language": language, "ai": len(ai), "failed": failed, "batch_id": batch_id}
@@ -218,7 +239,9 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
 
     train_x, train_y = expand(split["train"])
     calib_x, calib_y = expand(split["calibration"])
+    _log(f"{reference} : {len(train_x)} passages d'entraînement, {len(calib_x)} de calibration")
     layer1 = fit_layer1(train_x, train_y, language)
+    _log(f"{reference} : couche 1 entraînée")
 
     out_dir = f"{MODELS}/{reference}"
     encoder_info: dict[str, Any] | None = None
@@ -231,6 +254,7 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
             seed=seed,
         )
         encoder = TorchEncoder(f"{out_dir}/encoder")
+        _log(f"{reference} : couche 2 affinée ({encoder_info['steps']} pas)")
 
     l1 = layer1_logits(layer1, calib_x, language)
     l2 = encoder.logits([" ".join(p) for p in calib_x]) if encoder else None
@@ -242,6 +266,7 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
     with open(f"{out_dir}/manifest.json", "w", encoding="utf-8") as f:
         json.dump(manifest, f, indent=2)
     models_volume.commit()
+    _log(f"{reference} : couche 3 calibrée, paquet écrit ; évaluation sur {len(split['test'])}")
 
     model = VeritasModel.from_manifest(manifest, encoder)
     thresholds = thresholds_config().get()
@@ -283,15 +308,23 @@ def main(
     out_dir = Path(out)
     out_dir.mkdir(parents=True, exist_ok=True)
     model = read_llm_model(REPO)
-    for language in languages.split(","):
-        if stage in ("corpus", "all"):
-            print(build_human.remote(run, language, train_size, test_size))
-            print(generate_ai.remote(run, language, model))
-            entries = manifests.remote(run, language)
-            (out_dir / f"corpus-{language}.json").write_text(
+    langs = languages.split(",")
+    # Corpus des langues en parallèle (CPU, lots Claude simultanés) ; entraînement une langue
+    # après l'autre : jamais plus d'un GPU à la fois (garde-fou de coût).
+    if stage in ("corpus", "all"):
+        _log(f"corpus : {', '.join(langs)}")
+        for result in build_human.starmap([(run, lang, train_size, test_size) for lang in langs]):
+            _log(f"textes humains : {result}")
+        for result in generate_ai.starmap([(run, lang, model) for lang in langs]):
+            _log(f"textes générés : {result}")
+        corpus_manifests = manifests.starmap([(run, lang) for lang in langs])
+        for lang, entries in zip(langs, corpus_manifests, strict=True):
+            (out_dir / f"corpus-{lang}.json").write_text(
                 json.dumps(entries, ensure_ascii=False, indent=1) + "\n", encoding="utf-8"
             )
-        if stage in ("train", "all"):
+    if stage in ("train", "all"):
+        for language in langs:
+            _log(f"entraînement : {language}")
             result = train.remote(run, language, use_encoder)
             reference = reference_for(language, run)
             (out_dir / reference).mkdir(exist_ok=True)
@@ -301,4 +334,4 @@ def main(
             (out_dir / f"report-{TESTSET}-{reference}.json").write_text(
                 json.dumps(result["report"], indent=2) + "\n", encoding="utf-8"
             )
-            print(json.dumps(result["report"]["metrics"], indent=2))
+            _log(f"{reference} : " + json.dumps(result["report"]["metrics"]))
