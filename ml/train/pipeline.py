@@ -79,7 +79,9 @@ def _write(path: str, documents: list[dict[str, Any]]) -> None:
             f.write(json.dumps(document, ensure_ascii=False) + "\n")
 
 
-@app.function(volumes={CORPUS: corpus_volume}, timeout=3 * 3600, cpu=2)
+# Garde-fous de coût (estimation du 10/11/2026) : délais au plus juste, aucun conteneur gardé
+# actif. Le lancement GitHub coupe aussi l'étape au-delà de 60 min (pilote) ou 330 min (v1).
+@app.function(volumes={CORPUS: corpus_volume}, timeout=45 * 60, cpu=2)
 def build_human(run: str, language: str, train_size: int, test_size: int) -> dict[str, Any]:
     """Textes humains. Le jeu de test, une fois écrit, n'est plus jamais régénéré (gelé)."""
     import urllib.request
@@ -182,7 +184,8 @@ def manifests(run: str, language: str) -> list[dict[str, Any]]:
 @app.function(
     volumes={CORPUS: corpus_volume, MODELS: models_volume},
     gpu="L4",
-    timeout=4 * 3600,
+    # v1 réaliste : 50 à 75 min par langue ; 2 h 30 couvre le cas pessimiste.
+    timeout=150 * 60,
 )
 def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> dict[str, Any]:
     """Couches 1 à 3, puis évaluation sur le jeu de test gelé. Écrit le paquet dans le volume."""

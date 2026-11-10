@@ -100,7 +100,7 @@ DATABASE_URL=… pnpm -C apps/web db:migrate
   `/app/.venv/bin/rq worker veritas-shadow --url "$REDIS_URL"`, mêmes variables. Inutile tant
   qu'aucun modèle Veritas n'est livré.
 - **Couche 2** : `modal deploy services/veritas/modal/encoder_app.py` (ou le workflow
-  « Entraînement Veritas », étape `deploy`). GPU à la demande, arrêt après deux minutes sans
+  « Entraînement Veritas », étape `deploy`). GPU à la demande, arrêt après une minute sans
   requête.
 - **Web** : `VERITAS_URL` (adresse de l'API) et le même `VERITAS_INTERNAL_TOKEN`.
 - **Seuils et aiguillage** : `services/veritas/config/*.yaml`, relus à chaque modification.
