@@ -56,7 +56,8 @@ pnpm benchmark:plagiarism     # rappel d'Indexa sur le jeu de test gelé
 
 Sur Modal, lancé par GitHub Actions (ADR-0009) : un commit sur `main` qui modifie
 `ml/train/requests/run.json` démarre le workflow « Entraînement Veritas (Modal) » avec les
-paramètres du fichier (`pilot` pour un essai isolé, `v1` pour les modèles 0.1). Secrets du dépôt
+paramètres du fichier (`pilot` pour un essai isolé, `v1` pour les modèles 0.1, étape `deploy`
+pour la couche 2). Fiches des modèles : `docs/models/`. Secrets du dépôt
 nécessaires : `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET`, `ANTHROPIC_API_KEY`.
 
 ## Mettre en production
@@ -66,9 +67,9 @@ Voir [`docs/deploiement.md`](./docs/deploiement.md) : Vercel (web), Neon (Postgr
 
 ## État
 
-| Phase | Contenu                                                     | État                                                         |
-| ----- | ----------------------------------------------------------- | ------------------------------------------------------------ |
-| 1     | Squelette SaaS, Réécrire, Écrire, i18n, Stripe              | Code livré ; porte : abonnement Pro en production            |
-| 2     | Indexa (web + base privée), rapport PDF                     | Code livré ; rappel ≥ 90 % sur le jeu de test plagiat        |
-| 3     | Détection : fournisseur externe, Veritas FR/EN 0.1 en fond  | Code livré ; entraînement 0.1 et contrat fournisseur à faire |
-| 4     | VRT-HUM, modèle multilingue, benchmark public, API publique | À venir                                                      |
+| Phase | Contenu                                                     | État                                                                                                                 |
+| ----- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| 1     | Squelette SaaS, Réécrire, Écrire, i18n, Stripe              | Code livré ; porte : abonnement Pro en production                                                                    |
+| 2     | Indexa (web + base privée), rapport PDF                     | Code livré ; rappel ≥ 90 % sur le jeu de test plagiat                                                                |
+| 3     | Détection : fournisseur externe, Veritas FR/EN 0.1 en fond  | VRT-DET-FR/EN-0.1 livrés (couche 2 sur Modal) ; contrat fournisseur et activation du mode fantôme à faire (ADR-0010) |
+| 4     | VRT-HUM, modèle multilingue, benchmark public, API publique | À venir                                                                                                              |
