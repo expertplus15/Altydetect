@@ -47,6 +47,9 @@ jobs:
     name: Modal (Veritas)
     runs-on: ubuntu-latest
     timeout-minutes: 360
+    # Écriture : seulement pour pousser les sorties de v1 sur une branche dédiée (étape finale).
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -178,3 +181,22 @@ jobs:
           path: ml/train/out/
           if-no-files-found: warn
           retention-days: 30
+
+      # Sorties de v1 (manifestes, paquets, rapports : aucun texte) poussées sur une branche
+      # `ml/sorties-v1-<run>`, d'où une PR les range (jeu de test gelé, fiches des modèles).
+      # L'artefact reste disponible 30 jours.
+      - name: Sorties de v1 sur une branche
+        if: always() && steps.p.outputs.run == 'v1' && steps.p.outputs.stage != 'deploy'
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          if [ -z "$(ls -A ml/train/out 2>/dev/null)" ]; then echo "Aucune sortie."; exit 0; fi
+          dest="ml/train/runs/$RUN_ID"
+          mkdir -p "$dest" && cp -r ml/train/out/. "$dest/"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "ml/sorties-v1-$RUN_ID"
+          git add "$dest"
+          git commit -q -m "ml: sorties du run v1 $RUN_ID (manifestes, paquets, rapports)"
+          git push origin "ml/sorties-v1-$RUN_ID"
+          echo "Sorties poussées sur la branche ml/sorties-v1-$RUN_ID"

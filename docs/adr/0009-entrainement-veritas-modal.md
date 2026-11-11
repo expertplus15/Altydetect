@@ -35,7 +35,9 @@ sans `training_opt_in` ; le modèle LLM n'est écrit que dans `packages/core/src
   `ANTHROPIC_API_KEY` (recopiée dans le secret Modal `altydetect-anthropic`).
 - **Sorties commitées** : manifestes du corpus (identifiant, empreinte, source, URL, licence,
   partition), paquet du modèle (`manifest.json`, sans les poids de l'encodeur), rapport de
-  benchmark. Un essai `--run pilot` est isolé : corpus et références à part, jeu de test v1
+  benchmark. Pour v1, le workflow les pousse sur une branche `ml/sorties-v1-<run>` (le
+  dépôt ne lit pas les artefacts depuis l'environnement de développement), d'où une PR les
+  range. Un essai `--run pilot` est isolé : corpus et références à part, jeu de test v1
   intact.
 
 ## Conséquences
