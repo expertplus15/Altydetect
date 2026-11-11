@@ -114,3 +114,32 @@ def test_layer2_combines_with_layer1() -> None:
     raw["layer2"] = {"runtime": "modal", "reference": "x"}
     model = VeritasModel.from_manifest(raw, Fixed())
     assert model.detect(french_text(200), "fr").probability > 0.98
+
+
+# Paquets livrés (run v1, ADR-0009) : chargés tels qu'ils sont commités, sans appel à Modal.
+DELIVERED = Path(__file__).resolve().parents[1] / "models"
+
+
+@pytest.mark.parametrize("language", ["fr", "en"])
+def test_delivered_packages_load(language: str) -> None:
+    models = VeritasModels.load(DELIVERED)
+    reference = f"VRT-DET-{language.upper()}-0.1"
+    assert models.reference(language) == reference
+    encoder = models._models[language].encoder
+    assert isinstance(encoder, ModalEncoder) and encoder._reference == reference
+
+
+@pytest.mark.parametrize("language", ["fr", "en"])
+def test_delivered_packages_follow_layer2(language: str) -> None:
+    class Fixed:
+        def __init__(self, value: float) -> None:
+            self.value = value
+
+        def logits(self, passages: list[str]) -> list[float]:
+            return [self.value] * len(passages)
+
+    raw = json.loads((DELIVERED / language / "manifest.json").read_text(encoding="utf-8"))
+    text = french_text(200)
+    ai = VeritasModel.from_manifest(raw, Fixed(10.0)).detect(text, language).probability
+    human = VeritasModel.from_manifest(raw, Fixed(-10.0)).detect(text, language).probability
+    assert ai > 0.9 and human < 0.1

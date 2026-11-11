@@ -1,0 +1,21 @@
+{
+  "version": "detection-v1",
+  "created": "2026-11-11",
+  "run": "42928107614",
+  "licence": "Textes humains : ODC-BY-1.0 (allenai/c4) et conditions de Common Crawl ; textes générés : Claude (Anthropic) pour AltyDetect",
+  "generator": "ml/train/pipeline.py (fragment 1 de C4 / mC4, textes appariés)",
+  "documents": {
+    "fr": {
+      "ai": 1000,
+      "human": 1000
+    },
+    "en": {
+      "ai": 1000,
+      "human": 1000
+    }
+  },
+  "files": {
+    "fr.jsonl": "522e266415b31ff93f0b62e1c975b9d46d8ec5df5ff51d57762f872a654229b7",
+    "en.jsonl": "8d5cae87a4897818ae3086a459da7656ff7d117f56446a3f3ad10e0bb00bc231"
+  }
+}
