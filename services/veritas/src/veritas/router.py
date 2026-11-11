@@ -8,7 +8,9 @@ d'après les règles de config/routing.yaml (relues sans redéploiement). Quatre
 - les deux, concordants : le principal répond, l'autre est cité avec l'accord ;
 - les deux, discordants : résultat « undetermined », confiance faible.
 
-Quand les deux ont tourné, la comparaison est toujours enregistrée.
+Quand les deux ont tourné, la comparaison est toujours enregistrée. Si aucun fournisseur
+externe ne répond, Veritas ne répond seul que si `veritas_fallback` est activé (désactivé en
+phase 3) ; sinon la détection est indisponible.
 """
 
 import logging
@@ -92,14 +94,18 @@ class Router:
             return self._combine(e, v, "external", segment, plan)
 
         if serve == "both":
-            e, v = external(), veritas()
+            e = external()
+            if e is None and not routing.veritas_fallback:
+                raise DetectionUnavailableError
+            v = veritas()
             if e is None or v is None:
                 return self._alone(e or v)
             return self._combine(e, v, segment.primary, segment, plan)
 
         e = external()
         if e is None:
-            return self._alone(veritas() if self.veritas.available(language) else None)
+            fallback = routing.veritas_fallback and self.veritas.available(language)
+            return self._alone(veritas() if fallback else None)
         self._maybe_shadow(text, e, segment, language, plan, routing)
         return e.output
 

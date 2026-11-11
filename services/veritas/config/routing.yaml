@@ -9,9 +9,15 @@ agreement:
   min_comparisons: 200
 
 # Mode fantôme : Veritas tourne en arrière-plan quand l'externe répond seul.
+# Chaque comparaison appelle la couche 2 sur un GPU Modal (démarrage à froid compris) :
+# 10 % des requêtes au départ (ADR-0010), à relever une fois le coût réel mesuré.
 shadow:
   enabled: true
-  sample_rate: 1.0 # part des requêtes comparées, de 0 à 1
+  sample_rate: 0.1 # part des requêtes comparées, de 0 à 1
+
+# Phase 3 : si aucun fournisseur externe ne répond, la détection est indisponible ; Veritas
+# ne répond jamais seul aux utilisateurs avant d'avoir franchi la porte d'accord (ADR-0010).
+veritas_fallback: false
 
 # Premier segment qui correspond. Champs : languages, plans, min_words, max_words (facultatifs) ;
 # serve : external | veritas | both ; primary (pour both) : external | veritas ;

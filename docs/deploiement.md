@@ -98,7 +98,23 @@ DATABASE_URL=… pnpm -C apps/web db:migrate
   paquet utilise la couche 2. Routes internes protégées par `VERITAS_INTERNAL_TOKEN`.
 - **Worker du mode fantôme** : même image, commande
   `/app/.venv/bin/rq worker veritas-shadow --url "$REDIS_URL"`, mêmes variables. Inutile tant
-  qu'aucun modèle Veritas n'est livré.
+  que Veritas n'est pas activé.
+- **Activation du mode fantôme (ADR-0010)**, dans cet ordre :
+  1. Prérequis : un fournisseur externe actif (`DETECTION_PROVIDER` et sa clé). Sans lui,
+     rien n'est comparé et Détecter reste indisponible : Veritas ne répond jamais seul
+     (`veritas_fallback: false` dans `routing.yaml`).
+  2. Déployer la couche 2 : workflow « Entraînement Veritas », étape `deploy` (à la main, ou
+     `"stage": "deploy"` dans `ml/train/requests/run.json`). Application
+     `altydetect-veritas-encoder` : aucun coût tant qu'elle n'est pas appelée.
+  3. Sur `veritas-api` **et** `veritas-shadow` : `VERITAS_MODEL_DIR=/app/services/veritas/models`,
+     `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET`. L'API en a besoin pour décider des comparaisons et
+     pour le mode approfondi (appel synchrone).
+  4. Démarrer `veritas-shadow`. Vérifier dans les journaux `GET /health` puis, après quelques
+     détections, `GET /internal/v1/detect/agreement`.
+  5. Coût : 10 % des requêtes comparées (`shadow.sample_rate`), ≈ 6 $ par mois à 50 détections
+     par jour, plus un appel par détection approfondie. Suivre la facturation Modal le premier
+     mois avant de relever le taux.
+  - Retour arrière : retirer `VERITAS_MODEL_DIR` (ou `shadow.enabled: false`, relu à chaud).
 - **Couche 2** : `modal deploy services/veritas/modal/encoder_app.py` (ou le workflow
   « Entraînement Veritas », étape `deploy`). GPU à la demande, arrêt après une minute sans
   requête.
@@ -162,10 +178,11 @@ par le port cible du domaine public).
 | `indexa-api`     | `RAILWAY_DOCKERFILE_PATH=services/indexa/Dockerfile`                              | `INDEXA_INTERNAL_TOKEN`, `PORT=8002`                                                                                                                                                                  | oui            |
 | `indexa-worker`  | même image ; démarrage `/app/.venv/bin/rq worker indexa --url $REDIS_URL`         | celles de `indexa-api`, `BRAVE_SEARCH_API_KEY`, `INDEXA_MAX_QUERIES=8`, `INDEXA_MAX_PAGES=10`                                                                                                         | non            |
 | `veritas-api`    | `RAILWAY_DOCKERFILE_PATH=services/veritas/Dockerfile`                             | `VERITAS_INTERNAL_TOKEN`, `PORT=8001`, `VERITAS_ENV=production`, `DETECTION_PROVIDER`, `DETECTION_FALLBACK_PROVIDER`, clés du fournisseur (`PANGRAM_API_KEY`, `COPYLEAKS_EMAIL`, `COPYLEAKS_API_KEY`) | oui            |
-| `veritas-shadow` | même image ; démarrage `/app/.venv/bin/rq worker veritas-shadow --url $REDIS_URL` | celles de `veritas-api`, plus `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET`, `VERITAS_MODEL_DIR`                                                                                                             | non            |
+| `veritas-shadow` | même image ; démarrage `/app/.venv/bin/rq worker veritas-shadow --url $REDIS_URL` | celles de `veritas-api`                                                                                                                                                                               | non            |
 
-- `veritas-shadow`, `VERITAS_MODEL_DIR` et les jetons Modal ne servent qu'une fois un modèle
-  Veritas livré ; avant, l'externe répond seul.
+- Activation de Veritas (ADR-0010, section 7) : ajouter à `veritas-api` et `veritas-shadow`
+  `VERITAS_MODEL_DIR=/app/services/veritas/models`, `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET`,
+  puis démarrer `veritas-shadow`. Avant, l'externe répond seul.
 - Tant qu'aucun contrat de fournisseur n'est signé (ADR-0001), Détecter répond
   `DETECTION_UNAVAILABLE`. Ne jamais définir en production `VERITAS_ALLOW_SIMULATED`,
   `INDEXA_SEARCH_PROVIDER=fixtures` ni `INDEXA_FIXTURES_PATH`.

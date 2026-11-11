@@ -11,6 +11,10 @@ def test_shipped_configuration_is_valid() -> None:
     routing = routing_config().get()
     assert thresholds.min_words == 150
     assert routing.agreement_threshold == 0.85
+    # Phase 3 : Veritas jamais seul, comparaison sur 10 % des requêtes (ADR-0010).
+    assert routing.veritas_fallback is False
+    assert routing.shadow_enabled and routing.shadow_sample_rate == 0.1
+    assert all(s.serve == "external" for s in (*routing.segments, routing.default))
     assert routing.segment_for("fr", 300, "free").name == "fr"
     assert routing.segment_for("de", 300, "free").name == "other"
 
