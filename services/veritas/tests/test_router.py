@@ -169,12 +169,25 @@ def test_fallback_provider_answers_when_primary_fails() -> None:
     assert failing.calls == 1
 
 
-def test_veritas_answers_when_every_external_fails() -> None:
+def test_veritas_answers_when_every_external_fails_if_fallback_enabled() -> None:
     failing = FixedProvider("pangram", 0.9, ProviderError("panne"))
-    router, _, shadow = make(routing("external"), [failing], FakeVeritas(0.1))
+    rules = replace(routing("external"), veritas_fallback=True)
+    router, _, shadow = make(rules, [failing], FakeVeritas(0.1))
     out = router.detect(request())
     assert out.engine.primary == "VRT-DET-FR-0.1"
     assert shadow.jobs == []
+
+
+def test_phase_3_veritas_never_answers_alone_when_external_fails() -> None:
+    failing = FixedProvider("pangram", 0.9, ProviderError("panne"))
+    veritas = FakeVeritas(0.1)
+    router, store, shadow = make(routing("external"), [failing], veritas)
+    with pytest.raises(DetectionUnavailableError):
+        router.detect(request())
+    with pytest.raises(DetectionUnavailableError):
+        router.detect(request(mode=Mode.deep))
+    # Ni appel GPU inutile, ni comparaison, ni tâche fantôme.
+    assert veritas.calls == 0 and store.items == [] and shadow.jobs == []
 
 
 def test_unavailable_when_nobody_can_answer() -> None:

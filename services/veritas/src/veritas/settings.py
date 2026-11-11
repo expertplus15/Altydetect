@@ -95,6 +95,10 @@ class Routing:
     shadow_sample_rate: float
     segments: tuple[Segment, ...] = field(default_factory=tuple)
     default: Segment = field(default_factory=lambda: Segment(name="other"))
+    # Veritas répond seul quand aucun fournisseur externe ne répond. Désactivé en phase 3 :
+    # tant que la porte d'accord n'est pas franchie, seul un segment promu (serve: veritas)
+    # laisse Veritas répondre aux utilisateurs.
+    veritas_fallback: bool = False
 
     def segment_for(self, language: str, words: int, plan: str) -> Segment:
         return next((s for s in self.segments if s.matches(language, words, plan)), self.default)
@@ -109,6 +113,7 @@ class Routing:
             shadow_sample_rate=float(shadow.get("sample_rate", 1.0)),
             segments=tuple(Segment.parse(s) for s in raw.get("segments", [])),
             default=Segment.parse(raw.get("default", {"name": "other"})),
+            veritas_fallback=bool(raw.get("veritas_fallback", False)),
         )
         if not 0 < routing.agreement_threshold <= 1 or not 0 <= routing.shadow_sample_rate <= 1:
             raise ValueError("routing.yaml : seuil d'accord ou taux d'échantillonnage invalide")
