@@ -1,0 +1,35 @@
+{
+  "reference": "VRT-DET-EN-0.1",
+  "testset": "detection-v1/en",
+  "sizes": {
+    "train": 7902,
+    "calibration": 898,
+    "test": 2000
+  },
+  "metrics": {
+    "documents": {
+      "ai": 1000,
+      "human": 1000
+    },
+    "precision": 1.0,
+    "recall": 0.999,
+    "false_positive_rate": 0.0,
+    "undetermined_rate": {
+      "ai": 0.0,
+      "human": 0.0
+    },
+    "auroc": 1.0,
+    "threshold_for_1pct_fpr": 0.008154494537602745,
+    "gate_false_positives_passed": true
+  },
+  "latency_seconds_per_document_gpu": 0.2139,
+  "encoder": {
+    "base_model": "microsoft/deberta-v3-base",
+    "steps": 2478,
+    "final_loss": 0.012540399208555755
+  },
+  "thresholds": {
+    "likely_ai": 0.7,
+    "likely_human": 0.3
+  }
+}

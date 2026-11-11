@@ -1,0 +1,35 @@
+{
+  "reference": "VRT-DET-FR-0.1",
+  "testset": "detection-v1/fr",
+  "sizes": {
+    "train": 7927,
+    "calibration": 870,
+    "test": 2000
+  },
+  "metrics": {
+    "documents": {
+      "ai": 1000,
+      "human": 1000
+    },
+    "precision": 0.9960159362549801,
+    "recall": 1.0,
+    "false_positive_rate": 0.004,
+    "undetermined_rate": {
+      "ai": 0.0,
+      "human": 0.002
+    },
+    "auroc": 0.999997,
+    "threshold_for_1pct_fpr": 1.0540875677745651e-6,
+    "gate_false_positives_passed": true
+  },
+  "latency_seconds_per_document_gpu": 0.0662,
+  "encoder": {
+    "base_model": "almanach/camembert-base",
+    "steps": 2544,
+    "final_loss": 0.007756594817037694
+  },
+  "thresholds": {
+    "likely_ai": 0.7,
+    "likely_human": 0.3
+  }
+}
