@@ -75,6 +75,9 @@ Jusque-là, `DETECTION_PROVIDER` reste `TODO` dans `.env.example`.
 - Le seuil `TEXT_TOO_SHORT` (150 mots) reste au-dessus des minimums des deux fournisseurs.
 - Pangram n'a pas de webhook : les analyses longues sondent l'API Bulk depuis la file de
   tâches (RQ).
+- Novembre 2026 : Pangram a déprécié `POST /v3`. L'adaptateur utilise l'API asynchrone
+  (`POST /task`, puis `GET /task/{id}`) sur `text.external-api.pangram.com`, sélecteur
+  `pangram-4` (`PANGRAM_MODEL`). `GET /balance`, `/usage` et `/limits` sont gratuits.
 - Changer de fournisseur reste une variable d'environnement. Cette décision peut être
   revue sans toucher au reste du code.
 

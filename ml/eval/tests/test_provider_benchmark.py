@@ -2,7 +2,13 @@
 
 import pytest
 
-from detection.provider_benchmark import MAX_CONSECUTIVE_FAILURES, compare, sample
+from detection.provider_benchmark import (
+    MAX_CONSECUTIVE_FAILURES,
+    Throttle,
+    compare,
+    pangram_interval,
+    sample,
+)
 
 
 def corpus() -> list[dict[str, object]]:
@@ -125,3 +131,22 @@ def test_stops_when_provider_keeps_failing() -> None:
             log=lambda _: None,
         )
     assert MAX_CONSECUTIVE_FAILURES == 10
+
+
+def test_throttle_spaces_calls() -> None:
+    now = [0.0]
+    waits: list[float] = []
+
+    def sleep(seconds: float) -> None:
+        waits.append(seconds)
+
+    throttle = Throttle(2.0, clock=lambda: now[0], sleep=sleep)
+    throttle()
+    throttle()
+    throttle()
+    assert waits == [2.0, 4.0]
+
+
+def test_pangram_interval_shares_account_limit() -> None:
+    assert pangram_interval(2.5, 2) == 1.0  # 2 langues, 2,5 req/s : 1 tâche par seconde chacune
+    assert pangram_interval(None, 2) == 0.5
