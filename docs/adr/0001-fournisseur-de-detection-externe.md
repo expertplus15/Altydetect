@@ -56,6 +56,10 @@ Cette proposition devient une décision acceptée seulement si les trois conditi
 2. **Benchmark interne** des deux fournisseurs sur le jeu de test gelé `ml/eval/testset/`
    (FR et EN) : taux de faux positifs sur textes humains, rappel, robustesse aux textes
    reformulés, latence. Résultats consignés dans `docs/models/`.
+   Outil : `ml/eval/detection/provider_benchmark.py` (workflow « Entraînement Veritas »,
+   étape `benchmark`) : échantillon du jeu `detection-v1`, fournisseur et Veritas 0.1 notés
+   sur les mêmes textes, accord des bandes. Usage interne seulement : aucun score montré à
+   un client, compatible avec les CGU « usage interne » de Pangram.
 3. **Prix confirmés par écrit**, et intégrés dans `config/` en remplaçant les valeurs `TODO`.
 
 Jusque-là, `DETECTION_PROVIDER` reste `TODO` dans `.env.example`.

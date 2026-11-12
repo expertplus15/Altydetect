@@ -87,10 +87,14 @@ version = "0.0.0"
 source = { virtual = "ml/eval" }
 dependencies = [
     { name = "indexa" },
+    { name = "veritas" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "indexa", editable = "services/indexa" }]
+requires-dist = [
+    { name = "indexa", editable = "services/indexa" },
+    { name = "veritas", editable = "services/veritas" },
+]
 
 [[package]]
 name = "altydetect-ml-train"
