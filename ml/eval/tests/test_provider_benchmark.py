@@ -41,6 +41,8 @@ def test_sample_is_deterministic_and_test_only() -> None:
     assert first == sample(corpus(), 5, 3, seed=1)
     assert [d["label"] for d in first].count("human") == 5
     assert all(d["split"] == "test" for d in first)
+    big = sample(corpus(), 20, 20)
+    assert {d["label"] for d in big[:10]} == {"human", "ai"}  # ordre mélangé
     with pytest.raises(ValueError):
         sample(corpus(), 50, 3)
 

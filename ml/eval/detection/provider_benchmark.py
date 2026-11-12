@@ -74,7 +74,10 @@ def sample(
     ai = [d for d in test if d["label"] == "ai"]
     if len(human) < humans or len(ai) < ais:
         raise ValueError(f"jeu de test trop petit : {len(human)} humains, {len(ai)} générés")
-    return rng.sample(human, humans) + rng.sample(ai, ais)
+    chosen = rng.sample(human, humans) + rng.sample(ai, ais)
+    # Ordre d'envoi mélangé : un banc d'essai interrompu garde des humains et des générés.
+    rng.shuffle(chosen)
+    return chosen
 
 
 def compare(
