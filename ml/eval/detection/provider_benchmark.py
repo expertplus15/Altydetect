@@ -60,7 +60,7 @@ def pangram_interval(qps_limit: float | None, parallel: int) -> float:
     """Intervalle entre deux tâches pour une langue : la limite du compte (GET /limits) est
     partagée entre les langues traitées en parallèle, avec 25 % de marge."""
     if not qps_limit or qps_limit <= 0:
-        return 0.5
+        return 1.0  # limite inconnue : une tâche par seconde et par langue
     return round(parallel / qps_limit * 1.25, 3)
 
 
@@ -218,8 +218,9 @@ def benchmark(
             headers={"x-api-key": os.environ["PANGRAM_API_KEY"]},
             timeout=30.0,
         )
-        response.raise_for_status()
-        qps = response.json().get("qps_limit")
+        # Route pas ouverte à tous les comptes : sans réponse, cadence prudente par défaut.
+        if response.status_code == 200:
+            qps = response.json().get("qps_limit")
     interval = pangram_interval(qps, parallel)
     log(f"{language} : limite du compte {qps} req/s, une tâche toutes les {interval} s")
     report = compare(
