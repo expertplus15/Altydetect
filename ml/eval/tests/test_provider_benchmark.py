@@ -113,24 +113,52 @@ def test_provider_failure_is_counted_not_retried() -> None:
     assert report["agreement"]["compared"] == len(docs) - 1
 
 
-def test_stops_when_provider_keeps_failing() -> None:
+def test_stops_cleanly_when_provider_keeps_failing() -> None:
     class Down(Fixed):
         def detect(self, text: str, language: str) -> float:
             self.calls += 1
             raise RuntimeError("clé refusée")
 
     docs = sample(corpus(), 20, 5)
-    with pytest.raises(RuntimeError, match="arrêt"):
-        compare(
-            docs,
-            "fr",
-            Down(0, 0),
-            Fixed(0.1, 0.9),
-            lambda raw, t, lang: Scored(raw),
-            workers=1,
-            log=lambda _: None,
-        )
-    assert MAX_CONSECUTIVE_FAILURES == 10
+    down = Down(0, 0)
+    report = compare(
+        docs,
+        "fr",
+        down,
+        Fixed(0.1, 0.9),
+        lambda raw, t, lang: Scored(raw),
+        workers=1,
+        log=lambda _: None,
+    )
+    assert report["stopped_early"] is not None
+    assert down.calls == MAX_CONSECUTIVE_FAILURES
+    assert report["not_sent"] == len(docs) - MAX_CONSECUTIVE_FAILURES
+    assert report["external"] is None
+
+
+def test_out_of_credit_keeps_results_already_obtained() -> None:
+    class Credit(Fixed):
+        def detect(self, text: str, language: str) -> float:
+            self.calls += 1
+            if self.calls > 6:
+                raise RuntimeError("pangram : HTTP 402 sur POST /task")
+            return self.ai if text.startswith("ai") else self.human
+
+    docs = sample(corpus(), 10, 4)
+    credit = Credit(0.1, 0.9)
+    report = compare(
+        docs,
+        "fr",
+        credit,
+        Fixed(0.1, 0.9),
+        lambda raw, t, lang: Scored(raw),
+        workers=1,
+        log=lambda _: None,
+    )
+    assert "HTTP 402" in report["stopped_early"]
+    assert credit.calls == 7  # aucun appel après le refus de crédit
+    assert report["agreement"]["compared"] == 6
+    assert report["not_sent"] == len(docs) - 7
 
 
 def test_throttle_spaces_calls() -> None:

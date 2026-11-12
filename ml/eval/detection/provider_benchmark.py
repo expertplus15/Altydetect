@@ -88,28 +88,48 @@ def compare(
     throttle: Callable[[], None] = lambda: None,
 ) -> dict[str, Any]:
     """Note chaque document par les deux moteurs. `score(raw, text, language)` renvoie un
-    `Scored` (veritas.scoring). Un échec du fournisseur est compté, pas réessayé."""
+    `Scored` (veritas.scoring). Un échec du fournisseur est compté, pas réessayé. Arrêt propre,
+    résultats déjà obtenus conservés, si le crédit est épuisé (HTTP 402) ou après
+    MAX_CONSECUTIVE_FAILURES échecs consécutifs : les textes restants ne sont pas envoyés."""
+    stop = threading.Event()
+    lock = threading.Lock()
+    state = {"consecutive": 0, "done": 0}
+    stopped: list[str] = []
 
     def external_one(document: dict[str, Any]) -> Any:
+        if stop.is_set():
+            return None  # non envoyé
+        throttle()
+        if stop.is_set():
+            return None
         try:
-            throttle()
-            return score(external.detect(document["text"], language), document["text"], language)
+            result: Any = score(
+                external.detect(document["text"], language), document["text"], language
+            )
         except Exception as error:  # échec compté : jamais de nouvel appel payant
-            return error
+            result = error
+        with lock:
+            state["done"] += 1
+            if isinstance(result, Exception):
+                state["consecutive"] += 1
+                limit = state["consecutive"] >= MAX_CONSECUTIVE_FAILURES
+                if ("HTTP 402" in str(result) or limit) and not stop.is_set():
+                    stop.set()
+                    stopped.append(f"{type(result).__name__}: {result}")
+                    log(f"{language} : arrêt après {state['done']} textes ({result})")
+            else:
+                state["consecutive"] = 0
+            if state["done"] % 100 == 0:
+                log(f"{language} : {state['done']}/{len(documents)} textes notés")
+        return result
 
-    results: list[Any] = []
-    consecutive = 0
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        for i, result in enumerate(pool.map(external_one, documents), start=1):
-            results.append(result)
-            consecutive = consecutive + 1 if isinstance(result, Exception) else 0
-            if consecutive >= MAX_CONSECUTIVE_FAILURES:
-                raise RuntimeError(f"{language} : fournisseur en échec ({result!r}), arrêt")
-            if i % 100 == 0:
-                log(f"{language} : {i}/{len(documents)} textes notés par le fournisseur")
+        results: list[Any] = list(pool.map(external_one, documents))
 
     records: list[dict[str, Any]] = []
     for document, ext in zip(documents, results, strict=True):
+        if ext is None:
+            continue  # jamais envoyé au fournisseur
         record: dict[str, Any] = {"id": document["id"], "label": document["label"]}
         if isinstance(ext, Exception):
             record["external_error"] = type(ext).__name__
@@ -123,14 +143,19 @@ def compare(
         except Exception as error:
             record["veritas_error"] = type(error).__name__
         records.append(record)
-    return summarize(records, language)
+    report = summarize(records, language)
+    report["stopped_early"] = stopped[0] if stopped else None
+    report["not_sent"] = sum(r is None for r in results)
+    return report
 
 
 def summarize(records: list[dict[str, Any]], language: str) -> dict[str, Any]:
     from detection.metrics import detection_metrics
 
-    def metrics(engine: str) -> dict[str, Any]:
+    def metrics(engine: str) -> dict[str, Any] | None:
         rows = [r for r in records if engine in r]
+        if not rows:
+            return None
         return detection_metrics(
             [1 if r["label"] == "ai" else 0 for r in rows],
             [r[f"{engine}_band"] for r in rows],
