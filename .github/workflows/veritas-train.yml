@@ -10,9 +10,9 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "Étape : all, corpus, train, deploy (inférence), benchmark (fournisseur externe)"
+        description: "Étape : all, corpus, train, deploy (inférence), benchmark (fournisseur), robustness"
         type: choice
-        options: [all, corpus, train, deploy, benchmark]
+        options: [all, corpus, train, deploy, benchmark, robustness]
         default: all
       run:
         description: "pilot (essai isolé) ou v1 (corpus et modèles 0.1, jeu de test gelé)"
@@ -93,7 +93,7 @@ jobs:
             train=$IN_TRAIN; test=$IN_TEST; encoder=$IN_ENCODER
             provider=$IN_PROVIDER; bench_human=$IN_BENCH_HUMAN; bench_ai=$IN_BENCH_AI
           fi
-          [[ "$stage" =~ ^(all|corpus|train|deploy|benchmark)$ ]] || { echo "stage invalide"; exit 1; }
+          [[ "$stage" =~ ^(all|corpus|train|deploy|benchmark|robustness)$ ]] || { echo "stage invalide"; exit 1; }
           [[ "$provider" =~ ^(pangram)$ ]] || { echo "provider invalide"; exit 1; }
           [[ "$bench_human" =~ ^[0-9]{1,4}$ && "$bench_ai" =~ ^[0-9]{1,4}$ ]] || { echo "tailles du benchmark invalides"; exit 1; }
           [[ "$run" =~ ^(pilot|v1)$ ]] || { echo "run invalide"; exit 1; }
@@ -223,8 +223,20 @@ jobs:
               | jq -c '{month, total_requests, total_cost_usd, available_balance_usd} | with_entries(select(.value != null))' || true
           done
 
+      # Test de robustesse (detection-v2) : modèles ouverts sur un L4, un à la fois, puis
+      # Veritas 0.1 par catégorie. Aucun entraînement, aucune API payante hors Modal.
+      - name: Test de robustesse de Veritas
+        if: steps.p.outputs.stage == 'robustness'
+        timeout-minutes: 200
+        env:
+          PYTHONUNBUFFERED: "1"
+          LANGUAGES: ${{ steps.p.outputs.languages }}
+        run: >-
+          uv run --no-sync modal run ml/eval/detection/robustness.py
+          --languages "$LANGUAGES" --out ml/train/out
+
       - name: Corpus, entraînement, évaluation
-        if: steps.p.outputs.stage != 'deploy' && steps.p.outputs.stage != 'benchmark'
+        if: steps.p.outputs.stage != 'deploy' && steps.p.outputs.stage != 'benchmark' && steps.p.outputs.stage != 'robustness'
         # Coupure de l'étape (et de l'application Modal éphémère) : 120 min pour le pilote (le lot
         # Claude seul peut prendre près d'une heure), 330 min pour v1. Un seul GPU à la fois.
         timeout-minutes: ${{ steps.p.outputs.run == 'pilot' && 120 || 330 }}
@@ -258,11 +270,11 @@ jobs:
       # Sorties de v1 (manifestes, paquets, rapports : aucun texte) poussées sur une branche
       # `ml/sorties-v1-<run>`, d'où une PR les range (jeu de test gelé, fiches des modèles).
       # L'artefact reste disponible 30 jours.
-      - name: Sorties sur une branche (v1, benchmark)
-        if: always() && steps.p.outputs.stage != 'deploy' && (steps.p.outputs.run == 'v1' || steps.p.outputs.stage == 'benchmark')
+      - name: Sorties sur une branche (v1, benchmark, robustness)
+        if: always() && steps.p.outputs.stage != 'deploy' && (steps.p.outputs.run == 'v1' || steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness')
         env:
           RUN_ID: ${{ github.run_id }}
-          KIND: ${{ steps.p.outputs.stage == 'benchmark' && 'benchmark' || 'v1' }}
+          KIND: ${{ (steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness') && steps.p.outputs.stage || 'v1' }}
         run: |
           if [ -z "$(ls -A ml/train/out 2>/dev/null)" ]; then echo "Aucune sortie."; exit 0; fi
           dest="ml/train/runs/$RUN_ID"
