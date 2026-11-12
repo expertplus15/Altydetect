@@ -1,0 +1,894 @@
+{
+ "language": "en",
+ "documents": {
+  "human": 94,
+  "ai": 11
+ },
+ "errors": {
+  "external": 1,
+  "veritas": 0
+ },
+ "external": {
+  "documents": {
+   "ai": 11,
+   "human": 93
+  },
+  "precision": 1.0,
+  "recall": 1.0,
+  "false_positive_rate": 0.0,
+  "undetermined_rate": {
+   "ai": 0.0,
+   "human": 0.0
+  },
+  "auroc": 1.0,
+  "threshold_for_1pct_fpr": 1e-06,
+  "gate_false_positives_passed": true
+ },
+ "veritas": {
+  "documents": {
+   "ai": 11,
+   "human": 94
+  },
+  "precision": 1.0,
+  "recall": 1.0,
+  "false_positive_rate": 0.0,
+  "undetermined_rate": {
+   "ai": 0.0,
+   "human": 0.0
+  },
+  "auroc": 1.0,
+  "threshold_for_1pct_fpr": 0.010400999999999999,
+  "gate_false_positives_passed": true
+ },
+ "agreement": {
+  "all": 1.0,
+  "human": 1.0,
+  "ai": 1.0,
+  "compared": 104
+ },
+ "records": [
+  {
+   "id": "h-en-65900abe95f7c990",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-99ac00f7c4f97403",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0104,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-98fefe0dafb9bbc5",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.002,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-9cb494257b95f0e8",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0016,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-687fbed6a5f6ecad",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0011,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-df623be7c9248d1f",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0024,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-ddd8906a47a44c16",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0024,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-4392c90db2ae3aec",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-0421d22e5b9e0f66",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0022,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "a-en-d2da76cd7627527c",
+   "label": "ai",
+   "external": 1.0,
+   "external_band": "likely_ai",
+   "veritas": 0.9936,
+   "veritas_band": "likely_ai"
+  },
+  {
+   "id": "h-en-0beb17342ff32264",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "a-en-09ef281477497b8e",
+   "label": "ai",
+   "external": 1.0,
+   "external_band": "likely_ai",
+   "veritas": 0.9927,
+   "veritas_band": "likely_ai"
+  },
+  {
+   "id": "h-en-d66504c3bccd7dec",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0024,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-7a28a0ce2aa5b394",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0015,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-b084ecfac8f0b73f",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.005,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-ca896efa6803d10d",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0047,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-b711be289a3fd33d",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0019,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "a-en-a463d3b488018b5b",
+   "label": "ai",
+   "external": 1.0,
+   "external_band": "likely_ai",
+   "veritas": 0.9929,
+   "veritas_band": "likely_ai"
+  },
+  {
+   "id": "h-en-84124c1ae199bd59",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0053,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-390462b1fe86d187",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0016,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-a36a97911a24165b",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.003,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-f3409de93024b862",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0018,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-87021f94431918fb",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0023,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-35da6c05393a3dc8",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "a-en-ccfa1040fe5e67ae",
+   "label": "ai",
+   "external": 1.0,
+   "external_band": "likely_ai",
+   "veritas": 0.9927,
+   "veritas_band": "likely_ai"
+  },
+  {
+   "id": "h-en-05b4d99f1ed6da3b",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0013,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-a43a4ac15114a916",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0015,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "a-en-2b10fffe8854f0d1",
+   "label": "ai",
+   "external": 1.0,
+   "external_band": "likely_ai",
+   "veritas": 0.9927,
+   "veritas_band": "likely_ai"
+  },
+  {
+   "id": "h-en-94635a5f9e652f42",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0022,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-da0a330319181aa5",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0019,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-36532d489f5e8128",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0023,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-2a3821dc0f20095f",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-2f5b534b5122e7e6",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0019,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "a-en-275265f8e0996c8f",
+   "label": "ai",
+   "external": 1.0,
+   "external_band": "likely_ai",
+   "veritas": 0.9928,
+   "veritas_band": "likely_ai"
+  },
+  {
+   "id": "h-en-203db97ad06617a5",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0027,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-d912dfe338d49299",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0015,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-b0159d583f9c5da3",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0014,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-64bf0801b94148fa",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0019,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-18115f0aaf16c201",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0025,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-1e413739d1d33025",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.01,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-fa78e2ba55df2fe6",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0021,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-561774d9a58debe9",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-a27f01042582af6d",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0015,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-c69ec7ab6977e4dd",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.002,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-ec09f1b4f54d0f72",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0021,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-91cc6cff5214b5f1",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.002,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-54cdf0573b9966b3",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0021,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-1366527d1a4e1c7f",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0014,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-093cf235c1400bd9",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0026,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-4cbb8ddddb4309d7",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-988b5db4fc0c276d",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0016,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "a-en-55ebf4f959655b2c",
+   "label": "ai",
+   "external": 1.0,
+   "external_band": "likely_ai",
+   "veritas": 0.9921,
+   "veritas_band": "likely_ai"
+  },
+  {
+   "id": "h-en-661a670d75b350b0",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0016,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-eb15193bd03cf9ca",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-f4dcb23458542d3e",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0021,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-e1e9602c1a9b6dd9",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.002,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-9ca31e60201a8d04",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0011,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-150fb3b191730437",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0014,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-d97b2e1300c49c9b",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0014,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-13e44b0a21cf478b",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0027,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-b264b3026d0d5063",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0054,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-408fa69039ef74bf",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "a-en-9670a7b5a4858e1b",
+   "label": "ai",
+   "external": 1.0,
+   "external_band": "likely_ai",
+   "veritas": 0.9928,
+   "veritas_band": "likely_ai"
+  },
+  {
+   "id": "h-en-cbb762e8f1d7aa4a",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0016,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "a-en-085a5c3f74b3ad07",
+   "label": "ai",
+   "external": 1.0,
+   "external_band": "likely_ai",
+   "veritas": 0.9942,
+   "veritas_band": "likely_ai"
+  },
+  {
+   "id": "h-en-ecd65c410a9d6aa5",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-21d0423eb7f92178",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0015,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-d0f027d39b5f1e78",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0018,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-1bbd5d54b3be3a51",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.002,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-86c102c0a7c7ad31",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0025,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-2e5b35e9e0e43cf2",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0016,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-538405994a940b04",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.002,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-82aa80f829f94466",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0018,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-21c7b961676ee08a",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0022,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-388872611ce19cb3",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-e1051f2bace73eb7",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0025,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-121aeae7f8bf35bc",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0014,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "a-en-ea170602bfb9a791",
+   "label": "ai",
+   "external": 1.0,
+   "external_band": "likely_ai",
+   "veritas": 0.9932,
+   "veritas_band": "likely_ai"
+  },
+  {
+   "id": "h-en-3c985e082da9ca3e",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0029,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-eb5c9d0bc7bd88b8",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0015,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-3b93f174af45efe2",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-73f56c8237f68f69",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0015,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-e050f565e9e14438",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0018,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-fc995555942b011a",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0013,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-c2ce3cd27b0a7227",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0025,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-e09bd87a375bdcec",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.002,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-eaca8a46215c619a",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0013,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-3e44443a3a43063c",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0026,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-cf9cfa0d2350cb38",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0011,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-1e7be9f99c2c0895",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0012,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "a-en-4cb7f2ae12238fae",
+   "label": "ai",
+   "external": 1.0,
+   "external_band": "likely_ai",
+   "veritas": 0.9933,
+   "veritas_band": "likely_ai"
+  },
+  {
+   "id": "h-en-a72e8b69ae375ba7",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-75bbdadc2edf678c",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-d62a6b34b7767725",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-798d4b9dcf7b5997",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0028,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-6414d02aa9a4fadb",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0015,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-045ffa6ac5357dce",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0019,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-51155458ec91dd69",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-2d2fb727729db386",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.002,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-6598f334bc29f28b",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0018,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-19ec7e12bdf8aa32",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0015,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-501b28546feecf79",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.002,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-66472d057c24bdf3",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0098,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-ed5f76206e4ae29b",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0015,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-52fef13f88b8d91f",
+   "label": "human",
+   "external_error": "ProviderError",
+   "veritas": 0.002,
+   "veritas_band": "likely_human"
+  }
+ ],
+ "stopped_early": "ProviderError: pangram : HTTP 402 sur POST /task",
+ "not_sent": 495,
+ "provider": "pangram",
+ "words": 249503
+}
