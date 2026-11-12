@@ -2,16 +2,17 @@
 # Deux façons de lancer :
 # - à la main (Actions → Run workflow) ;
 # - par un commit sur main qui modifie ml/train/requests/run.json (paramètres dans le fichier).
-# Secrets du dépôt : MODAL_TOKEN_ID, MODAL_TOKEN_SECRET, ANTHROPIC_API_KEY.
+# Secrets du dépôt : MODAL_TOKEN_ID, MODAL_TOKEN_SECRET, ANTHROPIC_API_KEY (corpus),
+# PANGRAM_API_KEY (banc d'essai du fournisseur, étape benchmark).
 name: Entraînement Veritas (Modal)
 
 on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "Étape : all, corpus, train, deploy (application d'inférence)"
+        description: "Étape : all, corpus, train, deploy (inférence), benchmark (fournisseur externe)"
         type: choice
-        options: [all, corpus, train, deploy]
+        options: [all, corpus, train, deploy, benchmark]
         default: all
       run:
         description: "pilot (essai isolé) ou v1 (corpus et modèles 0.1, jeu de test gelé)"
@@ -31,6 +32,17 @@ on:
         description: "Entraîner la couche 2 (GPU)"
         type: boolean
         default: true
+      provider:
+        description: "Benchmark : fournisseur comparé à Veritas"
+        type: choice
+        options: [pangram]
+        default: pangram
+      bench_human:
+        description: "Benchmark : textes humains du jeu de test, par langue"
+        default: "500"
+      bench_ai:
+        description: "Benchmark : textes générés du jeu de test, par langue"
+        default: "100"
   push:
     branches: [main]
     paths: ["ml/train/requests/run.json"]
@@ -65,17 +77,25 @@ jobs:
           IN_TRAIN: ${{ inputs.train_size }}
           IN_TEST: ${{ inputs.test_size }}
           IN_ENCODER: ${{ inputs.use_encoder }}
+          IN_PROVIDER: ${{ inputs.provider }}
+          IN_BENCH_HUMAN: ${{ inputs.bench_human }}
+          IN_BENCH_AI: ${{ inputs.bench_ai }}
         run: |
           if [ "$EVENT" = "push" ]; then
             f=ml/train/requests/run.json
             stage=$(jq -r '.stage' "$f"); run=$(jq -r '.run' "$f")
             languages=$(jq -r '.languages' "$f"); train=$(jq -r '.train_size' "$f")
             test=$(jq -r '.test_size' "$f"); encoder=$(jq -r '.use_encoder' "$f")
+            provider=$(jq -r '.provider // "pangram"' "$f")
+            bench_human=$(jq -r '.bench_human // 500' "$f"); bench_ai=$(jq -r '.bench_ai // 100' "$f")
           else
             stage=$IN_STAGE; run=$IN_RUN; languages=$IN_LANGUAGES
             train=$IN_TRAIN; test=$IN_TEST; encoder=$IN_ENCODER
+            provider=$IN_PROVIDER; bench_human=$IN_BENCH_HUMAN; bench_ai=$IN_BENCH_AI
           fi
-          [[ "$stage" =~ ^(all|corpus|train|deploy)$ ]] || { echo "stage invalide"; exit 1; }
+          [[ "$stage" =~ ^(all|corpus|train|deploy|benchmark)$ ]] || { echo "stage invalide"; exit 1; }
+          [[ "$provider" =~ ^(pangram)$ ]] || { echo "provider invalide"; exit 1; }
+          [[ "$bench_human" =~ ^[0-9]{1,4}$ && "$bench_ai" =~ ^[0-9]{1,4}$ ]] || { echo "tailles du benchmark invalides"; exit 1; }
           [[ "$run" =~ ^(pilot|v1)$ ]] || { echo "run invalide"; exit 1; }
           [[ "$languages" =~ ^(fr|en)(,(fr|en))?$ ]] || { echo "languages invalide"; exit 1; }
           [[ "$train" =~ ^[0-9]{1,5}$ && "$test" =~ ^[0-9]{1,5}$ ]] || { echo "tailles invalides"; exit 1; }
@@ -84,6 +104,7 @@ jobs:
           {
             echo "stage=$stage"; echo "run=$run"; echo "languages=$languages"
             echo "train=$train"; echo "test=$test"; echo "encoder_flag=$flag"
+            echo "provider=$provider"; echo "bench_human=$bench_human"; echo "bench_ai=$bench_ai"
           } >> "$GITHUB_OUTPUT"
           echo "Étape $stage, essai $run, langues $languages, tailles $train / $test, $flag"
 
@@ -94,12 +115,16 @@ jobs:
           HAS_MODAL_ID: ${{ secrets.MODAL_TOKEN_ID != '' }}
           HAS_MODAL_SECRET: ${{ secrets.MODAL_TOKEN_SECRET != '' }}
           HAS_ANTHROPIC: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+          HAS_PANGRAM: ${{ secrets.PANGRAM_API_KEY != '' }}
         run: |
           missing=()
           [ "$HAS_MODAL_ID" = true ] || missing+=(MODAL_TOKEN_ID)
           [ "$HAS_MODAL_SECRET" = true ] || missing+=(MODAL_TOKEN_SECRET)
           if [ "$STAGE" = all ] || [ "$STAGE" = corpus ]; then
             [ "$HAS_ANTHROPIC" = true ] || missing+=(ANTHROPIC_API_KEY)
+          fi
+          if [ "$STAGE" = benchmark ]; then
+            [ "$HAS_PANGRAM" = true ] || missing+=(PANGRAM_API_KEY)
           fi
           if [ ${#missing[@]} -gt 0 ]; then
             echo "::error::Secrets absents du dépôt : ${missing[*]}. Les ajouter dans Settings → Secrets and variables → Actions → Repository secrets."
@@ -116,11 +141,12 @@ jobs:
           RAW_MODAL_ID: ${{ secrets.MODAL_TOKEN_ID }}
           RAW_MODAL_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
           RAW_ANTHROPIC: ${{ secrets.ANTHROPIC_API_KEY }}
+          RAW_PANGRAM: ${{ secrets.PANGRAM_API_KEY }}
         run: |
           clean() { printf '%s' "$1" | tr -d '[:space:]'; }
           id=$(clean "$RAW_MODAL_ID"); secret=$(clean "$RAW_MODAL_SECRET")
-          key=$(clean "$RAW_ANTHROPIC")
-          for v in "$id" "$secret" "$key"; do [ -n "$v" ] && echo "::add-mask::$v"; done
+          key=$(clean "$RAW_ANTHROPIC"); pangram=$(clean "$RAW_PANGRAM")
+          for v in "$id" "$secret" "$key" "$pangram"; do [ -n "$v" ] && echo "::add-mask::$v"; done
           bad=()
           [[ "$id" == ak-* ]] || bad+=("MODAL_TOKEN_ID (doit commencer par ak-)")
           [[ "$secret" == as-* ]] || bad+=("MODAL_TOKEN_SECRET (doit commencer par as-)")
@@ -137,7 +163,7 @@ jobs:
           fi
           {
             echo "MODAL_TOKEN_ID=$id"; echo "MODAL_TOKEN_SECRET=$secret"
-            echo "ANTHROPIC_API_KEY_CLEAN=$key"
+            echo "ANTHROPIC_API_KEY_CLEAN=$key"; echo "PANGRAM_API_KEY_CLEAN=$pangram"
           } >> "$GITHUB_ENV"
           echo "Format des secrets correct."
 
@@ -150,8 +176,28 @@ jobs:
         if: steps.p.outputs.stage == 'all' || steps.p.outputs.stage == 'corpus'
         run: uv run --no-sync modal secret create altydetect-anthropic ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY_CLEAN" --force
 
+      - name: Secret Modal de l'API Pangram
+        if: steps.p.outputs.stage == 'benchmark'
+        run: uv run --no-sync modal secret create altydetect-pangram PANGRAM_API_KEY="$PANGRAM_API_KEY_CLEAN" --force
+
+      # Banc d'essai interne (ADR-0001, condition 2) : fournisseur et Veritas sur un échantillon
+      # du jeu gelé detection-v1. Plafond de mots vérifié avant tout appel au fournisseur.
+      - name: Banc d'essai du fournisseur
+        if: steps.p.outputs.stage == 'benchmark'
+        timeout-minutes: 90
+        env:
+          PYTHONUNBUFFERED: "1"
+          PROVIDER: ${{ steps.p.outputs.provider }}
+          LANGUAGES: ${{ steps.p.outputs.languages }}
+          HUMANS: ${{ steps.p.outputs.bench_human }}
+          AIS: ${{ steps.p.outputs.bench_ai }}
+        run: >-
+          uv run --no-sync modal run ml/eval/detection/provider_benchmark.py
+          --provider "$PROVIDER" --languages "$LANGUAGES" --humans "$HUMANS" --ais "$AIS"
+          --out ml/train/out
+
       - name: Corpus, entraînement, évaluation
-        if: steps.p.outputs.stage != 'deploy'
+        if: steps.p.outputs.stage != 'deploy' && steps.p.outputs.stage != 'benchmark'
         # Coupure de l'étape (et de l'application Modal éphémère) : 120 min pour le pilote (le lot
         # Claude seul peut prendre près d'une heure), 330 min pour v1. Un seul GPU à la fois.
         timeout-minutes: ${{ steps.p.outputs.run == 'pilot' && 120 || 330 }}
@@ -185,18 +231,19 @@ jobs:
       # Sorties de v1 (manifestes, paquets, rapports : aucun texte) poussées sur une branche
       # `ml/sorties-v1-<run>`, d'où une PR les range (jeu de test gelé, fiches des modèles).
       # L'artefact reste disponible 30 jours.
-      - name: Sorties de v1 sur une branche
-        if: always() && steps.p.outputs.run == 'v1' && steps.p.outputs.stage != 'deploy'
+      - name: Sorties sur une branche (v1, benchmark)
+        if: always() && steps.p.outputs.stage != 'deploy' && (steps.p.outputs.run == 'v1' || steps.p.outputs.stage == 'benchmark')
         env:
           RUN_ID: ${{ github.run_id }}
+          KIND: ${{ steps.p.outputs.stage == 'benchmark' && 'benchmark' || 'v1' }}
         run: |
           if [ -z "$(ls -A ml/train/out 2>/dev/null)" ]; then echo "Aucune sortie."; exit 0; fi
           dest="ml/train/runs/$RUN_ID"
           mkdir -p "$dest" && cp -r ml/train/out/. "$dest/"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git switch -c "ml/sorties-v1-$RUN_ID"
+          git switch -c "ml/sorties-$KIND-$RUN_ID"
           git add "$dest"
-          git commit -q -m "ml: sorties du run v1 $RUN_ID (manifestes, paquets, rapports)"
-          git push origin "ml/sorties-v1-$RUN_ID"
-          echo "Sorties poussées sur la branche ml/sorties-v1-$RUN_ID"
+          git commit -q -m "ml: sorties du run $KIND $RUN_ID (sans texte)"
+          git push origin "ml/sorties-$KIND-$RUN_ID"
+          echo "Sorties poussées sur la branche ml/sorties-$KIND-$RUN_ID"

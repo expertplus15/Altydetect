@@ -3,13 +3,14 @@ name = "altydetect-ml-eval"
 version = "0.0.0"
 description = "Jeu de test gelé, benchmark, rapports."
 requires-python = ">=3.12,<3.13"
-dependencies = ["indexa"]
+dependencies = ["indexa", "veritas"]
 
 [tool.uv]
 package = false
 
 [tool.uv.sources]
 indexa = { workspace = true }
+veritas = { workspace = true }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
