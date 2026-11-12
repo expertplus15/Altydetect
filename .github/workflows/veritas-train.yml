@@ -158,13 +158,22 @@ jobs:
             [ "$code" = 200 ] || bad+=("ANTHROPIC_API_KEY refusée par l'API Claude (HTTP $code)")
           fi
           if [ "$STAGE" = benchmark ]; then
-            # Lecture du solde : gratuite, ne consomme ni crédit ni quota (docs.pangram.com).
-            code=$(curl -s -o /tmp/pangram-balance.json -w '%{http_code}' \
-              https://text.external-api.pangram.com/balance -H "x-api-key: $pangram")
+            # Clé vérifiée par la liste des modèles (gratuite, aucune analyse). Le solde (GET
+            # /balance) n'est pas ouvert à tous les comptes : affiché seulement s'il répond.
+            api=https://text.external-api.pangram.com
+            code=$(curl -s -o /tmp/pangram-models.json -w '%{http_code}' "$api/models" \
+              -H "x-api-key: $pangram")
+            if [ "$code" = 200 ]; then
+              echo "Modèles Pangram : $(jq -c '.models' /tmp/pangram-models.json)"
+            else
+              bad+=("PANGRAM_API_KEY refusée par l'API Pangram (GET /models : HTTP $code)")
+            fi
+            code=$(curl -s -o /tmp/pangram-balance.json -w '%{http_code}' "$api/balance" \
+              -H "x-api-key: $pangram")
             if [ "$code" = 200 ]; then
               echo "Crédits Pangram disponibles : $(jq -r '.available_balance_usd' /tmp/pangram-balance.json) USD"
             else
-              bad+=("PANGRAM_API_KEY refusée par l'API Pangram (HTTP $code)")
+              echo "Solde Pangram non disponible par l'API (HTTP $code) : voir le tableau de bord."
             fi
           fi
           if [ ${#bad[@]} -gt 0 ]; then
