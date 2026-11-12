@@ -18,7 +18,7 @@ from veritas.providers.base import (
 )
 from veritas.providers.copyleaks import CopyleaksProvider
 from veritas.providers.gptzero import GPTZeroProvider
-from veritas.providers.pangram import PangramProvider
+from veritas.providers.pangram import DEFAULT_MODEL, PangramProvider
 from veritas.providers.simulated import SimulatedProvider
 
 __all__ = [
@@ -47,7 +47,9 @@ def _simulated(env: Mapping[str, str]) -> DetectionProvider:
 
 
 _FACTORIES: dict[str, Callable[[Mapping[str, str]], DetectionProvider]] = {
-    "pangram": lambda env: PangramProvider(_required(env, "PANGRAM_API_KEY")),
+    "pangram": lambda env: PangramProvider(
+        _required(env, "PANGRAM_API_KEY"), model=env.get("PANGRAM_MODEL") or DEFAULT_MODEL
+    ),
     "copyleaks": lambda env: CopyleaksProvider(
         _required(env, "COPYLEAKS_EMAIL"), _required(env, "COPYLEAKS_API_KEY")
     ),

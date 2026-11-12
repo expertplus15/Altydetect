@@ -157,6 +157,16 @@ jobs:
               -H "x-api-key: $key" -H "anthropic-version: 2023-06-01")
             [ "$code" = 200 ] || bad+=("ANTHROPIC_API_KEY refusée par l'API Claude (HTTP $code)")
           fi
+          if [ "$STAGE" = benchmark ]; then
+            # Lecture du solde : gratuite, ne consomme ni crédit ni quota (docs.pangram.com).
+            code=$(curl -s -o /tmp/pangram-balance.json -w '%{http_code}' \
+              https://text.external-api.pangram.com/balance -H "x-api-key: $pangram")
+            if [ "$code" = 200 ]; then
+              echo "Crédits Pangram disponibles : $(jq -r '.available_balance_usd' /tmp/pangram-balance.json) USD"
+            else
+              bad+=("PANGRAM_API_KEY refusée par l'API Pangram (HTTP $code)")
+            fi
+          fi
           if [ ${#bad[@]} -gt 0 ]; then
             for b in "${bad[@]}"; do echo "::error::Secret refusé ou mal formé : $b"; done
             exit 1
@@ -195,6 +205,14 @@ jobs:
           uv run --no-sync modal run ml/eval/detection/provider_benchmark.py
           --provider "$PROVIDER" --languages "$LANGUAGES" --humans "$HUMANS" --ais "$AIS"
           --out ml/train/out
+
+      - name: Consommation Pangram (mois en cours) et solde
+        if: always() && steps.p.outputs.stage == 'benchmark'
+        run: |
+          for path in usage balance; do
+            curl -s "https://text.external-api.pangram.com/$path" -H "x-api-key: $PANGRAM_API_KEY_CLEAN" \
+              | jq -c '{month, total_requests, total_cost_usd, available_balance_usd} | with_entries(select(.value != null))' || true
+          done
 
       - name: Corpus, entraînement, évaluation
         if: steps.p.outputs.stage != 'deploy' && steps.p.outputs.stage != 'benchmark'

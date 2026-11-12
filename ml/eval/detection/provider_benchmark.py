@@ -11,6 +11,7 @@ Lancement : workflow « Entraînement Veritas », étape `benchmark` (ml/train/r
 
 import json
 import random
+import threading
 import time
 from collections.abc import Callable, Sequence
 from concurrent.futures import ThreadPoolExecutor
@@ -30,6 +31,37 @@ REPO = Path(__file__).resolve().parents[3] if modal.is_local() else Path("/root"
 
 class Detector(Protocol):
     def detect(self, text: str, language: str) -> Any: ...
+
+
+class Throttle:
+    """Espace les appels au fournisseur d'au moins `interval` secondes (tous fils confondus)."""
+
+    def __init__(
+        self,
+        interval: float,
+        clock: Callable[[], float] = time.monotonic,
+        sleep: Callable[[float], None] = time.sleep,
+    ) -> None:
+        self.interval = interval
+        self._clock, self._sleep = clock, sleep
+        self._lock = threading.Lock()
+        self._next = 0.0
+
+    def __call__(self) -> None:
+        with self._lock:
+            now = self._clock()
+            wait = max(0.0, self._next - now)
+            self._next = max(now, self._next) + self.interval
+        if wait:
+            self._sleep(wait)
+
+
+def pangram_interval(qps_limit: float | None, parallel: int) -> float:
+    """Intervalle entre deux tâches pour une langue : la limite du compte (GET /limits) est
+    partagée entre les langues traitées en parallèle, avec 25 % de marge."""
+    if not qps_limit or qps_limit <= 0:
+        return 0.5
+    return round(parallel / qps_limit * 1.25, 3)
 
 
 def sample(
@@ -53,12 +85,14 @@ def compare(
     score: Callable[[Any, str, str], Any],
     workers: int = 2,
     log: Callable[[str], None] = print,
+    throttle: Callable[[], None] = lambda: None,
 ) -> dict[str, Any]:
     """Note chaque document par les deux moteurs. `score(raw, text, language)` renvoie un
     `Scored` (veritas.scoring). Un échec du fournisseur est compté, pas réessayé."""
 
     def external_one(document: dict[str, Any]) -> Any:
         try:
+            throttle()
             return score(external.detect(document["text"], language), document["text"], language)
         except Exception as error:  # échec compté : jamais de nouvel appel payant
             return error
@@ -153,10 +187,11 @@ app = modal.App("altydetect-provider-benchmark", image=image)
     secrets=[modal.Secret.from_name("altydetect-pangram")],
 )
 def benchmark(
-    provider: str, language: str, humans: int, ais: int, max_words: int
+    provider: str, language: str, humans: int, ais: int, max_words: int, parallel: int
 ) -> dict[str, Any]:
     import os
 
+    import httpx2
     from veritas.engine.model import VeritasModels
     from veritas.providers import provider_from_name
     from veritas.scoring import score
@@ -175,6 +210,18 @@ def benchmark(
         raise RuntimeError(f"{language} : {words} mots, au-delà du plafond de {max_words}")
     log(f"{language} : {len(chosen)} textes, {words} mots envoyés au fournisseur")
     thresholds = thresholds_config().get()
+    # Limite de requêtes du compte (lecture gratuite), partagée entre les langues.
+    qps = None
+    if provider == "pangram":
+        response = httpx2.get(
+            "https://text.external-api.pangram.com/limits",
+            headers={"x-api-key": os.environ["PANGRAM_API_KEY"]},
+            timeout=30.0,
+        )
+        response.raise_for_status()
+        qps = response.json().get("qps_limit")
+    interval = pangram_interval(qps, parallel)
+    log(f"{language} : limite du compte {qps} req/s, une tâche toutes les {interval} s")
     report = compare(
         chosen,
         language,
@@ -182,6 +229,7 @@ def benchmark(
         VeritasModels.load("/root/models"),
         lambda raw, text, lang: score(raw, text, lang, thresholds),
         log=log,
+        throttle=Throttle(interval),
     )
     report["provider"] = provider
     report["words"] = words
@@ -206,7 +254,9 @@ def main(
     out_dir.mkdir(parents=True, exist_ok=True)
     # Plafond réparti entre les langues, vérifié sur les mots réels avant tout appel.
     per_language = max_words // len(langs)
-    reports = benchmark.starmap([(provider, lang, humans, ais, per_language) for lang in langs])
+    reports = benchmark.starmap(
+        [(provider, lang, humans, ais, per_language, len(langs)) for lang in langs]
+    )
     for lang, report in zip(langs, reports, strict=True):
         (out_dir / f"benchmark-{provider}-detection-v1-{lang}.json").write_text(
             json.dumps(report, indent=1) + "\n", encoding="utf-8"
