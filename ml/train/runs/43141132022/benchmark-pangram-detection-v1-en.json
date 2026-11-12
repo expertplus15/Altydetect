@@ -1,0 +1,310 @@
+{
+ "language": "en",
+ "documents": {
+  "human": 32,
+  "ai": 0
+ },
+ "errors": {
+  "external": 1,
+  "veritas": 0
+ },
+ "external": {
+  "documents": {
+   "ai": 0,
+   "human": 31
+  },
+  "precision": 0.0,
+  "recall": 0.0,
+  "false_positive_rate": 0.0,
+  "undetermined_rate": {
+   "ai": 0.0,
+   "human": 0.0
+  },
+  "auroc": NaN,
+  "threshold_for_1pct_fpr": 1e-06,
+  "gate_false_positives_passed": true
+ },
+ "veritas": {
+  "documents": {
+   "ai": 0,
+   "human": 32
+  },
+  "precision": 0.0,
+  "recall": 0.0,
+  "false_positive_rate": 0.0,
+  "undetermined_rate": {
+   "ai": 0.0,
+   "human": 0.0
+  },
+  "auroc": NaN,
+  "threshold_for_1pct_fpr": 0.0041010000000000005,
+  "gate_false_positives_passed": true
+ },
+ "agreement": {
+  "all": 1.0,
+  "human": 1.0,
+  "ai": null,
+  "compared": 31
+ },
+ "records": [
+  {
+   "id": "h-en-dbf3ea49dcba57ef",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0016,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-63881651dd73408b",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0022,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-c6bc2774a99d8a69",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0014,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-e7e6ca84bed30b7f",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0016,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-6a2b43859ffbabd7",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0041,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-09ef281477497b8e",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0018,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-43f52e547af4fb74",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0024,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-fa78e2ba55df2fe6",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0021,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-804c39d903e4168d",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0014,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-798d4b9dcf7b5997",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0028,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-66dbdd29b8af6464",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0017,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-ed917361855196dd",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0014,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-ccfa1040fe5e67ae",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0026,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-d87773994949c34f",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0019,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-4d2955a67f2b5356",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0018,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-774d48d42e186d9f",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0041,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-5cc150c858408782",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0023,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-96ea8a7b0e5726d0",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0016,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-e85b4eba1ada9a90",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0022,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-eb5c9d0bc7bd88b8",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0015,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-3b4a7efaae65466b",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.002,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-7de4eabfea88c1e2",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.002,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-22b99c63fb524c26",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0014,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-48f114d224f35f1d",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0019,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-23054532a5b947a5",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0014,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-c620f1409c0761a4",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0015,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-199c4fdc7db45049",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0014,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-9e91ddfb020c5048",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0019,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-d0f027d39b5f1e78",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0018,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-424336bafd22c4fe",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0021,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-ebe50b6f74823f18",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0015,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-en-86c102c0a7c7ad31",
+   "label": "human",
+   "external_error": "ProviderError",
+   "veritas": 0.0025,
+   "veritas_band": "likely_human"
+  }
+ ],
+ "stopped_early": "ProviderError: pangram : HTTP 402 sur POST /task",
+ "not_sent": 568,
+ "provider": "pangram",
+ "words": 249503
+}

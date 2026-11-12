@@ -1,0 +1,334 @@
+{
+ "language": "fr",
+ "documents": {
+  "human": 35,
+  "ai": 0
+ },
+ "errors": {
+  "external": 1,
+  "veritas": 0
+ },
+ "external": {
+  "documents": {
+   "ai": 0,
+   "human": 34
+  },
+  "precision": 0.0,
+  "recall": 0.0,
+  "false_positive_rate": 0.0,
+  "undetermined_rate": {
+   "ai": 0.0,
+   "human": 0.0
+  },
+  "auroc": NaN,
+  "threshold_for_1pct_fpr": 1e-06,
+  "gate_false_positives_passed": true
+ },
+ "veritas": {
+  "documents": {
+   "ai": 0,
+   "human": 35
+  },
+  "precision": 0.0,
+  "recall": 0.0,
+  "false_positive_rate": 0.0,
+  "undetermined_rate": {
+   "ai": 0.0,
+   "human": 0.02857142857142857
+  },
+  "auroc": NaN,
+  "threshold_for_1pct_fpr": 0.454501,
+  "gate_false_positives_passed": true
+ },
+ "agreement": {
+  "all": 1.0,
+  "human": 1.0,
+  "ai": null,
+  "compared": 34
+ },
+ "records": [
+  {
+   "id": "h-fr-df3791ce72f7053c",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-67a700c6a207de49",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-c9867279221e0dcc",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-ebc626081907b552",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-6ff1f92d171ca160",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-0c0057f3bd8da242",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-48decb81660ab8e7",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-fe058942d5ccbf2a",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-86e6fe634790059c",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-7f9ebe8a57e186e2",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-6d1933a9475c9f91",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-f39ba95ae66ef8c8",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-cf4ea00c6e85655e",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-dbb7f0c0a7c6733e",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-54a5e305feb66310",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-7d593885e63962c9",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-6171c958942efffc",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-99fcfaf1e44f9319",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-ec378422ae86eaf3",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-f0cc426fab9efb8a",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-3df9686a5304192e",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-84ed7d889b9a775f",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-290138881500d725",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-5006e70eb8d5b3d7",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-293c853a14b1d02e",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-c8cf66bdede64249",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-1c3317d095c91f4b",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-a45def21ba001cf4",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-d45d626c113efc5a",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-4734dd3b32ea2df7",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-f13615f67dec2d98",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-8a44939f666312c8",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-bd5b8b399aefcf55",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-d69e650e077695dd",
+   "label": "human",
+   "external": 0.0,
+   "external_band": "likely_human",
+   "veritas": 0.0,
+   "veritas_band": "likely_human"
+  },
+  {
+   "id": "h-fr-9fe31158b6c9a26c",
+   "label": "human",
+   "external_error": "ProviderError",
+   "veritas": 0.4545,
+   "veritas_band": "undetermined"
+  }
+ ],
+ "stopped_early": "ProviderError: pangram : HTTP 402 sur POST /task",
+ "not_sent": 565,
+ "provider": "pangram",
+ "words": 237344
+}
