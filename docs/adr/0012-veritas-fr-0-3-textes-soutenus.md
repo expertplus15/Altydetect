@@ -41,8 +41,7 @@ soutenu = humain ») et laisserait passer les textes générés soignés.
 - **Wikipédia exclue** : elle reste la mesure indépendante du registre encyclopédique dans
   `detection-v2`. L'entraîner dessus fausserait cette mesure.
 - **Écartées** : fiches service-public.fr (versions de 2025, rédaction possiblement assistée,
-  pas de date d'écriture) ; débats parlementaires disponibles sans date ; livres du domaine
-  public (orthographe et style anciens, autre biais).
+  pas de date d'écriture) ; débats parlementaires disponibles sans date .
 - **Vérifié le 13/11/2026** (métadonnées seulement) : un fichier sur 350 de French Science
   Commons compte 97 000 pages, dont 80 % en français, toutes sous CC BY, CC BY-SA, CC0,
   Licence ouverte ou domaine public, environ la moitié publiées avant 2023 ; les sources
@@ -53,6 +52,9 @@ soutenu = humain ») et laisserait passer les textes générés soignés.
   examinés, 1 955 autorisent l'usage commercial, dont 1 381 PDF de Wikipédia (exclue) ; le
   reste est hétérogène (numérisations, magazines, bandes dessinées) et la licence est déclarée
   par la personne qui a déposé le fichier, sans contrôle.
+- **Livres du domaine public écartés** (décision du 13/11/2026) : libres de droits, mais écrits
+  avant les années 1950 ; un français ancien créerait un autre biais (« style ancien =
+  humain ») sans rapprocher le corpus des textes que vérifient les utilisateurs.
 - **Nettoyage** : French Science Commons est issu d'une reconnaissance de PDF en Markdown.
   Seuls les paragraphes de prose sont gardés (pas de titres, tableaux, formules, références,
   notes, césures). Sinon le modèle apprendrait « bruit de numérisation = humain ». Mêmes
@@ -81,8 +83,10 @@ Le reste du corpus 0.2 français (12 697 documents) est repris tel quel.
 
 ### Entraînement
 
-Mêmes réglages que 0.2 (ADR-0011). Préparation des passages sur CPU avant de réserver le GPU :
-le run 0.2 a perdu ≈ 30 min de L4 par langue à cette étape.
+Mêmes réglages que 0.2 (ADR-0011). En 0.2, 31 min se sont écoulées entre le lancement et la
+fin de la préparation des passages, pour les deux langues à la fois : la cause (préparation,
+démarrage du conteneur ou attente d'un GPU) sera mesurée ; la préparation passera sur CPU si
+c'est elle.
 
 ### Portes de sortie
 
