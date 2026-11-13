@@ -2,6 +2,17 @@
 
 ## 2026-11-13
 
+- **Corpus 0.2** (`ml/corpus/manifests/veritas-0.2`, run 43366022743) : corpus v1 inclus,
+  plus des textes de modèles ouverts (Qwen2.5-7B, Mistral-7B v0.3, Granite-3.3-8B ; OLMo-2-7B
+  en anglais), des reformulations et des textes mixtes ; 12 697 documents (FR), 12 761 (EN).
+  Phi-3.5-mini tenu à l'écart. ADR-0011.
+- **VRT-DET-EN-0.2** (run 43425145321) : toutes les portes d'ADR-0011 franchies. Faux
+  positifs 0,2 % sur detection-v1, 0 % sur les 400 textes humains de detection-v2 ; 100 %
+  « Probablement IA » sur Qwen, Mistral, Phi (jamais vu) et Claude. Retenu pour remplacer
+  VRT-DET-EN-0.1 en mode fantôme. Fiche : `VRT-DET-EN-0.2.md`.
+- **VRT-DET-FR-0.2** (même run) : non retenu. Rappel de 99,7 à 100 % sur tous les
+  générateurs, mais faux positifs 3,7 % (2,5 % sur detection-v1, 8 % sur Wikipédia) au-dessus
+  de la porte de 1 %. VRT-DET-FR-0.1 reste en place. Fiche : `VRT-DET-FR-0.2.md`.
 - **Jeu de test `detection-v2`** (`ml/eval/testset/detection-v2`) : test de robustesse, par
   langue, 300 extraits Wikipédia de mars 2022, 100 textes humains et 100 textes de Claude
   courts (150 à 200 mots), 90 à 100 textes par modèle ouvert (Qwen2.5-7B, Mistral-7B v0.3,

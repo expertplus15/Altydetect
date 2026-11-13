@@ -1,6 +1,6 @@
 # ADR-0011 — Entraînement de Veritas 0.2 : plusieurs générateurs, calibrage moins tranché
 
-- **Statut** : proposé
+- **Statut** : accepté (portes validées le 13/11/2026 ; résultats et décision ci-dessous)
 - **Date** : 2026-11-13
 - **Décideurs** : équipe AltyDetect
 
@@ -62,7 +62,7 @@ une fois le corpus vérifié, `stage: train, run: v2`. Chaque étape tient sous 
 330 min.
 
 **Portes de sortie** (`GATES` dans `corpus_v2.py`), par langue, seuils de production —
-**proposées, à valider** :
+**validées le 13/11/2026** :
 
 | Porte                                                      | Seuil  |
 | ---------------------------------------------------------- | ------ |
@@ -101,6 +101,33 @@ Calcul : 64 lots, 3 h 11 de bout en bout, ≈ 20 h de GPU L4 d'après le journal
 ≈ 16 $ (au-dessus de l'estimation de 12 à 14 $, sous le plafond de 25 $). Écart : Granite et
 OLMo, plus lents que prévu, ont souvent manqué de mémoire GPU sur les longues réponses
 (paquets coupés en deux, aucun lot perdu).
+
+## Résultats de l'entraînement (run 43425145321, 13/11/2026)
+
+Fiches : `docs/models/VRT-DET-EN-0.2.md`, `docs/models/VRT-DET-FR-0.2.md` ; rapports dans
+`docs/models/reports/`. 1 h 32 de bout en bout, ≈ 2,4 h de GPU L4 (≈ 2 $).
+
+| Porte                                    | FR 0.2    | EN 0.2  |
+| ---------------------------------------- | --------- | ------- |
+| Faux positifs ≤ 1 %                      | **3,7 %** | 0,14 %  |
+| Rappel sur Claude ≥ 95 %                 | 100 %     | 100 %   |
+| Rappel sur les générateurs vus ≥ 80 %    | 99,7 %    | 100 %   |
+| Rappel sur Phi-3.5-mini (inconnu) ≥ 60 % | 100 %     | 100 %   |
+| **Toutes franchies**                     | **non**   | **oui** |
+
+**Décision** :
+
+- **Anglais** : VRT-DET-EN-0.2 remplace VRT-DET-EN-0.1 en mode fantôme (paquet et couche 2 dans
+  une PR à part). Servir seul reste soumis à la porte d'accord de la phase 3 (ADR-0010).
+- **Français** : VRT-DET-FR-0.1 reste en mode fantôme. VRT-DET-FR-0.2 reconnaît tous les
+  générateurs mesurés mais classe « Probablement IA » 8 % des extraits Wikipédia et 2,5 % des
+  pages mC4 du jeu de test. Pas de relèvement du seuil choisi sur le jeu de test. Une version
+  0.3 avec des textes humains plus variés (registre soutenu) fera l'objet d'un nouvel ADR.
+- Les scores de 100 % restent à confirmer hors laboratoire (jeux produits comme le corpus).
+- La zone « Indéterminé » reste presque vide : objectif de calibrage non atteint, à reprendre
+  en 0.3.
+- Le run a passé ≈ 30 min par langue sur GPU à préparer les passages avant d'entraîner : à
+  faire sur CPU en 0.3.
 
 ## Conséquences
 

@@ -1,0 +1,58 @@
+{
+  "reference": "VRT-DET-EN-0.2",
+  "testset": "detection-v1/en",
+  "sizes": {
+    "train": 11485,
+    "calibration": 1276,
+    "test": 2000
+  },
+  "metrics": {
+    "documents": {
+      "ai": 1000,
+      "human": 1000
+    },
+    "precision": 0.998003992015968,
+    "recall": 1.0,
+    "false_positive_rate": 0.002,
+    "undetermined_rate": {
+      "ai": 0.0,
+      "human": 0.0
+    },
+    "auroc": 0.999337,
+    "threshold_for_1pct_fpr": 0.0010628751155092812,
+    "gate_false_positives_passed": true
+  },
+  "latency_seconds_per_document_gpu": 0.2188,
+  "encoder": {
+    "base_model": "microsoft/deberta-v3-base",
+    "steps": 3684,
+    "final_loss": 0.2153712846338749,
+    "label_smoothing": 0.1,
+    "balanced": true
+  },
+  "thresholds": {
+    "likely_ai": 0.7,
+    "likely_human": 0.3
+  },
+  "gates": {
+    "gates": {
+      "max_false_positive_rate": 0.01,
+      "min_recall_claude": 0.95,
+      "min_recall_seen": 0.8,
+      "min_recall_unseen": 0.6
+    },
+    "measured": {
+      "false_positive_rate": 0.0014,
+      "recall_claude": 1.0,
+      "recall_seen": 1.0,
+      "recall_unseen": 1.0
+    },
+    "checks": {
+      "false_positive_rate": true,
+      "recall_claude": true,
+      "recall_seen": true,
+      "recall_unseen": true
+    },
+    "passed": true
+  }
+}
