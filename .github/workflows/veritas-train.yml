@@ -15,9 +15,9 @@ on:
         options: [all, corpus, train, deploy, benchmark, robustness]
         default: all
       run:
-        description: "pilot (essai isolé) ou v1 (corpus et modèles 0.1, jeu de test gelé)"
+        description: "pilot (essai isolé), v1 (modèles 0.1) ou v2 (modèles 0.2, ADR-0011)"
         type: choice
-        options: [pilot, v1]
+        options: [pilot, v1, v2]
         default: pilot
       languages:
         description: "Langues, séparées par des virgules"
@@ -96,7 +96,7 @@ jobs:
           [[ "$stage" =~ ^(all|corpus|train|deploy|benchmark|robustness)$ ]] || { echo "stage invalide"; exit 1; }
           [[ "$provider" =~ ^(pangram)$ ]] || { echo "provider invalide"; exit 1; }
           [[ "$bench_human" =~ ^[0-9]{1,4}$ && "$bench_ai" =~ ^[0-9]{1,4}$ ]] || { echo "tailles du benchmark invalides"; exit 1; }
-          [[ "$run" =~ ^(pilot|v1)$ ]] || { echo "run invalide"; exit 1; }
+          [[ "$run" =~ ^(pilot|v1|v2)$ ]] || { echo "run invalide"; exit 1; }
           [[ "$languages" =~ ^(fr|en)(,(fr|en))?$ ]] || { echo "languages invalide"; exit 1; }
           [[ "$train" =~ ^[0-9]{1,5}$ && "$test" =~ ^[0-9]{1,5}$ ]] || { echo "tailles invalides"; exit 1; }
           [[ "$encoder" =~ ^(true|false)$ ]] || { echo "use_encoder invalide"; exit 1; }
@@ -238,7 +238,8 @@ jobs:
       - name: Corpus, entraînement, évaluation
         if: steps.p.outputs.stage != 'deploy' && steps.p.outputs.stage != 'benchmark' && steps.p.outputs.stage != 'robustness'
         # Coupure de l'étape (et de l'application Modal éphémère) : 120 min pour le pilote (le lot
-        # Claude seul peut prendre près d'une heure), 330 min pour v1. Un seul GPU à la fois.
+        # Claude seul peut prendre près d'une heure), 330 min pour v1 et v2. v1 : un seul GPU à la
+        # fois ; v2 : génération sur 8 GPU L4 au plus, puis deux entraînements en parallèle.
         timeout-minutes: ${{ steps.p.outputs.run == 'pilot' && 120 || 330 }}
         env:
           # Suivi visible au fil de l'eau (sans cela, la sortie Python reste en mémoire tampon).
@@ -267,14 +268,14 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
-      # Sorties de v1 (manifestes, paquets, rapports : aucun texte) poussées sur une branche
-      # `ml/sorties-v1-<run>`, d'où une PR les range (jeu de test gelé, fiches des modèles).
+      # Sorties de v1 et v2 (manifestes, paquets, rapports : aucun texte) poussées sur une branche
+      # `ml/sorties-<v1|v2>-<run>`, d'où une PR les range (jeu de test gelé, fiches des modèles).
       # L'artefact reste disponible 30 jours.
-      - name: Sorties sur une branche (v1, benchmark, robustness)
-        if: always() && steps.p.outputs.stage != 'deploy' && (steps.p.outputs.run == 'v1' || steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness')
+      - name: Sorties sur une branche (v1, v2, benchmark, robustness)
+        if: always() && steps.p.outputs.stage != 'deploy' && (steps.p.outputs.run == 'v1' || steps.p.outputs.run == 'v2' || steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness')
         env:
           RUN_ID: ${{ github.run_id }}
-          KIND: ${{ (steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness') && steps.p.outputs.stage || 'v1' }}
+          KIND: ${{ (steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness') && steps.p.outputs.stage || steps.p.outputs.run }}
         run: |
           if [ -z "$(ls -A ml/train/out 2>/dev/null)" ]; then echo "Aucune sortie."; exit 0; fi
           dest="ml/train/runs/$RUN_ID"

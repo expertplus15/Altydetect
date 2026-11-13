@@ -14,6 +14,11 @@ MANIFEST_FIELDS = (
     "paired_with",
     "licence",
     "split",
+    # Veritas 0.2 : textes de modèles ouverts, reformulations et textes mixtes.
+    "category",
+    "generator",
+    "derived_from",
+    "ai_starts_at",
 )
 
 

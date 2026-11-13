@@ -347,15 +347,12 @@ def prefetch(model_key: str) -> None:
     _log(f"{model_key} : poids en cache")
 
 
-@app.function(gpu="L4", volumes={HF_CACHE: hf_volume}, timeout=60 * 60, max_containers=MAX_GPUS)
-def generate(
-    chunk: str, model_key: str, prompts: list[str], max_tokens: list[int]
-) -> tuple[str, list[str]]:
-    """Génère une réponse par consigne d'un lot, par paquets de 16 (triés par longueur)."""
+def generate_texts(chunk: str, name: str, prompts: list[str], max_tokens: list[int]) -> list[str]:
+    """Une réponse par consigne, par paquets de 16 triés par longueur, sur le GPU du conteneur.
+    Partagé avec l'entraînement (ml/train/pipeline.py, corpus de Veritas 0.2)."""
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    name = GENERATORS[model_key]
     _log(f"{chunk} : chargement de {name}, {len(prompts)} consignes")
     tokenizer = AutoTokenizer.from_pretrained(name, padding_side="left")
     if tokenizer.pad_token is None:
@@ -403,7 +400,15 @@ def generate(
         for i, text in zip(batch, texts, strict=True):
             outputs[i] = text
         _log(f"{chunk} : {min(start + 16, len(order))}/{len(order)}")
-    return chunk, outputs
+    return outputs
+
+
+@app.function(gpu="L4", volumes={HF_CACHE: hf_volume}, timeout=60 * 60, max_containers=MAX_GPUS)
+def generate(
+    chunk: str, model_key: str, prompts: list[str], max_tokens: list[int]
+) -> tuple[str, list[str]]:
+    """Génère une réponse par consigne d'un lot."""
+    return chunk, generate_texts(chunk, GENERATORS[model_key], prompts, max_tokens)
 
 
 @app.function(volumes={CORPUS: corpus_volume}, timeout=45 * 60, cpu=2, memory=8192)
