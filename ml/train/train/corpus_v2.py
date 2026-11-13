@@ -147,7 +147,7 @@ def mixed_documents(
     return out
 
 
-# Portes de sortie de Veritas 0.2, proposées le 13/11/2026 (ADR-0011) : À VALIDER.
+# Portes de sortie de Veritas 0.2, validées le 13/11/2026 (ADR-0011).
 # Mesurées avec les seuils de production (thresholds.yaml), par langue.
 GATES = {
     # Faux positifs sur tous les textes humains (detection-v1 et detection-v2) : porte du PRD.
