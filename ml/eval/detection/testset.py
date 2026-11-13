@@ -1,4 +1,6 @@
-"""Jeu de test gelé `detection-v1` et manifestes du corpus de Veritas 0.1 (ADR-0009).
+"""Jeux de test gelés `detection-v1` et `detection-v2`, manifestes du corpus de Veritas 0.1.
+
+`detection-v1` (ADR-0009) :
 
 Construit à partir des sorties du run v1 (manifestes sans texte : identifiant, empreinte,
 source, URL, licence, partition) :
@@ -10,6 +12,12 @@ Les textes restent dans le volume Modal `altydetect-veritas-corpus` ; ils ne son
 commités.
 
     uv run --no-sync python -m detection.testset <dossier du run> --created AAAA-MM-JJ
+
+`detection-v2` (test de robustesse, `detection/robustness.py`) : manifestes sans texte des
+huit catégories, gelés dans `ml/eval/testset/detection-v2/` ; jamais utilisés à
+l'entraînement, ni directement ni par leurs sources.
+
+    uv run --no-sync python -m detection.testset <dossier du run> --created AAAA-MM-JJ --v2
 """
 
 import argparse
@@ -99,12 +107,83 @@ def verify_frozen() -> dict[str, Any]:
     return manifest
 
 
+V2 = "detection-v2"
+V2_DIR = REPO / "ml/eval/testset" / V2
+V2_LICENCE = (
+    "Wikipédia : CC BY-SA 3.0 (legacy-datasets/wikipedia 20220301) ; textes courts et mixtes "
+    "dérivés de detection-v1 ; textes générés : Qwen2.5-7B-Instruct et "
+    "Mistral-7B-Instruct-v0.3 (Apache-2.0), Phi-3.5-mini-instruct (MIT)"
+)
+
+
+def freeze_v2(run_dir: Path, created: str, run_id: str) -> dict[str, Any]:
+    """Gèle les manifestes de detection-v2 produits par le test de robustesse."""
+    if (V2_DIR / "MANIFEST.json").exists():
+        raise RuntimeError(f"{V2} est gelé : créer une nouvelle version du jeu de test")
+    V2_DIR.mkdir(parents=True, exist_ok=True)
+    counts: dict[str, dict[str, int]] = {}
+    files: dict[str, str] = {}
+    for language in LANGUAGES:
+        entries = _read_jsonl(run_dir / f"{V2}-{language}.jsonl")
+        if any("text" in e for e in entries):
+            raise ValueError(f"{language} : un manifeste ne doit contenir aucun texte")
+        entries.sort(key=lambda e: e["id"])
+        (V2_DIR / f"{language}.jsonl").write_text(_jsonl(entries), encoding="utf-8")
+        files[f"{language}.jsonl"] = _sha256(V2_DIR / f"{language}.jsonl")
+        counts[language] = dict(sorted(Counter(e["category"] for e in entries).items()))
+    manifest = {
+        "version": V2,
+        "created": created,
+        "run": run_id,
+        "licence": V2_LICENCE,
+        "generator": "ml/eval/detection/robustness.py",
+        "documents": counts,
+        "files": files,
+    }
+    (V2_DIR / "MANIFEST.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    return manifest
+
+
+def verify_frozen_v2() -> dict[str, Any]:
+    """Empreintes de detection-v2, absence de texte, et aucun recouvrement avec le corpus
+    d'entraînement de Veritas 0.1 : ni document commun, ni source tirée de ce corpus."""
+    manifest: dict[str, Any] = json.loads((V2_DIR / "MANIFEST.json").read_text(encoding="utf-8"))
+    for name, digest in manifest["files"].items():
+        if _sha256(V2_DIR / name) != digest:
+            raise AssertionError(f"{V2}/{name} modifié : le jeu de test est gelé")
+    for language in LANGUAGES:
+        entries = _read_jsonl(V2_DIR / f"{language}.jsonl")
+        corpus = _read_jsonl(CORPUS_DIR / f"{language}.jsonl")
+        test_ids = {e["id"] for e in _read_jsonl(TESTSET_DIR / f"{language}.jsonl")}
+        if any("text" in e for e in entries):
+            raise AssertionError(f"{language} : texte présent dans un manifeste")
+        shared = {e["sha256"] for e in entries} & {e["sha256"] for e in corpus}
+        if shared:
+            raise AssertionError(f"{language} : {len(shared)} documents communs avec le corpus")
+        for e in entries:
+            sources = e.get("derived_from")
+            for source in sources if isinstance(sources, list) else [sources] if sources else []:
+                if source not in test_ids:
+                    raise AssertionError(f"{e['id']} : source hors de detection-v1 (test)")
+        counts = dict(sorted(Counter(e["category"] for e in entries).items()))
+        if counts != manifest["documents"][language]:
+            raise AssertionError(f"{language} : effectifs différents du manifeste")
+    return manifest
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("run_dir", type=Path)
     parser.add_argument("--created", required=True)
     parser.add_argument("--run-id", required=True)
+    parser.add_argument("--v2", action="store_true", help="geler detection-v2")
     args = parser.parse_args()
+    if args.v2:
+        print(json.dumps(freeze_v2(args.run_dir, args.created, args.run_id), indent=2))
+        verify_frozen_v2()
+        return
     print(json.dumps(freeze(args.run_dir, args.created, args.run_id), indent=2))
     verify_frozen()
 

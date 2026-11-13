@@ -5,8 +5,10 @@
 - **Run** : [42928107614](https://github.com/expertplus15/Altydetect/actions/runs/42928107614) (ADR-0009)
 - **Paquet** : `services/veritas/models/en/manifest.json` (poids de l'encodeur dans le
   volume Modal `altydetect-veritas-models`, jamais dans le dépôt)
-- **Jeu de test** : `ml/eval/testset/detection-v1/en.jsonl` (gelé)
-- **Rapport** : `docs/models/reports/detection-v1-VRT-DET-EN-0.1.json`
+- **Jeux de test** : `ml/eval/testset/detection-v1/en.jsonl`,
+  `ml/eval/testset/detection-v2/en.jsonl` (robustesse), gelés
+- **Rapports** : `docs/models/reports/detection-v1-VRT-DET-EN-0.1.json`,
+  `docs/models/reports/robustness-detection-v2-VRT-DET-EN-0.1.json`
 - **Voir aussi** : `VRT-DET-FR-0.1.md`
 
 ## Méthode (ADR-0008)
@@ -44,14 +46,56 @@ Manifestes sans texte : `ml/corpus/manifests/veritas-0.1/`.
 
 **Porte faux positifs** (< 1 %) : franchie sur ce jeu.
 
+## Robustesse sur detection-v2 (2026-11-13)
+
+Jeu gelé `ml/eval/testset/detection-v2/en.jsonl`, run
+[43356145940](https://github.com/expertplus15/Altydetect/actions/runs/43356145940), rapport
+`docs/models/reports/robustness-detection-v2-VRT-DET-EN-0.1.json`. Aucun de ces textes ni de
+leurs sources n'a servi à l'entraînement. Mêmes seuils que la production (0,70 / 0,30).
+
+| Catégorie                         | Textes | « Probablement IA » | « Indéterminé » | « Probablement humain » |
+| --------------------------------- | ------ | ------------------- | --------------- | ----------------------- |
+| Humains : Wikipédia (mars 2022)   | 300    | **0 %**             | 0 %             | 100 %                   |
+| Humains : courts (150-200 mots)   | 100    | **0 %**             | 0 %             | 100 %                   |
+| Claude : courts (150-200 mots)    | 100    | **99 %**            | 0 %             | 1 %                     |
+| Claude reformulé par Mistral      | 100    | **100 %**           | 0 %             | 0 %                     |
+| Qwen2.5-7B-Instruct               | 96     | **5 %**             | 3 %             | 92 %                    |
+| Mistral-7B-Instruct-v0.3          | 100    | **4 %**             | 2 %             | 94 %                    |
+| Phi-3.5-mini-instruct             | 100    | **19 %**            | 4 %             | 77 %                    |
+| Mixtes (début humain, fin Claude) | 100    | 15 %                | 5 %             | 80 %                    |
+
+Faux positifs : **0 %** sur 400 textes humains. Rappel sur
+l'ensemble des textes générés : **46 %** (496 textes).
+
+Lecture :
+
+- **Aucun faux positif** sur 400 textes humains jamais vus (Wikipédia d'avant les assistants,
+  textes courts) : la promesse de prudence tient.
+- **Claude est reconnu** même sur 150 à 200 mots (99 %) et reformulé par un autre modèle
+  (100 %).
+- **Les autres modèles ne le sont presque pas** : Phi 19 %, Qwen 5 %, Mistral 4 %. Veritas
+  0.1 a appris la signature de Claude, pas celle des textes générés en général ; l'écart est
+  plus net qu'en français.
+- **Textes mixtes** : 80 % « Probablement humain ». Le score du document ne signale pas une
+  fin générée ; l'analyse par phrase n'est pas mesurée ici.
+- **Probabilités extrêmes** : « Indéterminé » ne sert presque jamais (0 à 5 % selon la
+  catégorie). Le calibrage, ajusté sur le seul couple C4 / Claude, est trop confiant hors de
+  cette distribution.
+
+**Conséquence** : Veritas 0.1 ne peut pas répondre seul aux utilisateurs. Un texte écrit par un
+autre modèle que Claude serait le plus souvent annoncé « Probablement humain ». Il reste en
+mode fantôme derrière le fournisseur externe (ADR-0010) jusqu'à une version entraînée sur
+plusieurs générateurs et mesurée sur ce jeu.
+
 ## Limites à connaître
 
 - **Plafond, pas promesse** : jeu de test de la même distribution que l'entraînement (pages
-  C4 / mC4 de 2019, 180 à 900 mots) et un seul générateur. Les textes d'autres modèles, les
-  textes retouchés à la main, mixtes ou très courts ne sont pas mesurés ici.
+  C4 / mC4 de 2019, 180 à 900 mots) et un seul générateur. Hors de cette distribution, voir
+  la section « Robustesse » : les textes d'autres modèles ne sont pas reconnus de façon fiable.
+  Les textes retouchés à la main ne sont pas mesurés.
 - **Écart avec le fournisseur externe : non mesuré.** Aucun contrat n'est encore signé
   (ADR-0001). Le mode fantôme le mesurera en production ; la porte de la phase 3 est un
   accord ≥ 85 % sur un échantillon suffisant (`min_comparisons`, encore TODO).
-- **Non activé** : la couche 2 (`altydetect-veritas-encoder`) n'est pas déployée sur Modal et
-  `VERITAS_MODEL_DIR` n'est défini nulle part. Tant que ce n'est pas fait, l'externe répond
-  seul.
+- **Non activé en production** : la couche 2 (`altydetect-veritas-encoder`) est déployée sur
+  Modal (mise à l'échelle jusqu'à zéro), mais `VERITAS_MODEL_DIR` n'est défini sur aucun
+  service. L'activation en mode fantôme suit `docs/deploiement.md`, section 7 (ADR-0010).

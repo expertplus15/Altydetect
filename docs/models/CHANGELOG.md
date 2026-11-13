@@ -1,5 +1,19 @@
 # Changelog des modèles et des jeux de test
 
+## 2026-11-13
+
+- **Jeu de test `detection-v2`** (`ml/eval/testset/detection-v2`) : test de robustesse, par
+  langue, 300 extraits Wikipédia de mars 2022, 100 textes humains et 100 textes de Claude
+  courts (150 à 200 mots), 90 à 100 textes par modèle ouvert (Qwen2.5-7B, Mistral-7B v0.3,
+  Phi-3.5-mini), 100 textes de Claude reformulés par Mistral, 100 textes mixtes. Nouvelle
+  version, detection-v1 inchangé. Gelé : empreintes dans `MANIFEST.json`, vérifiées en test
+  avec l'absence de tout document ou source issu du corpus d'entraînement. Manifestes sans
+  texte ; textes dans le volume Modal `altydetect-veritas-corpus`.
+- **VRT-DET-FR-0.1** et **VRT-DET-EN-0.1** mesurés sur detection-v2 (run 43356145940) :
+  0 % de faux positifs sur 400 textes humains par langue ; Claude reconnu (99 à 100 %, même
+  court) ; autres modèles mal reconnus (FR : Phi 83 %, Qwen 54 %, Mistral 3 % ; EN : 19 %,
+  5 %, 4 %). Les modèles restent en mode fantôme. Rapports dans `docs/models/reports/`.
+
 ## 2026-11-11
 
 - **Jeu de test `detection-v1`** (`ml/eval/testset/detection-v1`) : par langue (fr, en),
