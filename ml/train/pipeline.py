@@ -487,7 +487,9 @@ def main(
     import sys
 
     sys.path.insert(0, str(REPO / "ml/corpus"))
-    sys.path.insert(0, str(REPO / "ml/eval"))  # v2 : train.corpus_v2 lit detection.robustness
+    # v2 : train.corpus_v2 (ml/train) lit detection.robustness (ml/eval).
+    sys.path.insert(0, str(REPO / "ml/eval"))
+    sys.path.insert(0, str(REPO / "ml/train"))
     from corpus.generate import read_llm_model
 
     out_dir = Path(out)
