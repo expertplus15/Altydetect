@@ -1,0 +1,33 @@
+{
+  "version": "detection-v2",
+  "created": "2026-11-13",
+  "run": "43356145940",
+  "licence": "Wikipédia : CC BY-SA 3.0 (legacy-datasets/wikipedia 20220301) ; textes courts et mixtes dérivés de detection-v1 ; textes générés : Qwen2.5-7B-Instruct et Mistral-7B-Instruct-v0.3 (Apache-2.0), Phi-3.5-mini-instruct (MIT)",
+  "generator": "ml/eval/detection/robustness.py",
+  "documents": {
+    "fr": {
+      "ai_mistral": 100,
+      "ai_phi": 100,
+      "ai_qwen": 90,
+      "ai_reformulated": 100,
+      "ai_short": 100,
+      "human_short": 100,
+      "human_wikipedia": 300,
+      "mixed": 100
+    },
+    "en": {
+      "ai_mistral": 100,
+      "ai_phi": 100,
+      "ai_qwen": 96,
+      "ai_reformulated": 100,
+      "ai_short": 100,
+      "human_short": 100,
+      "human_wikipedia": 300,
+      "mixed": 100
+    }
+  },
+  "files": {
+    "fr.jsonl": "c1d4ad0a86825a59449ed0d6b78a8ceae506b2546e50dedca202c6a1fd51bf5e",
+    "en.jsonl": "72a5837b620265ad2f98e0d2ab9d5c4b3a178ecff54eea8550c3d0fa53cad1f5"
+  }
+}
