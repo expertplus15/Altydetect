@@ -90,9 +90,9 @@ calibration ; la partition test reste `detection-v1`). Le corpus v1 y est inclus
 | **Total**                                   | 12 697 | 12 761 |
 
 Par générateur (textes ouverts et reformulations) : FR Qwen 867, Mistral 1 029, Granite
-1 004 ; EN Qwen 697, Mistral 756, Granite 754, OLMo 754. Les consignes écartées (≈ 4 % en
-français, ≈ 2 % en anglais, surtout Qwen) sont des sorties vides, trop courtes ou hors
-consigne, rejetées par `clean_generation`.
+1 004 ; EN Qwen 697, Mistral 756, Granite 754, OLMo 754. Les textes écartés sont presque tous
+de Qwen (FR 99 sur 966 consignes, EN 39 sur 736) : réponses de moins de 150 mots une fois les
+titres retirés, rejetées par `clean_generation`. Qwen reste le générateur le moins représenté.
 
 Vérifications : aucune empreinte commune avec la partition test de `detection-v1` ni avec
 `detection-v2` ; aucun texte dérivé d'une source de test ; aucun doublon.
