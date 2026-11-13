@@ -116,14 +116,16 @@ def test_layer2_combines_with_layer1() -> None:
     assert model.detect(french_text(200), "fr").probability > 0.98
 
 
-# Paquets livrés (run v1, ADR-0009) : chargés tels qu'ils sont commités, sans appel à Modal.
+# Paquets livrés : chargés tels qu'ils sont commités, sans appel à Modal. Français : run v1
+# (ADR-0009) ; anglais : run v2 (ADR-0011, portes de sortie franchies).
 DELIVERED = Path(__file__).resolve().parents[1] / "models"
+DELIVERED_REFERENCES = {"fr": "VRT-DET-FR-0.1", "en": "VRT-DET-EN-0.2"}
 
 
 @pytest.mark.parametrize("language", ["fr", "en"])
 def test_delivered_packages_load(language: str) -> None:
     models = VeritasModels.load(DELIVERED)
-    reference = f"VRT-DET-{language.upper()}-0.1"
+    reference = DELIVERED_REFERENCES[language]
     assert models.reference(language) == reference
     encoder = models._models[language].encoder
     assert isinstance(encoder, ModalEncoder) and encoder._reference == reference

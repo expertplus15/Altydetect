@@ -8,8 +8,9 @@
   Phi-3.5-mini tenu à l'écart. ADR-0011.
 - **VRT-DET-EN-0.2** (run 43425145321) : toutes les portes d'ADR-0011 franchies. Faux
   positifs 0,2 % sur detection-v1, 0 % sur les 400 textes humains de detection-v2 ; 100 %
-  « Probablement IA » sur Qwen, Mistral, Phi (jamais vu) et Claude. Retenu pour remplacer
-  VRT-DET-EN-0.1 en mode fantôme. Fiche : `VRT-DET-EN-0.2.md`.
+  « Probablement IA » sur Qwen, Mistral, Phi (jamais vu) et Claude. Livré à la place de
+  VRT-DET-EN-0.1 (`services/veritas/models/en`) ; mode fantôme dès l'activation d'ADR-0010.
+  Fiche : `VRT-DET-EN-0.2.md`.
 - **VRT-DET-FR-0.2** (même run) : non retenu. Rappel de 99,7 à 100 % sur tous les
   générateurs, mais faux positifs 3,7 % (2,5 % sur detection-v1, 8 % sur Wikipédia) au-dessus
   de la porte de 1 %. VRT-DET-FR-0.1 reste en place. Fiche : `VRT-DET-FR-0.2.md`.

@@ -2,14 +2,14 @@
 
 - **Référence** : `VRT-DET-EN-0.2`
 - **Date** : 2026-11-13
-- **Statut** : **retenu** pour remplacer VRT-DET-EN-0.1 en mode fantôme (ADR-0011, portes de
-  sortie franchies). Pas encore activé : remplacement du paquet et déploiement de la couche 2
-  dans une PR à part.
+- **Statut** : **livré**, à la place de VRT-DET-EN-0.1 (ADR-0011, portes de sortie
+  franchies). Tourne en mode fantôme dès l'activation d'ADR-0010 ; ne répond jamais seul.
 - **Run** : [43425145321](https://github.com/expertplus15/Altydetect/actions/runs/43425145321)
   (run `v2`, étape `train`) ; corpus : run
   [43366022743](https://github.com/expertplus15/Altydetect/actions/runs/43366022743)
-- **Paquet** : volume Modal `altydetect-veritas-models`, dossier `VRT-DET-EN-0.2` (manifeste et
-  poids de l'encodeur, jamais dans le dépôt) ; manifeste aussi sur la branche
+- **Paquet** : `services/veritas/models/en/manifest.json` ; poids de l'encodeur dans le volume
+  Modal `altydetect-veritas-models`, dossier `VRT-DET-EN-0.2/encoder`, jamais dans le dépôt ;
+  servis par la même application `altydetect-veritas-encoder` que 0.1 ; sorties du run sur la branche
   `ml/sorties-v2-43425145321`
 - **Jeux de test** : `ml/eval/testset/detection-v1/en.jsonl`,
   `ml/eval/testset/detection-v2/en.jsonl` (robustesse), gelés

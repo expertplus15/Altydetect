@@ -2,8 +2,10 @@
 
 - **Référence** : `VRT-DET-EN-0.1`
 - **Date** : 2026-11-11
+- **Statut** : **remplacé** par VRT-DET-EN-0.2 le 2026-11-13 (`VRT-DET-EN-0.2.md`). Poids
+  conservés dans le volume Modal `altydetect-veritas-models` ; manifeste dans l'historique git
 - **Run** : [42928107614](https://github.com/expertplus15/Altydetect/actions/runs/42928107614) (ADR-0009)
-- **Paquet** : `services/veritas/models/en/manifest.json` (poids de l'encodeur dans le
+- **Paquet** : `services/veritas/models/en/manifest.json` jusqu'au 2026-11-13 (poids de l'encodeur dans le
   volume Modal `altydetect-veritas-models`, jamais dans le dépôt)
 - **Jeux de test** : `ml/eval/testset/detection-v1/en.jsonl`,
   `ml/eval/testset/detection-v2/en.jsonl` (robustesse), gelés
