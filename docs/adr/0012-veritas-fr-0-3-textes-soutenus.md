@@ -43,6 +43,16 @@ soutenu = humain ») et laisserait passer les textes générés soignés.
 - **Écartées** : fiches service-public.fr (versions de 2025, rédaction possiblement assistée,
   pas de date d'écriture) ; débats parlementaires disponibles sans date ; livres du domaine
   public (orthographe et style anciens, autre biais).
+- **Vérifié le 13/11/2026** (métadonnées seulement) : un fichier sur 350 de French Science
+  Commons compte 97 000 pages, dont 80 % en français, toutes sous CC BY, CC BY-SA, CC0,
+  Licence ouverte ou domaine public, environ la moitié publiées avant 2023 ; les sources
+  comprennent DUMAS (mémoires d'étudiants) et TEL (thèses), proches des usages visés. La
+  base Judilibre compte 553 000 décisions de la Cour de cassation, en majorité avant 2022.
+- **archive.org écarté** : 224 600 textes français datés de 1990 à mi-2022, mais presque
+  tous sous droits (bibliothèque de prêt). Sur 9 000 textes sous licence Creative Commons
+  examinés, 1 955 autorisent l'usage commercial, dont 1 381 PDF de Wikipédia (exclue) ; le
+  reste est hétérogène (numérisations, magazines, bandes dessinées) et la licence est déclarée
+  par la personne qui a déposé le fichier, sans contrôle.
 - **Nettoyage** : French Science Commons est issu d'une reconnaissance de PDF en Markdown.
   Seuls les paragraphes de prose sont gardés (pas de titres, tableaux, formules, références,
   notes, césures). Sinon le modèle apprendrait « bruit de numérisation = humain ». Mêmes
