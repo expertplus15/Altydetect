@@ -25,7 +25,7 @@ import random
 import re
 import time
 from collections import Counter
-from collections.abc import Iterable, Sequence
+from collections.abc import Callable, Iterable, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -236,6 +236,22 @@ def chunks(
     ]
 
 
+def split_on_oom(
+    batch: list[int],
+    run: Callable[[list[int]], list[str]],
+    is_oom: Callable[[BaseException], bool],
+) -> list[str]:
+    """Exécute `run` sur un paquet de consignes ; si la mémoire GPU manque (consignes et
+    générations longues : reformulations de Mistral), le coupe en deux et recommence."""
+    try:
+        return run(batch)
+    except Exception as error:
+        if not is_oom(error) or len(batch) == 1:
+            raise
+    half = len(batch) // 2
+    return split_on_oom(batch[:half], run, is_oom) + split_on_oom(batch[half:], run, is_oom)
+
+
 def category_report(records: Iterable[dict[str, Any]]) -> dict[str, Any]:
     """Par catégorie : part de chaque bande (seuils de production) et parts au-delà des seuils
     prudents d'une bêta (≥ 0,80 IA, ≤ 0,20 humain)."""
@@ -293,6 +309,8 @@ image = (
             "PYTHONPATH": "/root",
             "HF_HOME": HF_CACHE,
             "HF_HUB_DISABLE_TELEMETRY": "1",
+            # Moins de fragmentation de la mémoire GPU sur les longues générations.
+            "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
         }
     )
     .add_local_python_source("veritas")
@@ -346,8 +364,8 @@ def generate(
     torch.manual_seed(0)
     order = sorted(range(len(prompts)), key=lambda i: max_tokens[i])
     outputs: list[str] = [""] * len(prompts)
-    for start in range(0, len(order), 16):
-        batch = order[start : start + 16]
+
+    def run(batch: list[int]) -> list[str]:
         chats = [
             tokenizer.apply_chat_template(
                 [{"role": "user", "content": prompts[i]}],
@@ -367,9 +385,21 @@ def generate(
                 top_p=0.95,
                 pad_token_id=tokenizer.pad_token_id,
             )
-        texts = tokenizer.batch_decode(
+        texts: list[str] = tokenizer.batch_decode(
             generated[:, encoded["input_ids"].shape[1] :], skip_special_tokens=True
         )
+        return texts
+
+    def is_oom(error: BaseException) -> bool:
+        if not isinstance(error, torch.OutOfMemoryError):
+            return False
+        torch.cuda.empty_cache()
+        _log(f"{chunk} : mémoire GPU insuffisante, paquet coupé en deux")
+        return True
+
+    for start in range(0, len(order), 16):
+        batch = order[start : start + 16]
+        texts = split_on_oom(batch, run, is_oom)
         for i, text in zip(batch, texts, strict=True):
             outputs[i] = text
         _log(f"{chunk} : {min(start + 16, len(order))}/{len(order)}")

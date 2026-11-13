@@ -10,6 +10,7 @@ from detection.robustness import (
     derived_documents,
     mix,
     pick,
+    split_on_oom,
     truncate,
     wiki_excerpt,
 )
@@ -131,3 +132,37 @@ def test_chunks_are_stable_sorted_by_budget_and_cover_every_prompt() -> None:
     shuffled = list(reversed(jobs))
     again = [[shuffled[i][2]["id"] for i in idx] for _, idx in chunks("mistral", shuffled, 50)]
     assert again == [[jobs[i][2]["id"] for i in idx] for _, idx in plan]
+
+
+class FakeOOM(Exception):
+    pass
+
+
+def test_split_on_oom_halves_batch_until_it_fits() -> None:
+    calls: list[list[int]] = []
+
+    def run(batch: list[int]) -> list[str]:
+        calls.append(batch)
+        if len(batch) > 4:
+            raise FakeOOM
+        return [f"t{i}" for i in batch]
+
+    out = split_on_oom(list(range(16)), run, lambda e: isinstance(e, FakeOOM))
+    assert out == [f"t{i}" for i in range(16)]  # ordre conservé
+    assert [len(c) for c in calls] == [16, 8, 4, 4, 8, 4, 4]
+
+
+def test_split_on_oom_reraises_other_errors_and_single_prompt_oom() -> None:
+    import pytest
+
+    def boom(batch: list[int]) -> list[str]:
+        raise ValueError("autre")
+
+    with pytest.raises(ValueError):
+        split_on_oom([1, 2], boom, lambda e: isinstance(e, FakeOOM))
+
+    def always_oom(batch: list[int]) -> list[str]:
+        raise FakeOOM
+
+    with pytest.raises(FakeOOM):
+        split_on_oom([1, 2, 3], always_oom, lambda e: isinstance(e, FakeOOM))
