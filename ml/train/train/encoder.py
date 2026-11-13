@@ -16,7 +16,12 @@ def fine_tune(
     learning_rate: float = 2e-5,
     batch_size: int = 16,
     seed: int = 0,
+    label_smoothing: float = 0.0,
+    balanced: bool = False,
 ) -> dict[str, Any]:
+    """`label_smoothing` et `balanced` (poids des classes inverses de leurs effectifs) : Veritas
+    0.2, contre des probabilités trop tranchées et le déséquilibre humains / générés. Valeurs
+    par défaut : comportement de 0.1, inchangé."""
     import torch
     from transformers import (
         AutoModelForSequenceClassification,
@@ -32,6 +37,14 @@ def fine_tune(
     model = AutoModelForSequenceClassification.from_pretrained(base, num_labels=2).to("cuda")
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=0.01)
     steps = epochs * math.ceil(len(samples) / batch_size)
+    weights = None
+    if balanced:
+        positives = sum(y for _, y in samples)
+        negatives = len(samples) - positives
+        weights = torch.tensor(
+            [len(samples) / (2 * max(negatives, 1)), len(samples) / (2 * max(positives, 1))],
+            device="cuda",
+        )
     scheduler = get_linear_schedule_with_warmup(optimizer, int(0.06 * steps), steps)
 
     model.train()
@@ -50,7 +63,10 @@ def fine_tune(
             ).to("cuda")
             labels = torch.tensor([y for _, y in batch], device="cuda")
             with torch.autocast("cuda", dtype=torch.bfloat16):
-                loss = model(**encoded, labels=labels).loss
+                logits = model(**encoded).logits
+            loss = torch.nn.functional.cross_entropy(
+                logits.float(), labels, weight=weights, label_smoothing=label_smoothing
+            )
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             optimizer.step()
@@ -60,4 +76,10 @@ def fine_tune(
     model.save_pretrained(out_dir)
     tokenizer.save_pretrained(out_dir)
     tail = losses[-100:] or [0.0]
-    return {"base_model": base, "steps": steps, "final_loss": sum(tail) / len(tail)}
+    return {
+        "base_model": base,
+        "steps": steps,
+        "final_loss": sum(tail) / len(tail),
+        "label_smoothing": label_smoothing,
+        "balanced": balanced,
+    }

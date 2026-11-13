@@ -36,13 +36,20 @@ def layer1_logits(layer1: dict[str, Any], passages: list[list[str]], language: s
 
 
 def fit_combination(
-    l1: list[float], l2: list[float] | None, labels: list[int]
+    l1: list[float],
+    l2: list[float] | None,
+    labels: list[int],
+    c: float = 10.0,
+    balanced: bool = False,
 ) -> tuple[dict[str, float], dict[str, Any]]:
     """Régression logistique sur [logit couche 1, logit couche 2] ajustée sur la calibration :
-    sa sortie est déjà une probabilité calibrée, la mise à l'échelle de Platt reste neutre."""
+    sa sortie est déjà une probabilité calibrée, la mise à l'échelle de Platt reste neutre.
+    Veritas 0.2 : régularisation plus forte (`c` = 1) et classes équilibrées."""
     columns = [l1] if l2 is None else [l1, l2]
     x = np.array(columns, dtype=float).T
-    model = LogisticRegression(max_iter=2000, C=10.0).fit(x, labels)
+    model = LogisticRegression(
+        max_iter=2000, C=c, class_weight="balanced" if balanced else None
+    ).fit(x, labels)
     weights = [float(w) for w in model.coef_[0]]
     combine = {
         "layer1": weights[0],
