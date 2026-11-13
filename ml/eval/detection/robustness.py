@@ -12,8 +12,10 @@ qu'il n'a jamais vu, par catégorie et par langue (fr, en) :
 - `ai_short` : textes générés de detection-v1 coupés à 150-200 mots ;
 - `mixed` : début d'un texte humain suivi de la fin du texte généré sur le même sujet.
 
-Les modèles ouverts tournent sur un GPU L4 Modal, un modèle à la fois. Les textes restent dans
-le volume Modal ; seuls les manifestes (sans texte) et les métriques sont rapportés.
+Les modèles ouverts tournent sur des GPU L4 Modal, par lots de consignes indépendants (au plus
+CHUNK consignes, MAX_GPUS lots en parallèle). Chaque lot terminé est sauvegardé dans le volume :
+un run interrompu reprend sans régénérer ce qui est déjà fait. Les textes restent dans le volume
+Modal ; seuls les manifestes (sans texte) et les métriques sont rapportés.
 
 Lancement : workflow « Entraînement Veritas », étape `robustness`.
 """
@@ -62,6 +64,9 @@ SIZES = {
     "mixed": 100,
 }
 SHORT_MIN, SHORT_MAX = 150, 200
+# Lots de génération : 50 consignes (≈ 25 min sur un L4 au pire), 8 GPU au plus en parallèle.
+CHUNK = 50
+MAX_GPUS = 8
 MIN_WORDS, MAX_WORDS = 180, 900
 
 REFORMULATE = {
@@ -218,6 +223,19 @@ def derived_documents(language: str, v1: Sequence[dict[str, Any]]) -> list[dict[
     return out
 
 
+def chunks(
+    key: str, jobs: Sequence[tuple[str, str, dict[str, Any], int]], size: int = CHUNK
+) -> list[tuple[str, list[int]]]:
+    """Découpe les consignes d'un générateur en lots nommés, triés par budget de mots (des
+    lots homogènes : une génération longue ne retient pas des courtes). Le découpage ne
+    dépend que des consignes : un run relancé retrouve les mêmes lots et leurs sauvegardes."""
+    order = sorted(range(len(jobs)), key=lambda i: (jobs[i][3], jobs[i][2]["id"], jobs[i][1]))
+    return [
+        (f"{key}-{n:02d}", order[start : start + size])
+        for n, start in enumerate(range(0, len(order), size))
+    ]
+
+
 def category_report(records: Iterable[dict[str, Any]]) -> dict[str, Any]:
     """Par catégorie : part de chaque bande (seuils de production) et parts au-delà des seuils
     prudents d'une bêta (≥ 0,80 IA, ≤ 0,20 humain)."""
@@ -297,19 +315,34 @@ def _read(path: str) -> list[dict[str, Any]]:
         return [json.loads(line) for line in f if line.strip()]
 
 
-@app.function(gpu="L4", volumes={HF_CACHE: hf_volume}, timeout=60 * 60)
-def generate(model_key: str, prompts: list[str], max_tokens: list[int]) -> list[str]:
-    """Génère une réponse par consigne, par lots de 16 (consignes triées par longueur)."""
+@app.function(volumes={HF_CACHE: hf_volume}, timeout=30 * 60, cpu=2, memory=4096)
+def prefetch(model_key: str) -> None:
+    """Télécharge les poids une seule fois (sans GPU) : les lots parallèles ne font que lire
+    le cache, aucune écriture concurrente dans le volume."""
+    from huggingface_hub import snapshot_download
+
+    # Poids découpés seulement (Mistral publie aussi un consolidated.safetensors en double).
+    snapshot_download(
+        GENERATORS[model_key], allow_patterns=["*.json", "model*.safetensors", "tokenizer*"]
+    )
+    hf_volume.commit()
+    _log(f"{model_key} : poids en cache")
+
+
+@app.function(gpu="L4", volumes={HF_CACHE: hf_volume}, timeout=60 * 60, max_containers=MAX_GPUS)
+def generate(
+    chunk: str, model_key: str, prompts: list[str], max_tokens: list[int]
+) -> tuple[str, list[str]]:
+    """Génère une réponse par consigne d'un lot, par paquets de 16 (triés par longueur)."""
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
     name = GENERATORS[model_key]
-    _log(f"{model_key} : chargement de {name}, {len(prompts)} consignes")
+    _log(f"{chunk} : chargement de {name}, {len(prompts)} consignes")
     tokenizer = AutoTokenizer.from_pretrained(name, padding_side="left")
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     model = AutoModelForCausalLM.from_pretrained(name, torch_dtype=torch.bfloat16).to("cuda")
-    hf_volume.commit()
     torch.manual_seed(0)
     order = sorted(range(len(prompts)), key=lambda i: max_tokens[i])
     outputs: list[str] = [""] * len(prompts)
@@ -339,8 +372,8 @@ def generate(model_key: str, prompts: list[str], max_tokens: list[int]) -> list[
         )
         for i, text in zip(batch, texts, strict=True):
             outputs[i] = text
-        _log(f"{model_key} : {min(start + 16, len(order))}/{len(order)}")
-    return outputs
+        _log(f"{chunk} : {min(start + 16, len(order))}/{len(order)}")
+    return chunk, outputs
 
 
 @app.function(volumes={CORPUS: corpus_volume}, timeout=45 * 60, cpu=2, memory=8192)
@@ -401,45 +434,86 @@ def build(languages: list[str]) -> dict[str, list[dict[str, Any]]]:
             docs[lang] += wikipedia.remote(lang, SIZES["human_wikipedia"])
             docs[lang] += derived_documents(lang, v1[lang])
 
-        # Un appel GPU par modèle, toutes langues confondues (chargement unique).
+        # Consignes de chaque générateur, toutes langues confondues.
+        jobs: dict[str, list[tuple[str, str, dict[str, Any], int]]] = {}  # langue, catégorie…
         for key in GENERATORS:
-            jobs: list[tuple[str, str, dict[str, Any], int]] = []  # langue, catégorie, source, mots
+            jobs[key] = []
             for lang in languages:
                 test = [d for d in v1[lang] if d["split"] == "test"]
                 humans = [d for d in test if d["label"] == "human"]
                 for h in pick(humans, SIZES["ai_per_generator"], f"{VERSION}-{lang}-{key}"):
-                    jobs.append((lang, f"ai_{key}", h, int(h["words"])))
+                    jobs[key].append((lang, f"ai_{key}", h, int(h["words"])))
                 if key == REFORMULATOR:
                     ais = [d for d in test if d["label"] == "ai"]
                     for a in pick(ais, SIZES["ai_reformulated"], f"{VERSION}-{lang}-reform"):
-                        jobs.append((lang, "ai_reformulated", a, int(a["words"])))
-            prompts = [
-                REFORMULATE[lang].format(text=src["text"])
-                if category == "ai_reformulated"
-                else prompt_for(src)
-                for lang, category, src, _ in jobs
-            ]
-            budget = [min(2000, int(words * 2.2) + 100) for *_, words in jobs]
-            texts = generate.remote(key, prompts, budget)
-            kept = 0
-            for (lang, category, src, _), raw in zip(jobs, texts, strict=True):
-                text = clean_generation(raw)
-                if text is None:
-                    continue
-                docs[lang].append(
-                    document(
-                        category,
-                        "ai",
-                        lang,
-                        text,
-                        generator=GENERATORS[key],
-                        source=f"generated:{GENERATORS[key]}",
-                        licence=f"Généré par {GENERATORS[key]} ({GENERATOR_LICENCES[key]})",
-                        derived_from=src["id"],
-                    )
+                        jobs[key].append((lang, "ai_reformulated", a, int(a["words"])))
+
+        # Lots déjà générés par un run précédent : relus, jamais régénérés.
+        partial = Path(f"{base}/partial")
+        partial.mkdir(parents=True, exist_ok=True)
+        plan = {name: (key, idx) for key in GENERATORS for name, idx in chunks(key, jobs[key])}
+        todo = [name for name in plan if not (partial / f"{name}.json").exists()]
+        _log(f"génération : {len(plan) - len(todo)}/{len(plan)} lots déjà faits")
+        for key in sorted({plan[name][0] for name in todo}):
+            prefetch.remote(key)
+
+        def arguments(name: str) -> tuple[str, str, list[str], list[int]]:
+            key, idx = plan[name]
+            prompts, budget = [], []
+            for i in idx:
+                lang, category, src, words = jobs[key][i]
+                prompts.append(
+                    REFORMULATE[lang].format(text=src["text"])
+                    if category == "ai_reformulated"
+                    else prompt_for(src)
                 )
-                kept += 1
-            _log(f"{key} : {kept}/{len(jobs)} textes gardés")
+                budget.append(min(2000, int(words * 2.2) + 100))
+            return name, key, prompts, budget
+
+        failures: list[str] = []
+        saved = 0
+        for result in generate.starmap(
+            [arguments(name) for name in todo], order_outputs=False, return_exceptions=True
+        ):
+            if isinstance(result, BaseException):
+                failures.append(f"{type(result).__name__}: {result}")
+                continue
+            name, texts = result
+            (partial / f"{name}.json").write_text(
+                json.dumps(texts, ensure_ascii=False), encoding="utf-8"
+            )
+            corpus_volume.commit()  # sauvegarde immédiate : un run relancé reprend ici
+            saved += 1
+            _log(f"{name} : lot sauvegardé ({saved}/{len(todo)})")
+        if failures:
+            raise RuntimeError(
+                f"{len(failures)} lots en échec (les autres sont sauvegardés) : "
+                + " | ".join(failures[:3])
+            )
+
+        for key in GENERATORS:
+            kept = 0
+            for name, idx in chunks(key, jobs[key]):
+                texts = json.loads((partial / f"{name}.json").read_text(encoding="utf-8"))
+                for i, raw in zip(idx, texts, strict=True):
+                    lang, category, src, _ = jobs[key][i]
+                    text = clean_generation(raw)
+                    if text is None:
+                        continue
+                    docs[lang].append(
+                        document(
+                            category,
+                            "ai",
+                            lang,
+                            text,
+                            generator=GENERATORS[key],
+                            source=f"generated:{GENERATORS[key]}",
+                            licence=f"Généré par {GENERATORS[key]} ({GENERATOR_LICENCES[key]})",
+                            derived_from=src["id"],
+                        )
+                    )
+                    kept += 1
+            _log(f"{key} : {kept}/{len(jobs[key])} textes gardés")
 
         Path(base).mkdir(parents=True, exist_ok=True)
         for lang in languages:

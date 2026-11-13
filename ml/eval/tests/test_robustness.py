@@ -5,6 +5,7 @@ from veritas.text import count_words
 from detection.robustness import (
     SIZES,
     category_report,
+    chunks,
     clean_generation,
     derived_documents,
     mix,
@@ -112,3 +113,21 @@ def test_category_report_counts_bands_and_overall_rates() -> None:
     assert report["human_wikipedia"]["beta_ai_ge_0_8"] == 0.0  # 0,75 < seuil prudent
     assert report["ai_qwen"]["errors"] == 1 and report["ai_qwen"]["likely_ai"] == 0.5
     assert report["_overall"] == {"false_positive_rate": 0.5, "recall": 0.5, "humans": 2, "ais": 2}
+
+
+def test_chunks_are_stable_sorted_by_budget_and_cover_every_prompt() -> None:
+    jobs = [
+        ("fr" if i % 2 else "en", "ai_mistral", {"id": f"h-{i:03}"}, 900 - i * 7)
+        for i in range(120)
+    ]
+    plan = chunks("mistral", jobs, size=50)
+    assert [name for name, _ in plan] == ["mistral-00", "mistral-01", "mistral-02"]
+    assert [len(idx) for _, idx in plan] == [50, 50, 20]
+    flat = [i for _, idx in plan for i in idx]
+    assert sorted(flat) == list(range(120))  # chaque consigne une seule fois
+    budgets = [jobs[i][3] for i in flat]
+    assert budgets == sorted(budgets)  # lots homogènes en longueur
+    # Même découpage quel que soit l'ordre d'entrée : un run relancé retrouve ses lots.
+    shuffled = list(reversed(jobs))
+    again = [[shuffled[i][2]["id"] for i in idx] for _, idx in chunks("mistral", shuffled, 50)]
+    assert again == [[jobs[i][2]["id"] for i in idx] for _, idx in plan]
