@@ -1,0 +1,7071 @@
+{
+ "language": "en",
+ "testset": "detection-v2/en",
+ "references": "VRT-DET-EN-0.2",
+ "thresholds": {
+  "likely_ai": 0.7,
+  "likely_human": 0.3
+ },
+ "categories": {
+  "ai_mistral": {
+   "label": "ai",
+   "documents": 100,
+   "errors": 0,
+   "likely_ai": 1.0,
+   "undetermined": 0.0,
+   "likely_human": 0.0,
+   "beta_ai_ge_0_8": 1.0,
+   "mean_probability": 0.9566
+  },
+  "ai_phi": {
+   "label": "ai",
+   "documents": 100,
+   "errors": 0,
+   "likely_ai": 1.0,
+   "undetermined": 0.0,
+   "likely_human": 0.0,
+   "beta_ai_ge_0_8": 1.0,
+   "mean_probability": 0.9623
+  },
+  "ai_qwen": {
+   "label": "ai",
+   "documents": 96,
+   "errors": 0,
+   "likely_ai": 1.0,
+   "undetermined": 0.0,
+   "likely_human": 0.0,
+   "beta_ai_ge_0_8": 1.0,
+   "mean_probability": 0.9643
+  },
+  "ai_reformulated": {
+   "label": "ai",
+   "documents": 100,
+   "errors": 0,
+   "likely_ai": 1.0,
+   "undetermined": 0.0,
+   "likely_human": 0.0,
+   "beta_ai_ge_0_8": 1.0,
+   "mean_probability": 0.9688
+  },
+  "ai_short": {
+   "label": "ai",
+   "documents": 100,
+   "errors": 0,
+   "likely_ai": 1.0,
+   "undetermined": 0.0,
+   "likely_human": 0.0,
+   "beta_ai_ge_0_8": 1.0,
+   "mean_probability": 0.9612
+  },
+  "human_short": {
+   "label": "human",
+   "documents": 100,
+   "errors": 0,
+   "likely_ai": 0.0,
+   "undetermined": 0.0,
+   "likely_human": 1.0,
+   "beta_ai_ge_0_8": 0.0,
+   "mean_probability": 0.0005
+  },
+  "human_wikipedia": {
+   "label": "human",
+   "documents": 300,
+   "errors": 0,
+   "likely_ai": 0.0,
+   "undetermined": 0.0,
+   "likely_human": 1.0,
+   "beta_ai_ge_0_8": 0.0,
+   "mean_probability": 0.0004
+  },
+  "mixed": {
+   "label": "mixed",
+   "documents": 100,
+   "errors": 0,
+   "likely_ai": 0.43,
+   "undetermined": 0.03,
+   "likely_human": 0.54,
+   "beta_ai_ge_0_8": 0.39,
+   "mean_probability": 0.4313
+  },
+  "_overall": {
+   "false_positive_rate": 0.0,
+   "recall": 1.0,
+   "humans": 400,
+   "ais": 496
+  }
+ },
+ "records": [
+  {
+   "id": "v2-en-ai_mistral-01568a32dc5da297",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9574,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-0284c26adac0e1b8",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9509,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-04621620a064c588",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9596,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-07fd8e804c33416d",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9561,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-090396d33c4bb156",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9626,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-0d950b7c7bd54f64",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9712,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-0de25e5fe84719ec",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9555,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-12e7399f82e8a2c4",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9594,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-194e85ec773fdeee",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9679,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-19862113a53c11e3",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9593,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-1c05b87331126b0a",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9644,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-1ead7d81f0e2a90e",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9604,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-1f08f3379ea4aa72",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9718,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-1fb793b68a57f758",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9555,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-21d7d47d003738f8",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9445,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-2380c584f398759f",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9572,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-24dc96fef7e53081",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.968,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-26df929e396d6587",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9637,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-293a6a2aa2859525",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9693,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-2b8f34ff1c5f784e",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9616,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-2df48e7027fbf9b8",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9394,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-2f81a1074e7f6122",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.957,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-3027a548eade41b2",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9497,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-31bc39af00435db3",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9546,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-34b903e6a44b200c",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9518,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-3543075ed5884483",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9376,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-411ca8dd2bb4ff5f",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9579,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-4160f6298a4c543e",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9654,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-452dda3dbab72567",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9701,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-45b6bddbe9be786a",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9695,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-4774e717bb34e0a1",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9384,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-491a4dc05d54f996",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9504,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-4ad13cded562dd7c",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9604,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-534a762ba02aeca6",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9317,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-5b32c7a9cd3b188f",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9431,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-6ad1aa522380f67d",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9687,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-6ba3cba907e26e07",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9616,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-6ce39b186deba0d2",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.962,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-6d33b2da2dd4450f",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9522,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-7449dc8a909879c0",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9508,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-7565600e876c1536",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9528,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-75f59b8a370c1506",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9623,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-794ef47033c3d2d3",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9606,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-79d3bba492e5781c",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9661,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-7dd88e3c847e6c0e",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9531,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-7edb80729bf0a276",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.967,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-8738cd5a7bf7f5e8",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9583,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-8a689d8d76241d66",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9651,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-8b0b3fdf9059826e",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9603,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-8e6e333d0f8560fa",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9589,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-8e9d920fbc35fb51",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9526,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-912aea39a610cb68",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9533,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-91fb983ab709d864",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9501,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-9217e83b860f90cd",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9554,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-92d8cb70b9220df7",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9731,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-9650742ed781e7a5",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9359,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-9726ecb6a92f1ea5",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9595,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-98de8310120eae87",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9625,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-9b7d0698f7282430",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9639,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-9eba8fe7df84bd2f",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9641,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-9fd6be2b7649f7a0",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9389,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-a3db8428da4879b4",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9578,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-a47f92fb6d3babdf",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9507,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-a75a786e673abdad",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9553,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-a9ba4349cefe2fb6",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9386,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-aa40c86d396baf17",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9568,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-ab4bd2fe17c0db51",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9517,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-ad4f44fdbc3874f8",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.953,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-adc497a82f4b85cc",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9707,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-b087af7e78837754",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9548,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-b2d37bce4efe921d",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9643,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-ba0bfbb019f7674d",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9589,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-bb9873549c84926c",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.941,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-bbaff3cdab9ffdda",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9493,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-bf1dace785e0c0f9",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.961,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-c2553297339449ca",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9609,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-c2db153f8c0acc51",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9534,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-c80a4c39a37d833c",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9556,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-cd5fa55fb1ababc0",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9709,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-ce966ae7ec9f8a28",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.958,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-cfde8e4942acb4ff",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9456,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-cfe1cf16513e9d32",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9536,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-d04e3e2a4254c193",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9434,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-d0a9b129dc3c05c6",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9514,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-d29abfab56f83703",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9552,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-d347d380dedc88ab",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9459,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-d4e9eec5ccf7a8f5",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9615,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-d728a80aeeb8ba0e",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9687,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-dfa727ec0f5fd0a0",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9408,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-e14204982003ca67",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.958,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-e1540d422cde2201",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.947,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-e4b65097d7f95dbe",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9491,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-e51cf58f48ab1690",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9444,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-e7e44f7e664e02e5",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.962,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-edf3c3d7d1a2cad7",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.957,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-ef577844db6c81da",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9538,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-f3444b5714f46211",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.971,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-f9f8b1b00c204b78",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9616,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-fa718aabc3d138af",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9551,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_mistral-ffea5760316e0a53",
+   "category": "ai_mistral",
+   "label": "ai",
+   "probability": 0.9688,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-00962793e55c1342",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9681,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-054b8bfcf577a89a",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9681,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-0a6b95c20cc72221",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9537,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-0ab105c20022813b",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9638,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-16d5a3c97fc8389e",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9645,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-1b61ed539e79ef90",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.956,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-1bb525325663dae7",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.962,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-1c789aee2a4408fb",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9549,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-1e685a01dcb62b0f",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9631,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-1e78a23b7a5a2297",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9451,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-1f20fe7cd115a1c1",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9603,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-20e983b5000ef8d3",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9625,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-20eb5d60e4fe635e",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9509,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-2582d367fa9e5215",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9709,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-278727fb9f075a47",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9648,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-2a1e25513a29ae35",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9674,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-2c6dab1feb8af217",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9648,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-2dab212a40820750",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9596,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-2ffeb4a3cbec0237",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9658,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-3463f0dc591b7d00",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9659,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-3521ffea0172bef3",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9655,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-356898090564c53d",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9543,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-359df399907db91c",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9751,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-3998395e92560222",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9598,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-3ed42db940a4c539",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9704,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-405b46d05fbd8d13",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9622,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-41a57375f09449d7",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.961,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-4c3325e7f3e79a28",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9642,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-5517df05b99facda",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9571,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-5a475c9bec6d7d99",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9501,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-5c3fc20bf8db855e",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9527,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-5d94610c56836cc1",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9636,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-5e3916a5c667cb9c",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9623,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-5f000e8b5b2266e6",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9719,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-5f6cc3714c946238",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9716,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-61afedcd8fd031d4",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9579,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-625abe544846a128",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9576,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-6ba587dad4afa033",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9623,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-6c4a542ffaa645ae",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9757,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-74aa9d5775461a73",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9638,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-774a64dfd0569e43",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9472,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-78d98cb259be2b54",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9644,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-79d8945fa3ec73c9",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9674,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-7b5391f320e8c01a",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9504,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-7ecd359bb0752ca0",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9677,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-7f595bc3b8be4d1f",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9631,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-81036fcc78a698da",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.967,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-835229260b65813f",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9634,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-852593774dd9a5d2",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9717,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-8574c2d70330fe1a",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9771,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-87c11441fcd14fb7",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9603,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-887b07b2f71c5f70",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9648,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-8c5e3eae56bcb7e6",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9688,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-8cce753b43898bca",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9643,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-906839805cdede4a",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9701,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-931f963fd242ed9b",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9683,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-94e4de66817ee69f",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9649,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-956eb98e2041384b",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9461,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-98ff19e189915e3b",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9626,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-a17b7572e6ea122e",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9637,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-a5cfa969271200c9",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9511,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-b12fbba9cd32dd2b",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9676,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-b202575bf80f644e",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9655,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-b29fb04dcf2b825d",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.971,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-b3e8be00fb3e1bc6",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.959,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-b57d85028e1f8003",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.96,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-b5a9614f74a7744c",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9662,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-b81623253031967d",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9616,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-b817a8bbdd8f8272",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9604,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-bb31aec89245cba2",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9626,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-bbbc3b1242ab8519",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9704,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-bcfae1cb4bcd8aaa",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9513,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-bed0f20190da6049",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9542,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-c181408229d8fd96",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9646,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-c285f2cb426d06a6",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9536,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-c66150926dcba410",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9622,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-c74a9a0eb4527514",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9636,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-c7c6b11b7cf44cf4",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9677,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-ce0d4c05d84b1768",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9648,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-ce3bcd6b168c586b",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9548,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-ce4652cb0b632a50",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9541,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-ce8b1e70610ddaea",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9528,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-d0972366fb5eb0b7",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9689,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-d6e598635a7c49e4",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9694,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-dd7d46e5fac23568",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9618,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-de41194fbf1c33e0",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9635,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-de9192403d8f7924",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9704,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-deb37578e0a106a5",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.961,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-df8d70e39cb1431c",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9561,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-e42001cd90358921",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9582,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-e6656d4c19cbc788",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9364,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-e84803591e81a538",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9714,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-e8d4991d883351fa",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9597,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-f04a987e05f7f9ed",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9726,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-f251841b20b30aff",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9534,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-f2dc3d873113a289",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.959,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-f4185fcc0111e151",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.964,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-f8d87db63265cb81",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9657,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-fc50fdb8c69d2ef1",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9687,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_phi-fcf7a33e04fdb799",
+   "category": "ai_phi",
+   "label": "ai",
+   "probability": 0.9672,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-013a5c68e812acec",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9557,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-01b8789264670a5d",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.961,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-0879de0972ab51e0",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9674,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-08eef0afcd0e5a72",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9585,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-092f6674a36f111c",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9687,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-0e5c5fbc12331dcd",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9576,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-0ed35ea9e70e79b3",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9652,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-0f03926cb50f03ab",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9618,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-153fe4ada5cc760b",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9679,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-15e226143d9a26ff",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9651,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-1864d8a7375d2ac7",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9604,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-19eb7c01eed574e7",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9646,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-1abb3008e59f98ce",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9654,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-1b3cd85123e35a98",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9707,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-1d4f0f8d90dec0db",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9618,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-200536d4ae9da372",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9597,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-20587219a9fcfab6",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9666,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-20c609d6416a6415",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9602,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-2162daa2b8b20015",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9678,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-2207c51f4dcd93ff",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9657,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-223a172faed14989",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9719,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-23baab91a8d88463",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9742,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-24a7a68931281a2e",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.961,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-25fa5c3a1c78aeb6",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9661,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-2702c03f056b34bb",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9748,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-27acd9ca9b460026",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9686,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-2a6e3c1736c58e4a",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9663,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-387a61f0d8d324c6",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9712,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-38918c8609c293ba",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9619,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-3a228d01f66fca50",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9628,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-3ce51088b7b0f1ca",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9631,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-3e288b9ad0463fe1",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9737,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-40ab357f81f34309",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9645,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-4299b05c95c10846",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9597,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-4738d054cae4afa8",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9569,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-4863b86b7afc2fac",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9643,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-4b78ad37c8aa9071",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9646,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-4ca326977c0c9a37",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9586,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-500677af5f9fdea0",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9746,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-503c0fc8af98c73a",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9643,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-53155398f43cbb5c",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9598,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-54333c493d40558e",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9679,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-545b634cdeec79cc",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9583,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-54c0361c9f399862",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9691,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-5509592232f2b1b3",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9482,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-6293850fc11d4a53",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9652,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-648e93ebbb169165",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9703,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-651d7928a7cb3419",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9524,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-69f83f370183dcb9",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9778,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-6b1418370c27e6b6",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9543,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-6e688c8ea4ae2e22",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9612,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-72588ba1b2b8702b",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9619,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-7f8395cf415e4cd7",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9562,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-7fe521500e13f0b3",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9666,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-868f12c5e5d9f2ca",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9624,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-8a4845e6415004d0",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9671,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-8ac286deec98ff66",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9588,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-8cf11bf6e2bcf59e",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9637,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-91087ad2c6a5b41f",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.957,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-93aeb21b23386b0a",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9558,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-94b76c90f812fdbe",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.954,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-97746a51948f07cd",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.959,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-9983ccdea319ee13",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9694,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-9b20685986057451",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9642,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-9ee3b1a566638252",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9656,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-9f0375e292bbb449",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9648,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-a1198d47f3fbc82e",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9691,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-a3ea94b2a08de169",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9644,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-a540c3641901bd8d",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9682,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-ab4652c07c9b05d7",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9683,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-ab8124b807072c4f",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.958,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-b0349b8266a69b6d",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9551,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-bd7860d8ba06273d",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.966,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-bee1071cacdc5c62",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9578,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-c29c52c519f9d882",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9619,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-c4f5a639e6ecb770",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9638,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-c50e763167049cf7",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9695,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-c58c4cbd87061300",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9629,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-ce077b1d455477ba",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9634,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-d70681585974d65f",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9697,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-db733561db607f37",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.961,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-de2e4e336dfb48f7",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9617,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-de994a9cf4de5386",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9749,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-e065152f3a33e7fb",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9692,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-e17ca7c1656124f3",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9636,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-e1b11b91158f9589",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9664,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-e4e22cd5a5380513",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9699,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-e5a25c1ee2dfa73e",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9742,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-e64b74b6bae9cb73",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9653,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-e7c614aaad74a748",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9641,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-ed6b8997f2b7dded",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.972,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-f058d52b09573780",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9574,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-fcbbce37086cbef2",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9764,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-fd32d1fea71476f1",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9667,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-fecbc17d77069cbd",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9632,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_qwen-ffd38c629498fb7a",
+   "category": "ai_qwen",
+   "label": "ai",
+   "probability": 0.9634,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-01b34132c6b12512",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.953,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-0b5e03061b95d43e",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9709,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-0c566f36620a0e67",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9728,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-0d23258f6e90565d",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9804,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-0e503b1e3db5e34a",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9608,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-0ea558b95a90a5bf",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9741,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-15973f8b5777c382",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9743,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-1acf3f4aa41a6042",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9768,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-1bf4701c5297df94",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9685,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-1dda724a4d1d4635",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9758,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-1ee63758cfb2a386",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9729,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-212f6c6484a6caad",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9665,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-2140f4cf8dcd09be",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9642,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-25b0bb8bf7157832",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9745,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-25b9cc6ac4730620",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.968,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-2639f66d3f5b899d",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9709,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-264f286a3a1fb99f",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9703,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-297cfd87ac493feb",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9701,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-2cb94091c207a670",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9542,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-2dbdf9bfa7e8b506",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9774,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-315b0cfd9e0c9fcd",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9687,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-3a7e66116924e3ff",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9604,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-42690ce65c9b213f",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9652,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-42e56b4beaea959e",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9672,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-4a22d6e19dc63954",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9759,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-4a7a3260508a0f65",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.97,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-4b11959223db57aa",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9694,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-4b9c94716fa7c714",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9707,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-52d4751d6435f54e",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9659,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-55645b1ed01db683",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9588,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-557aa557fdededea",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9703,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-55a963497fae79cc",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9736,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-55cdc1842259b333",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9661,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-588ceedd957553ab",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.952,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-5aeafa18c68aebb2",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9735,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-5bbd8a5eba20dc77",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9653,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-5be1734a91823dda",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9666,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-5c69a2f4d9e1aa83",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9725,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-61543d3d7e6ffb47",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9553,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-6439baaa4c5302f3",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9746,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-683b191ab9bdd242",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9717,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-69350f7605c4af77",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9685,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-6e8a6897d8a53249",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.969,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-70d69881654caef1",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9706,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-73aa3ca04b236729",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9698,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-7494b7007899f0cf",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9646,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-74f60bd7c3d4586e",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9672,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-79d20fe53ff4da08",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9644,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-7fead6d3c91d482b",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9641,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-80b7007ba6b3407e",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9763,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-82c372f5060f36b8",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9621,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-855a05a699165729",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9755,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-886eda7bc0faf0cf",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9599,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-8f9e478a473fa68f",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9816,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-97a03751c069dc8f",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9718,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-989c533d61385902",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9729,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-9963e9357a0282c4",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9655,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-9a30f0054ffb5392",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9746,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-9a78f6266001895d",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9743,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-9a91678fcb956609",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9724,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-9c947203acfb92a6",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9767,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-a02f0f8925a05996",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9672,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-a50bfc986b87db1b",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9767,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-a62d2206dea2e2dd",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9671,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-a772cb3a838c7355",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9616,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-a981169aa25eeb76",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9723,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-abe65d4eb1ed87a5",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9733,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-ad5af6a2012ca809",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9744,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-add511f57aa0592a",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9597,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-b4146614348d3f67",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9635,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-b48439f737da2238",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9646,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-b8c7cf34d6294531",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9761,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-ba47214ecdcfda5d",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.973,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-bd6344542b0b219e",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.965,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-be30723bc9639801",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.974,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-bfcbf024222862ec",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9662,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-c0370cb136405078",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9611,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-c36b0fe4f045cdb6",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9753,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-c7dba1e82d11e5a7",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9728,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-c942478395805bb4",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9693,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-c9f261b52f40b3c0",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.961,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-cdac861116976716",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9778,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-cfa4ccbf87227d37",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9649,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-d1315700c1ddf774",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9716,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-d16bfdc07143f9b6",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9685,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-d2745fa5e6353925",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9644,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-d58c804ddfddfad2",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9676,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-d5a27af30181c466",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9724,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-d76fcee0e4656d1f",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9675,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-da011229f85a65f6",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9714,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-da3d9aaadfa284ea",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9646,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-de227d96b1c056bf",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.964,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-e23fa59625304b96",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9591,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-e2750cf224d74269",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9717,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-e5eb378cef1f0dcc",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9494,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-f2dabc055fb828d6",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9705,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-f747d5514370b0a8",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9688,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-fad29f6e813818d2",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9779,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-fccde5e4704ee974",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9754,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_reformulated-fd99c87422338a80",
+   "category": "ai_reformulated",
+   "label": "ai",
+   "probability": 0.9663,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-023f7353a7d19d11",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9525,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-03708a307fd7cb70",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9632,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-04ff0c239fef8e43",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9652,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-06e517d03602e193",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9361,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-08e8bff3ae6ad435",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9721,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-0be9d36af778c629",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9736,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-1102c28da3da35b5",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9653,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-166e5367a03fb589",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9593,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-18b6080ad3c828d3",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9644,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-1aa5b5ab259d8136",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9597,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-1c0c70f61aa7f2ce",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9566,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-238fadd401c4c276",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9787,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-25bc7bea99237df8",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9631,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-29c53b07a802e86f",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.965,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-2c3a72faae378136",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9611,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-31d487e60e9b1855",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9491,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-347548c9a4a9c6ac",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9448,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-34a787d3c57ae7b0",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9593,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-350e6b33b0d8140a",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9343,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-36bbb64bd50bc5fe",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9731,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-382848d5f67cd2e6",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9628,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-3cacd2eb23cc0cf9",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9695,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-3cbdf15b438b4e11",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9679,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-3d6a5070596e0416",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9293,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-3e14c16cc54cac0e",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9685,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-3fcff640aa2dfb53",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9504,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-41314319321c2f8a",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9488,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-416f593aa532ef99",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.961,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-42a47aed586d16d8",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9547,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-46c39855e99d4b8b",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.955,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-4b05e5d67f09e119",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9639,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-4be9d2ed4fe23adc",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.963,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-507af8a0d1374154",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9589,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-55229253b3001492",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9594,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-5da6993115f8c870",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9643,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-5dc76d6c0a590c4d",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9599,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-5fae242f14929587",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9583,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-6a198d9e76adc215",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.952,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-71e3202f7d034efc",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9604,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-72130188dbc02064",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9643,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-777b814d6dac5af6",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9712,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-7b8a0c150d0f59a6",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9751,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-7f61c59e9dbfe79d",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9548,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-801872059d81b1b1",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9728,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-81917cf19250cf6f",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9694,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-8208d5b3fc61f415",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.962,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-83a51a9e16bd6102",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9649,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-84e80c7d04ddbb48",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9665,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-862dcc2484ba28d7",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9652,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-86ea3746d2e9e892",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9609,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-88bb250778862ba6",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9687,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-8d03d0b819c2f4e7",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9566,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-8d7ef443d024b3a6",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9636,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-8e4acd99c628ca72",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9636,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-8ebee484349b3aa6",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9577,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-8fb28e853b2832b9",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9529,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-922428f9ccfcb53d",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9542,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-94bcde585786950c",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9665,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-953769ef7be2039b",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9511,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-972168387f7de3f4",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9624,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-97dc6680744ec5a3",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9648,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-9b4af093b7df16c8",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9627,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-9e9c644eac8c6980",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.976,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-9f10d70d889e99c3",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9665,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-9f9d04d6e1637bbc",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9657,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-9fdcf79d58789344",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9577,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-a0496546edb502ec",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9612,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-a0fafca3041c0125",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9649,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-a11e480e84031c74",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9659,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-a7ef795c712b346e",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.975,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-a80d7072d9126365",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9669,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-af7e35b328f7c396",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9679,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-b0d93ebc9e70aed2",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9594,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-b39fe6581f4819dc",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9659,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-b43c6e2e010dbbcf",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.973,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-b47418171e9ae162",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9613,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-bbe9189a9c1c7a88",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9341,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-bc219d8cfa55b5ab",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9563,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-be9d16007dfb72ac",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9615,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-c1f88ec2ccbcbf61",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9546,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-c23da7775c1fac51",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9713,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-c96f94db4aa03345",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9703,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-c987b5abcfa45957",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9567,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-c98801a3c7f9d98c",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.953,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-d31507aa5f9071dd",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.963,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-d4b63cf723ccb08a",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.969,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-da7f22164012d765",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9614,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-df3e4f409647c46a",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9609,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-e37740bfdec4be78",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9492,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-e4a47ef634925207",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9587,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-e5ad0bcc15012fd7",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9581,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-e93e4687b48631c3",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9602,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-ebdfef4c56ed62f8",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9561,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-ed5006e64403b363",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9622,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-f030dad245491f96",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.966,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-f1a1a463e137d6a5",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9622,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-f2cadf9b22b743f3",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9708,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-f3564b0394c415f1",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9329,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-f57bec7662e88117",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9679,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-ai_short-fa3ebd42532fafc8",
+   "category": "ai_short",
+   "label": "ai",
+   "probability": 0.9786,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-human_short-0238a9473c2f4e08",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-02c03ac6422d4c84",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-067b2b0e11466e43",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-070ffde43f95c344",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-083653083012cce6",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0001,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-0899fe86afafe854",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-096f107c13557e5f",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-139f0b743d62735b",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-14bf1a25e43a3d95",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-18ca772eb37d93bc",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-18f6bd3dc2bc4fab",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0007,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-1b357d0016c01b38",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-1e55bf06b3c04b11",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-20b58bc6252909c7",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-213f42296cdab86b",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-226132e3d34e874e",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-239bce26bdd7d5e1",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.008,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-26de181774535fba",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-280c4f9389a24134",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-2ac2695d51f97dc7",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-2eefc55f1160da5d",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-32793eb8231275d1",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0001,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-3b91bb14b3209c39",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-3c9a2f8d154b1b13",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-3ca99a3fa66cab39",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-3d55b2773487febf",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-3debe95ede7031fd",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-4017167b35c20f7a",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-42fba772bb9db765",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-45a760ab4caea895",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-4885470687b643ae",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-49f03beb7eb8f2f6",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-4d2d0079288dca6f",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-54915a7b04b88e10",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-554f8942cc72ba0f",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0023,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-55c09ad76ced134d",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-5d3ade1dfedd1c7e",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-5fb223e2ab423ec2",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-61553322df83ce9d",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-62778b8b4f6bd815",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-6422a3c92c4b3822",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-64eccf33625126e6",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-65cf87269653e50d",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0007,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-687a7ab7f3795ae3",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-6a776d6a032a63e1",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-6f85530b819d3e4e",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-6fd4d60ffb013e3f",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-73931874fe751b58",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0001,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-748be9d9beff4450",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0007,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-7692fbadddb37160",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-76ac2c9a29335653",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-7983d4e48951176d",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-7c5114871d30b853",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-7e738339f6af43c4",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-7f17bfc41665803d",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-7f45bd86b2670d67",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-80c44e68be345e39",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-83c3b58094256cbc",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-844dd641f33e1fbf",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-857fbf0ea13c7683",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-87009364d185c5b9",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-877ec971571ce291",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0001,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-87df899185bfaede",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0008,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-99378528ca3e9b60",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-9b5b8d33eb123e6a",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-9be661f7f368df7a",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-a26fa9d3251ac760",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-a2c9b8d9c1c6a69a",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-aa49cef67adfb825",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-ac73872c08a12675",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-b24866738e9efef6",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-b26b32ac4a81b005",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-b3f6ebec243af081",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-b69dcb977b4efd10",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-b6edd8ef24fc44f5",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-b765af5c523c0539",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-bf85706baa6159ff",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-c5dc58ffa3847bd4",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-c75aa4f77b7665bd",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0016,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-c75d72c1944f9940",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-c838c1a977847232",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-cc78ed3132be89d9",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-cf89b216dbdd5b9e",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-d9d0bfbad8abacb8",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-d9ee6bddab6e9638",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-dae9a1339cf537d2",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-e1b90376183f634f",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-e2afcf29bc8ad165",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-e51cbce90f4dfed6",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-e5aaab939325a96f",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-e6596697f17ff9bf",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-e7da9f4783bd5c40",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-e80c63d3ba62d1de",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-eb945ad20932e54b",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-ed28039fefd8ab4e",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-ed71bf2ac714aad7",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0008,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-ef1a538e730cad2a",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-f25b3dd1dad94d7a",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-f6784bfaf69adbd2",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_short-f6af0ec96882e538",
+   "category": "human_short",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-02072eba1f51fd4f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-0275c056ccd8b642",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-0292b1a82605a2ea",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-041967f8a78fd323",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-04d3d833f34559ff",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-06a2ee3753264e0e",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-07013b1c4f0ab3aa",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-083700bec0dbb3cf",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-087d296d6fbbb089",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-09d5e2e171a946e0",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-0a7888d3018ade64",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-0b5c40a1883de7f7",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-0c1892a2fdfdb9df",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-0c434e04358ac696",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-0d933c9f50d03854",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-0eab177b079299aa",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-0eb963d193320583",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1061c1dcace40ed6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1303a459f90f98f7",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0007,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-14eeb981136f4af9",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-159a7325b469ef6e",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1617180d6efb32b9",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1712cd64c6b60367",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-179fce69e045ed7c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-191e0050e1dff550",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-199a1bd26e7ea975",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1a1c7afb551ad325",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1a3730a9fd0878c1",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1b280bad8f5fd5f9",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1bface1289d8c6b4",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1c0db15915f322da",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1caa0756e50bcaf1",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1db9ee18e0db7353",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1dd50786142b5fb7",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1eb77c9dab03732c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1f8d008737667d87",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-1fbebef0b00c6943",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-203b17520583333e",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-220d66de4f47501e",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-23221d0aee33e837",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-234c647ec4b59556",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-24248277ee709b73",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-243e386d79633065",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-24ceb719ba931655",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-27ce164978fe3a1f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-2a4d65fdeaf81ef5",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-2ac335811e9c0738",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-2c2ec562fc8d91c8",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-2ca76b0404ef2b0f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-2cca109f57bb38b7",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-2d7e588112e37f07",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-308c2fca2176dd44",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-31a25fa96570a5a9",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-31bb779653c15831",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-31d77d75af76890f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-32217861d2e45b2f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-33b352432a681996",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-355f8fad8abf352a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-35f60d81a67f5c2f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-37043e80102a14af",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-37bd2b68b8eb5dff",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-385cae1d1c103fb0",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-389ccbf7b4dda53d",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-39e1d9ac08b52ad8",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-3a6cd8256ddf060d",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-3b905fd55b438827",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-3c578ab135c0a3c3",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-3ca07b396df8d29f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-3d07f62bd96af42f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-3df74341528a631a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-3fca64ba6c6cdd85",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-402c9dc113c88bd1",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-4252049b5ffd72b7",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-428421acb93f9b17",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-45532e6774493252",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-4577d298f2a768c2",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-45eb66ee69b57fdb",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-469743e4a452f9d3",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-48497be6af7c392e",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-4871ccb26c685ba4",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-494a577e3c63e169",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-4a05d0aee371d636",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-4a95a4bd90849876",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-4b77b945db0f6e97",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-4b866cc2c8df93b4",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-4c3618e6e6ffb248",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-4d6f8e9cc5b4da38",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-4dbe4bf4b05c8bf9",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-4ed27cd6689213c4",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-4fffbf905c3ab1be",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-5003589adc2ccf3b",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-5062c27fbb10a286",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-50d244016f4833d2",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-513d1d28ab226660",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-52024a8495705646",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0007,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-5230a53fec2efad3",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-52ac3680f64e253e",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-537dde3e7d55f05d",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-5530ebd5a5545ce2",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-55b2c2405ae51ff4",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-5667489bfb235367",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-59a68436dc02160e",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-5ad3a11a5933a39b",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-5c3304d6273450c1",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-5e1741bd3d533ae9",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-60a93f5d4982bf25",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-60e9b8ff9254917a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-61f9b642b4175471",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-642dace76eb55d22",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-643d4d33bf740df5",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-64a5986c654cff9e",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-64c29d4a438ec97c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-659bb66b81eeafc7",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-669745e9c46b53f6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-672235fee5369b15",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-67b24e4d4741b194",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-68d1c5e876f6377e",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-68d3a5bea318825b",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-694b3c2bde79f521",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-6ba1ea18ac7c94ea",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-6c85afae243f3a47",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-6db37fe117a9c825",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-6e63056b051d37b0",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-6e8be8f54133339b",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-6f0ca8dac098e4b5",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-7095b04b640a2a92",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-70ae6723fd068c78",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-70be8c5bf8f50361",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-70f4968f0227a99a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0009,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-71ee2599f1ab98e3",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-73aa207ea3761151",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-73dedfc404a2e52c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-746de9ff4738e580",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-74f82d7fd02052d4",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-762f738d99762c05",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-7676db32b246818d",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-76de6dfbbd038cb6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-770d6d636a6ee3aa",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-789fb9094094aa1c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-78d357e00c07cd2a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-7966238fae63932a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-79a468442277e91b",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-79ba61275167d4bf",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-7a91356878e877ab",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-7aceadbf8bfa32ca",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0008,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-7b5dc5c497eb01ea",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-7dcad98818b9f5e8",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-81916d8363de6d28",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-8203a056647ae586",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-82650bdeeb0f0020",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-829ec7be4ed2af58",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-82d778868881dac7",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-8312bb17d6302e7a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-8366ec4ed88e20ec",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-83f3d2b570a8b65c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0007,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-84a51c4ed4b4093a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-86226916c22f6636",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-873612bf1d7e21ba",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-8759eabe1f17e0d6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-877235976034b1ef",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-87ac1299fec881dc",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-889e9d6b7a79590a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-88c714651e69d374",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-891aa705c9a6c086",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-8a4c7035e493cfc7",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-8a7bc161ae54724f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-8af5f513262f8a97",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-8c3aecf5253a90e2",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-8dfd6f12fbb1c3bf",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-8f2f97a1a2dc3fd1",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-90cf1139859cbc36",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-91a43ef59d0f7498",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-9253dae4fb0059e1",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-93b6af197f87591b",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-95acc2569c28339d",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-95e2310ac678b7e9",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-96733561ba328bb6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-96dba2e1bd732622",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-96de9efa9db19168",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0007,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-96f5a6100c6ada31",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-98491b11da69fd8d",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-9855b08d8bc1a090",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-99888d59d4d885f5",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-999e6252b9361568",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-99a5e1f091fc8036",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-99a615ea8816a649",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-99af282bde90117c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-9a703f4e63b90567",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-9b6acd92d0e72ab6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-9c47aff68bbaa8e8",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-9c4c3977c96a57fc",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-9d4c4e22d0fb96d7",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-9d4f4934c06311c6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-9f1c59f53de1e53d",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-a0d820d7dca7e541",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-a11c97a7c0a228df",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-a29350c242b6c1b9",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0008,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-a40c6f74ee474a51",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-a50c7df38256bb67",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-a5e11fba854985f2",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-a69d0761133f1d0a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-a6a07ef250264573",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-a83de77dfd0470b3",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-aa14fb7654784d8f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-aaeb46f855faa261",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-ac806213f3569fc6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-aced7dd34f3c0b30",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-ad863cb774e0cf2d",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-aedc1b9e8152bdcf",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-af30ea6968a4777e",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-b02556b22280091e",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-b0cd8af6fd256116",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-b3c5bab6f97b2c6b",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-b6bb7c1dea62301b",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-b6ce6fbad4fd7503",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-b85fa72e2876a09e",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-b979e3ee4d2fd9f3",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-b98670ace7b8e8c6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-ba05365956c3c106",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-bc852cfbecbadffb",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-bf93106ddaf6168d",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-c265cf94c2189789",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-c3d447facc630960",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-c3e17d730cd76a07",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-c4dc8d50c5aa90c2",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-c522fe770d7f1922",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-c6b11f0d5dae2e17",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-c83e7a46827ee32f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-c92d8b30471f0a5c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-c9c209560328c1c3",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0007,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-cab06ac0bae05e50",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-cbb9cc3e9c704f58",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-cbe4ff825137ff57",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-cc8973cafbd04cd6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-cd296c84a3390ad0",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-cd656e19e65ed0ab",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-cde065b773d86986",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-cec9ee041b38f1ec",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-cf5bb503a7421db3",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d01137e0473a5a0c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d09866530a10ed0a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d11181aaa271cf86",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d2b94a4692cb77ce",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d33a84bced9f5778",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d422798d4002a454",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d4929aefe1ef646b",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d4b971195b0b92bb",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d4c3fc151ea1c9bd",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0009,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d56af8d23c4a179f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d7515392cf92497d",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d7af9df3d3b819c6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d8265fc863724b64",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d8af99fb4af9d63b",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-d953ccdfb8c6165c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-da1914ea52ec74bd",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-db5d0817e3c3d7f6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-dce3be6f04ab1a31",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-dd232d6421aa4659",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-dda681b7899e5d37",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-ddb2ca1971e34f45",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-de9670cd26d3ed29",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-dfb65cd4bea6efeb",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-dfcb2aca0db7f35f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e06901e2a7759567",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e0b347636fe53e2a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e0d917a46e152766",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e0ee385d692eebc1",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e2d3b22417f4966c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e3638b3a2d291328",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e3768db251b2fa20",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e3925d0e22cd120a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e4746e6c611c00b6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e4dd9548fa4edd4a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e62ee04995be6c7f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e7b333343552425c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e85acaf8fe644eec",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e8bb10f230793079",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-e9a08003969f9c1c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-eb5b21cd9853ef82",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-ebf72c238d85780f",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-ec78bdcf7ee0bfa1",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-ed423c025235bbfa",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-ede41dadc7c7187b",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-eeabccf16c58ee5a",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-eeb28e6f9c3f33b5",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-ef8fd2acac023c1b",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-f2e38cd8eb490950",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-f355a365ca715896",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-f593f68e83b0dabb",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-f67bf0016326461c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-f7411e3b846d7092",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-f90c69ccd2ad6c29",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-f90e38b6cccd78c9",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-fa6ef8296faebbc6",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-fb03ec13eae98385",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-fb086f47b48316ec",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-fd9676f68028f4f7",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-ff5db5a181bfbb9c",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-ff8e2abbd138f7a1",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-human_wikipedia-ffa7c791c051ced0",
+   "category": "human_wikipedia",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-005d18cd7f217a07",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-01c450abac1e5493",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-0b15bf8bca85f4ee",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.001,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-0df9d6eae329d028",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9357,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-10e8bf3cf449854e",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-138d08c92886aa14",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.1257,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-179a5f2c68c5a854",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9529,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-19e01b4491f66d05",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9333,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-226644dcd597832b",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.2131,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-22c53dda61ad58ef",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.183,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-23a74fc61812aa82",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0141,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-268a9428a72e3e4d",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.1551,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-2706d288ceacdc43",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9414,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-289f6044c3d3056d",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9594,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-2c33ba8e7362bae7",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0184,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-381c366809cda295",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.7237,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-3841c0eaff5d5d3c",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.8353,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-4028ed323f0162df",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.3842,
+   "band": "undetermined"
+  },
+  {
+   "id": "v2-en-mixed-420b91d3a802607d",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9499,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-42e16a14dbf511ae",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-43e059f694394607",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9321,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-49219f357a0dbece",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0007,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-524b48b8e649000b",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.867,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-540e67479b2cd8ad",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0008,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-57e7e06d9c4db38f",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9341,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-5a2f8b1dac06dbe6",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9569,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-5ab26ac7e1475c31",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.001,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-5daa379d761c0a47",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.1967,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-6140ba21b30c0c03",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.954,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-61d6ef0b1bb777ca",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.2431,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-625eb34e05363f12",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.2872,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-639ca696ab6588f7",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9474,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-6b0ccdb2bcdfcfd6",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-729cf79a2c47c5d4",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0105,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-73274f1c67ffcb07",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0013,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-74660568f0fa45fd",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.4337,
+   "band": "undetermined"
+  },
+  {
+   "id": "v2-en-mixed-763c76a3d885f6ca",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0124,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-78f446f4b7f37b6e",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9325,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-7a1588c693ecdc7f",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.002,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-7b232b6df2fa756c",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0063,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-81c4acc278f8e1b4",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-8ce30cb858f22bc6",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9632,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-8ebc0d574e1fed73",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9366,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-92ea11b028ece1fd",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.2762,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-931bc6d6b975815f",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9536,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-936639046df5a487",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0265,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-94630c011f795f7f",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9431,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-997a5e8956919649",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.7509,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-9a8480c5d86656d2",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-9b050787fad4f220",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0027,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-9c67bd5cf9a80d52",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9616,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-9cf9071f5cd0ad18",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9694,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-9da34d19e2090a85",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9275,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-a073c7fc5149b05b",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0029,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-a159a0f717161593",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9507,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-a1c337ccae6dbffe",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9053,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-a20ddbdf1fee98fc",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9544,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-a57b4fed1fc72bec",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9606,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-ab7b348c68a39597",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0402,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-ace89969642df8a2",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0009,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-ad641bb7a2e30f08",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9284,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-b01177eda188ec2f",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-b0dc6f15f89bc5cf",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0483,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-b13e21a50fa75742",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9432,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-b2986b36fcd883fe",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9582,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-b2f53aa4bc6a5b45",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.958,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-b3cb4841a2ff6f9d",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9559,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-b5c06363f3cebc75",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0162,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-b7eff0f386ad8806",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0111,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-b80c4a9b3a671d8c",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.716,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-b882dad3cca35202",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0298,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-b8dd06f4f7b0073c",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0009,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-bb09c61642d46426",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0008,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-c174d3aaa827f50b",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0139,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-c29ca0d8b4258ae6",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9689,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-c40da5bafafdabc7",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.419,
+   "band": "undetermined"
+  },
+  {
+   "id": "v2-en-mixed-c8e135ef1a61ae44",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9539,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-c966504c780a1639",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0007,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-cbda4bbcaaa81e6c",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9585,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-ccb8fc86fe3663ef",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-cedad687c34eefbb",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9663,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-d38232ec4100fca9",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0008,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-d9d44ab3a78ffccf",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.7234,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-da00275dbca61724",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-da6143c879f6b7b7",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0027,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-dabc542d24947a89",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0007,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-dd68db4a3455c12d",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.075,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-e08bd0a8e82206ac",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0004,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-e58cb71bc5451155",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.1496,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-e87cb1c15f8e130e",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0009,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-e90082f0eb33e128",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-eb20d52021a7f512",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0024,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-ebd4729458056433",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0425,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-ed93845367314699",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9017,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-f1b201856da1b8dd",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0153,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-f32c1134e96c5070",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0005,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-f3cd97f178829720",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.0008,
+   "band": "likely_human"
+  },
+  {
+   "id": "v2-en-mixed-f91a645c2382f279",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9698,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-fbab967749a67b86",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9592,
+   "band": "likely_ai"
+  },
+  {
+   "id": "v2-en-mixed-fd6ce1d883f3d1fc",
+   "category": "mixed",
+   "label": "mixed",
+   "probability": 0.9628,
+   "band": "likely_ai"
+  }
+ ]
+}
