@@ -75,6 +75,33 @@ Le rapport du run indique chaque porte, mesurée et franchie ou non. Un modèle 
 toutes les portes peut remplacer 0.1 en mode fantôme ; servir seul reste soumis à la porte
 d'accord de la phase 3 (ADR-0010).
 
+## Corpus 0.2 obtenu (run 43366022743, 13/11/2026)
+
+Manifestes sans texte : `ml/corpus/manifests/veritas-0.2/{fr,en}.jsonl` (partitions train et
+calibration ; la partition test reste `detection-v1`). Le corpus v1 y est inclus à l'identique.
+
+| Partie                                      | FR     | EN     |
+| ------------------------------------------- | ------ | ------ |
+| Textes humains (v1)                         | 4 400  | 4 400  |
+| Textes de Claude (v1)                       | 4 397  | 4 400  |
+| Textes de modèles ouverts (sur 2 400 visés) | 2 302  | 2 362  |
+| Reformulations (sur 600 visées)             | 598    | 599    |
+| Textes mixtes                               | 1 000  | 1 000  |
+| **Total**                                   | 12 697 | 12 761 |
+
+Par générateur (textes ouverts et reformulations) : FR Qwen 867, Mistral 1 029, Granite
+1 004 ; EN Qwen 697, Mistral 756, Granite 754, OLMo 754. Les textes écartés sont presque tous
+de Qwen (FR 99 sur 966 consignes, EN 39 sur 736) : réponses de moins de 150 mots une fois les
+titres retirés, rejetées par `clean_generation`. Qwen reste le générateur le moins représenté.
+
+Vérifications : aucune empreinte commune avec la partition test de `detection-v1` ni avec
+`detection-v2` ; aucun texte dérivé d'une source de test ; aucun doublon.
+
+Calcul : 64 lots, 3 h 11 de bout en bout, ≈ 20 h de GPU L4 d'après le journal, soit
+≈ 16 $ (au-dessus de l'estimation de 12 à 14 $, sous le plafond de 25 $). Écart : Granite et
+OLMo, plus lents que prévu, ont souvent manqué de mémoire GPU sur les longues réponses
+(paquets coupés en deux, aucun lot perdu).
+
 ## Conséquences
 
 - **Coût estimé** (tarifs Modal du 10/11/2026, L4 à 0,80 $/h ; débits mesurés pendant le test
