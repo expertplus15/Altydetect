@@ -1,0 +1,18 @@
+{
+  "version": "detection-v3",
+  "created": "2026-11-14",
+  "run": "43541257510",
+  "licence": "Textes humains : French Science Commons (CC BY, CC BY-SA, CC0, Licence ouverte, par document) et décisions de la Cour de cassation (Judilibre, Licence ouverte 2.0) ; textes générés : Qwen2.5-7B-Instruct, Mistral-7B-Instruct-v0.3, Granite-3.3-8B-Instruct (Apache-2.0)",
+  "generator": "ml/train/pipeline.py (run v3, ml/train/train/corpus_v3.py)",
+  "documents": {
+    "fr": {
+      "ai_academic": 196,
+      "ai_legal": 170,
+      "human_academic": 200,
+      "human_legal": 200
+    }
+  },
+  "files": {
+    "fr.jsonl": "1775be3db3b0ec22851dc6f6c2aa9e528edc6a184d1c45828128d6924cd9c6d3"
+  }
+}
