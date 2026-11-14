@@ -46,10 +46,10 @@ TESTSET = "detection-v1"
 ROBUSTNESS = "detection-v2"
 FORMAL = "detection-v3"
 # « v1 » : corpus et modèles 0.1 ; « v2 » : modèles 0.2 (ADR-0011) ; « v3 » : modèle français 0.3
-# (ADR-0012) ; tout autre nom (« pilot »)
+# (ADR-0012) ; « v4 » : modèle français 0.4 (ADR-0012, suite) ; tout autre nom (« pilot »)
 # est isolé : corpus à part, références suffixées, jeu de test v1 intact.
 MAIN_RUN = "v1"
-VERSIONS = {"v1": "0.1", "v2": "0.2", "v3": "0.3"}
+VERSIONS = {"v1": "0.1", "v2": "0.2", "v3": "0.3", "v4": "0.4"}
 # Lots de génération du corpus 0.2 : 100 consignes, 8 GPU L4 au plus en parallèle.
 OPEN_CHUNK = 100
 MAX_GPUS = 8
@@ -366,17 +366,17 @@ def build_open(run: str, language: str) -> dict[str, Any]:
 
 
 @app.function(volumes={CORPUS: corpus_volume}, timeout=600)
-def seed_from_v2(run: str, language: str) -> dict[str, Any]:
-    """FR 0.3 : recopie du corpus 0.2 (textes humains, de Claude, de modèles ouverts, mixtes ;
-    même jeu de test gelé detection-v1). Rien n'est écrasé."""
+def seed_from(run: str, language: str, source: str, names: list[str]) -> dict[str, Any]:
+    """Recopie de fichiers d'un corpus précédent (FR 0.3 : corpus 0.2 ; FR 0.4 : corpus 0.3),
+    même jeu de test gelé detection-v1. Rien n'est écrasé."""
     import shutil
 
     base = f"{CORPUS}/{run}/{language}"
     os.makedirs(base, exist_ok=True)
     counts = {}
-    for name in ("human", "ai", "ai_open", "mixed"):
+    for name in names:
         if not os.path.exists(f"{base}/{name}.jsonl"):
-            shutil.copyfile(f"{CORPUS}/v2/{language}/{name}.jsonl", f"{base}/{name}.jsonl")
+            shutil.copyfile(f"{CORPUS}/{source}/{language}/{name}.jsonl", f"{base}/{name}.jsonl")
         counts[name] = len(_read(f"{base}/{name}.jsonl"))
     corpus_volume.commit()
     return {"language": language, **counts}
@@ -519,10 +519,44 @@ def formal_humans(run: str) -> dict[str, Any]:
     return summary
 
 
+@app.function(volumes={CORPUS: corpus_volume}, timeout=120 * 60, cpu=2, memory=8192)
+def formal_extra(run: str) -> dict[str, Any]:
+    """FR 0.4 : textes humains de registre soutenu supplémentaires, sans GPU, hors de tout
+    document du corpus 0.3 et de detection-v3. Arrêt avant toute génération si le registre
+    universitaire n'atteint pas son effectif."""
+    from train.corpus_v3 import EXTRA_SIZES, is_priority, select_extra
+
+    base = f"{CORPUS}/{run}/fr"
+    path = f"{base}/human_formal_extra.jsonl"
+    inventory: Counter[str] = Counter()
+    if not os.path.exists(path):
+        used = {
+            value
+            for d in _read(f"{base}/human_formal.jsonl") + _read(f"{CORPUS}/{FORMAL}/fr.jsonl")
+            for value in (d.get("url"), d["sha256"])
+            if value
+        }
+        academic = select_extra("academic", _academic_candidates(inventory), used)
+        legal = select_extra("legal", _legal_candidates(inventory), used)
+        if len(academic) < EXTRA_SIZES["academic"]:
+            raise RuntimeError(f"fr : pages universitaires insuffisantes ({len(academic)})")
+        _write(path, academic + legal)
+        corpus_volume.commit()
+    documents = _read(path)
+    summary = {
+        "inventory": dict(inventory),
+        "selected": dict(Counter(f"{d['category']}:{d['split']}" for d in documents)),
+        "academic_priority": sum(is_priority(d) for d in documents if d["register"] == "academic"),
+    }
+    _log(f"fr : textes de registre soutenu supplémentaires {summary}")
+    return summary
+
+
 @app.function(volumes={CORPUS: corpus_volume}, timeout=200 * 60, cpu=2, memory=8192)
-def build_formal(run: str) -> dict[str, Any]:
+def build_formal(run: str, extra: bool = False) -> dict[str, Any]:
     """Un texte généré par texte humain de registre soutenu (même sujet, même genre), puis le
-    jeu gelé detection-v3/fr (partition test), écrit une seule fois."""
+    jeu gelé detection-v3/fr (partition test), écrit une seule fois. `extra` (FR 0.4) : textes
+    humains supplémentaires, fichiers et lots à part."""
 
     from detection.robustness import chunks
 
@@ -530,13 +564,15 @@ def build_formal(run: str) -> dict[str, Any]:
     from train.corpus_v3 import generated_document, plan_jobs, prompt
 
     base = f"{CORPUS}/{run}/fr"
-    humans = _read(f"{base}/human_formal.jsonl")
-    if not os.path.exists(f"{base}/ai_formal.jsonl"):
+    suffix = "_extra" if extra else ""
+    humans = _read(f"{base}/human_formal{suffix}.jsonl")
+    target = f"{base}/ai_formal{suffix}.jsonl"
+    if not os.path.exists(target):
         jobs = plan_jobs(humans)
-        partial = Path(f"{base}/partial_formal")
+        partial = Path(f"{base}/partial_formal{suffix}")
         partial.mkdir(parents=True, exist_ok=True)
         plan = {
-            f"fr-formal-{name}": (key, idx)
+            f"fr-formal{suffix.replace('_', '-')}-{name}": (key, idx)
             for key in jobs
             for name, idx in chunks(key, jobs[key], OPEN_CHUNK)
         }
@@ -554,7 +590,7 @@ def build_formal(run: str) -> dict[str, Any]:
         _generate_lots(partial, list(plan), arguments, "fr (registre soutenu)")
         known = {
             d["sha256"]
-            for name in ("human", "ai", "ai_open")
+            for name in ("human", "ai", "ai_open", "human_formal", "ai_formal")
             for d in _read(f"{base}/{name}.jsonl")
         }
         known |= {d["sha256"] for d in humans}
@@ -567,11 +603,11 @@ def build_formal(run: str) -> dict[str, Any]:
                     continue
                 known.add(document["sha256"])
                 generated.append(document)
-        _write(f"{base}/ai_formal.jsonl", sorted(generated, key=lambda d: d["id"]))
+        _write(target, sorted(generated, key=lambda d: d["id"]))
         corpus_volume.commit()
-    generated = _read(f"{base}/ai_formal.jsonl")
+    generated = _read(target)
     testset = f"{CORPUS}/{FORMAL}/fr.jsonl"
-    if not os.path.exists(testset):
+    if not extra and not os.path.exists(testset):
         _write(testset, [d for d in humans + generated if d["split"] == "test"])
         corpus_volume.commit()
     summary = {
@@ -580,7 +616,7 @@ def build_formal(run: str) -> dict[str, Any]:
         ),
         "testset": dict(Counter(d["category"] for d in _read(testset))),
     }
-    _log(f"fr : corpus FR 0.3 {summary}")
+    _log(f"fr : corpus FR {VERSIONS[run]} {summary}")
     return summary
 
 
@@ -593,7 +629,15 @@ def manifests(run: str, language: str) -> list[dict[str, Any]]:
     documents = _read(f"{base}/human.jsonl") + _read(f"{base}/ai.jsonl")
     # Corpus 0.2 (absents en v1 et pour le pilote) et FR 0.3 (registre soutenu, partition test
     # comprise : c'est le manifeste du jeu detection-v3).
-    for name in ("ai_open", "mixed", "human_formal", "ai_formal"):
+    names = (
+        "ai_open",
+        "mixed",
+        "human_formal",
+        "ai_formal",
+        "human_formal_extra",
+        "ai_formal_extra",
+    )
+    for name in names:
         documents += _read(f"{base}/{name}.jsonl")
     return manifest_entries(documents)
 
@@ -622,13 +666,14 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
     _log(f"{reference} : conteneur GPU démarré")
     # Veritas 0.2 et FR 0.3 : lissage des étiquettes, classes équilibrées, combinaison plus
     # régularisée.
-    v2 = run in ("v2", "v3")
+    v2 = run in ("v2", "v3", "v4")
     base = f"{CORPUS}/{run}/{language}"
     documents = _read(f"{base}/human.jsonl") + _read(f"{base}/ai.jsonl")
     documents += _read(f"{base}/ai_open.jsonl") + _read(f"{base}/mixed.jsonl")
     # FR 0.3 : registre soutenu, sans sa partition test (jeu detection-v3, mesuré à part : la
     # partition « test » de ce corpus reste celle de detection-v1).
-    for name in ("human_formal", "ai_formal"):
+    # FR 0.4 : textes supplémentaires (jamais en partition test).
+    for name in ("human_formal", "ai_formal", "human_formal_extra", "ai_formal_extra"):
         documents += [d for d in _read(f"{base}/{name}.jsonl") if d["split"] != "test"]
     split = {
         name: [d for d in documents if d["split"] == name]
@@ -726,7 +771,7 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
         "records": records,
     }
     out: dict[str, Any] = {"manifest": manifest, "report": report, "robustness": robustness}
-    if run == "v3":
+    if run in ("v3", "v4"):
         from train.corpus_v3 import check_gates as check_gates_v3
 
         formal_records = score_set(FORMAL)
@@ -766,14 +811,25 @@ def main(
     # Corpus des langues en parallèle (CPU, lots Claude simultanés) ; entraînement une langue
     # après l'autre : jamais plus d'un GPU à la fois (garde-fou de coût). v2 : génération par
     # lots sur 8 GPU L4 au plus, puis les deux langues entraînées en parallèle (ADR-0011).
-    if run == "v3" and langs != ["fr"]:
-        raise SystemExit("run v3 (ADR-0012) : français seulement, languages doit valoir « fr »")
+    if run in ("v3", "v4") and langs != ["fr"]:
+        raise SystemExit(f"run {run} (ADR-0012) : français seulement, languages doit valoir « fr »")
     if stage in ("corpus", "all"):
         _log(f"corpus : {', '.join(langs)}")
-        if run == "v3":
+        if run == "v4":
             from train.corpus_v2 import BY_LANGUAGE, OPEN_GENERATORS
 
-            _log(f"corpus 0.2 recopié : {seed_from_v2.remote(run, 'fr')}")
+            names = ["human", "ai", "ai_open", "mixed", "human_formal", "ai_formal"]
+            _log(f"corpus 0.3 recopié : {seed_from.remote(run, 'fr', 'v3', names)}")
+            # Textes humains d'abord, sans GPU : s'ils manquent, rien n'est généré.
+            _log(f"registre soutenu, supplément : {formal_extra.remote(run)}")
+            for key in BY_LANGUAGE["fr"]:
+                prefetch.remote(OPEN_GENERATORS[key])
+            _log(f"corpus FR 0.4 : {build_formal.remote(run, True)}")
+        elif run == "v3":
+            from train.corpus_v2 import BY_LANGUAGE, OPEN_GENERATORS
+
+            names = ["human", "ai", "ai_open", "mixed"]
+            _log(f"corpus 0.2 recopié : {seed_from.remote(run, 'fr', 'v2', names)}")
             # Textes humains d'abord, sans GPU : s'ils manquent, rien n'est généré.
             _log(f"registre soutenu : {formal_humans.remote(run)}")
             for key in BY_LANGUAGE["fr"]:

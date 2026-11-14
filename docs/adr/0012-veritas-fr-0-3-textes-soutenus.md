@@ -113,3 +113,31 @@ positifs sur Wikipédia seule, la mesure du défaut à corriger.
   textes réels (étape 3 du plan). Sinon : analyse par source et nouvel ADR.
 - Limite : le registre soutenu ne couvre pas tous les usages (copies d'étudiants, lettres de
   motivation, courriels). La vérification sur des textes réels doit en comprendre.
+
+## Résultats de FR 0.3 et suite : FR 0.4 (14/11/2026)
+
+Entraînement FR 0.3 (run 43550379470, 25 min, ≈ 0,35 $) : portes non franchies.
+
+| Textes humains classés « Probablement IA » | FR 0.2 | FR 0.3    |
+| ------------------------------------------ | ------ | --------- |
+| detection-v1 (pages mC4)                   | 2,5 %  | 1,3 %     |
+| Wikipédia (detection-v2)                   | 8 %    | 5,3 %     |
+| Textes courts (detection-v2)               | 3 %    | 2 %       |
+| Arrêts (detection-v3)                      | —      | 0 %       |
+| Pages universitaires (detection-v3)        | —      | 10 %      |
+| **Tous (porte ≤ 1 %)**                     | 3,7 %  | **2,8 %** |
+
+Rappel de 99 à 100 % sur tous les générateurs, Phi compris. Les faux positifs universitaires
+sont surtout des pages courtes (moins de 300 mots : 11 %) et récentes (2018 à 2022 : 17 % ;
+avant 2010 : 0 %). Un seuil relevé ne suffit pas (à 0,90 : 1,3 % de faux positifs
+universitaires, 91 % de rappel). La vérification de ces pages par Pangram n'a pas pu se faire
+(crédit du compte épuisé, aucun texte envoyé). Les 31 premières minutes de l'entraînement 0.2
+ne venaient pas de la préparation des passages : en 0.3, le conteneur GPU a démarré en 14 s et
+la préparation a pris 6 s.
+
+**FR 0.4** (run `v4`, décision du 14/11/2026) : le corpus 0.3 plus 2 000 pages universitaires et
+jusqu'à 800 passages d'arrêts supplémentaires (sur ≈ 4 100 et ≈ 865 disponibles), pris hors de
+tout document du corpus 0.3 et de detection-v3, dont 70 % de pages courtes ou récentes ; un
+texte généré apparié pour chacun, comme en 0.3. Mêmes réglages, mêmes portes, mêmes jeux de
+test (detection-v3 inchangé). Corpus et entraînement dans un seul run (≈ 2 h, ≈ 4 à 5 $,
+plafond 10 $).
