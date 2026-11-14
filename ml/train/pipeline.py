@@ -617,6 +617,9 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
     from train.samples import label_of, labelled_passages
 
     reference = reference_for(language, run)
+    # Repère du démarrage du conteneur GPU : sépare l'attente d'un GPU et le démarrage de la
+    # préparation des passages (ADR-0012, 31 min non expliquées en 0.2).
+    _log(f"{reference} : conteneur GPU démarré")
     # Veritas 0.2 et FR 0.3 : lissage des étiquettes, classes équilibrées, combinaison plus
     # régularisée.
     v2 = run in ("v2", "v3")
@@ -631,6 +634,7 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
         name: [d for d in documents if d["split"] == name]
         for name in ("train", "calibration", "test")
     }
+    _log(f"{reference} : {len(documents)} documents lus")
     rng = random.Random(seed)
 
     def expand(docs: list[dict[str, Any]]) -> tuple[list[list[str]], list[int]]:
