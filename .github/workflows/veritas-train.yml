@@ -15,9 +15,9 @@ on:
         options: [all, corpus, train, deploy, benchmark, robustness]
         default: all
       run:
-        description: "pilot (essai isolé), v1 (modèles 0.1) ou v2 (modèles 0.2, ADR-0011)"
+        description: "pilot (essai isolé), v1 (modèles 0.1), v2 (modèles 0.2, ADR-0011) ou v3 (FR 0.3, ADR-0012, languages fr)"
         type: choice
-        options: [pilot, v1, v2]
+        options: [pilot, v1, v2, v3]
         default: pilot
       languages:
         description: "Langues, séparées par des virgules"
@@ -96,7 +96,7 @@ jobs:
           [[ "$stage" =~ ^(all|corpus|train|deploy|benchmark|robustness)$ ]] || { echo "stage invalide"; exit 1; }
           [[ "$provider" =~ ^(pangram)$ ]] || { echo "provider invalide"; exit 1; }
           [[ "$bench_human" =~ ^[0-9]{1,4}$ && "$bench_ai" =~ ^[0-9]{1,4}$ ]] || { echo "tailles du benchmark invalides"; exit 1; }
-          [[ "$run" =~ ^(pilot|v1|v2)$ ]] || { echo "run invalide"; exit 1; }
+          [[ "$run" =~ ^(pilot|v1|v2|v3)$ ]] || { echo "run invalide"; exit 1; }
           [[ "$languages" =~ ^(fr|en)(,(fr|en))?$ ]] || { echo "languages invalide"; exit 1; }
           [[ "$train" =~ ^[0-9]{1,5}$ && "$test" =~ ^[0-9]{1,5}$ ]] || { echo "tailles invalides"; exit 1; }
           [[ "$encoder" =~ ^(true|false)$ ]] || { echo "use_encoder invalide"; exit 1; }
@@ -268,11 +268,11 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
-      # Sorties de v1 et v2 (manifestes, paquets, rapports : aucun texte) poussées sur une branche
-      # `ml/sorties-<v1|v2>-<run>`, d'où une PR les range (jeu de test gelé, fiches des modèles).
+      # Sorties de v1, v2 et v3 (manifestes, paquets, rapports : aucun texte) poussées sur une
+      # branche `ml/sorties-<v1|v2|v3>-<run>`, d'où une PR les range (jeu de test gelé, fiches des modèles).
       # L'artefact reste disponible 30 jours.
-      - name: Sorties sur une branche (v1, v2, benchmark, robustness)
-        if: always() && steps.p.outputs.stage != 'deploy' && (steps.p.outputs.run == 'v1' || steps.p.outputs.run == 'v2' || steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness')
+      - name: Sorties sur une branche (v1, v2, v3, benchmark, robustness)
+        if: always() && steps.p.outputs.stage != 'deploy' && (steps.p.outputs.run == 'v1' || steps.p.outputs.run == 'v2' || steps.p.outputs.run == 'v3' || steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness')
         env:
           RUN_ID: ${{ github.run_id }}
           KIND: ${{ (steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness') && steps.p.outputs.stage || steps.p.outputs.run }}

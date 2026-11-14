@@ -1,4 +1,5 @@
-"""Chaîne d'entraînement de Veritas VRT-DET-FR/EN sur Modal (ADR-0008, ADR-0009, ADR-0011).
+"""Chaîne d'entraînement de Veritas VRT-DET-FR/EN sur Modal (ADR-0008, ADR-0009, ADR-0011,
+ADR-0012).
 
 Étapes, par langue :
 1. corpus humain : pages C4 / mC4 nettoyées (fragment 0 : entraînement et calibration,
@@ -12,6 +13,11 @@ Claude), puis enrichi de textes de modèles ouverts, de reformulations et de tex
 (train/corpus_v2.py) ; le modèle est aussi mesuré sur le jeu de robustesse detection-v2,
 avec les portes de sortie de l'ADR.
 
+Run « v3 » (Veritas FR 0.3, ADR-0012, français seulement) : le corpus 0.2 français est recopié,
+puis enrichi de textes humains de registre soutenu (universitaire, juridique) et d'autant de
+textes générés dans ces registres (train/corpus_v3.py) ; leur partition test forme le jeu gelé
+detection-v3, mesuré avec detection-v1 et detection-v2.
+
 Les textes ne quittent jamais les volumes Modal ; ce script rapporte seulement les manifestes
 (empreintes, sources, licences), le paquet du modèle et les métriques, dans --out.
 
@@ -23,6 +29,8 @@ import json
 import os
 import random
 import time
+from collections import Counter
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -36,10 +44,12 @@ HF_CACHE = "/hf"
 REFERENCES = {"fr": "VRT-DET-FR-0.1", "en": "VRT-DET-EN-0.1"}
 TESTSET = "detection-v1"
 ROBUSTNESS = "detection-v2"
-# « v1 » : corpus et modèles 0.1 ; « v2 » : modèles 0.2 (ADR-0011) ; tout autre nom (« pilot »)
+FORMAL = "detection-v3"
+# « v1 » : corpus et modèles 0.1 ; « v2 » : modèles 0.2 (ADR-0011) ; « v3 » : modèle français 0.3
+# (ADR-0012) ; tout autre nom (« pilot »)
 # est isolé : corpus à part, références suffixées, jeu de test v1 intact.
 MAIN_RUN = "v1"
-VERSIONS = {"v1": "0.1", "v2": "0.2"}
+VERSIONS = {"v1": "0.1", "v2": "0.2", "v3": "0.3"}
 # Lots de génération du corpus 0.2 : 100 consignes, 8 GPU L4 au plus en parallèle.
 OPEN_CHUNK = 100
 MAX_GPUS = 8
@@ -64,6 +74,7 @@ image = (
         "pydantic==2.14.3",
         "pyyaml==6.0.3",
         "httpx2==2.16.0",
+        "pyarrow==21.0.0",
     )
     .env(
         {
@@ -254,11 +265,43 @@ def open_generate(
     return chunk, generate_texts(chunk, name, prompts, max_tokens)
 
 
+def _generate_lots(
+    partial: Path,
+    names: list[str],
+    arguments: Callable[[str], tuple[str, str, list[str], list[int]]],
+    label: str,
+) -> None:
+    """Génère les lots manquants (8 GPU L4 au plus) ; chaque lot est sauvegardé dans le volume
+    dès sa fin : un run relancé reprend sans régénérer. Les lots en échec sont signalés à la
+    fin, une fois les autres sauvegardés. Appelé depuis un conteneur (corpus 0.2 et FR 0.3)."""
+    todo = [name for name in names if not (partial / f"{name}.json").exists()]
+    _log(f"{label} : {len(names) - len(todo)}/{len(names)} lots déjà générés")
+    failures: list[str] = []
+    saved = 0
+    for result in open_generate.starmap(
+        [arguments(name) for name in todo], order_outputs=False, return_exceptions=True
+    ):
+        if isinstance(result, BaseException):
+            failures.append(f"{type(result).__name__}: {result}")
+            continue
+        name, texts = result
+        (partial / f"{name}.json").write_text(
+            json.dumps(texts, ensure_ascii=False), encoding="utf-8"
+        )
+        corpus_volume.commit()
+        saved += 1
+        _log(f"{name} : lot sauvegardé ({saved}/{len(todo)})")
+    if failures:
+        raise RuntimeError(
+            f"{label} : {len(failures)} lots en échec (les autres sont sauvegardés) : "
+            + " | ".join(failures[:3])
+        )
+
+
 @app.function(volumes={CORPUS: corpus_volume}, timeout=300 * 60, cpu=2, memory=8192)
 def build_open(run: str, language: str) -> dict[str, Any]:
     """Textes des modèles ouverts, reformulations et textes mixtes (corpus 0.2). Chaque lot
     généré est sauvegardé dans le volume dès sa fin : un run relancé reprend sans régénérer."""
-    from collections import Counter
 
     from detection.robustness import chunks
 
@@ -285,8 +328,6 @@ def build_open(run: str, language: str) -> dict[str, Any]:
             for key in jobs
             for name, idx in chunks(key, jobs[key], OPEN_CHUNK)
         }
-        todo = [name for name in plan if not (partial / f"{name}.json").exists()]
-        _log(f"{language} : {len(plan) - len(todo)}/{len(plan)} lots déjà générés")
 
         def arguments(name: str) -> tuple[str, str, list[str], list[int]]:
             key, idx = plan[name]
@@ -298,26 +339,7 @@ def build_open(run: str, language: str) -> dict[str, Any]:
                 [budget(job[3]) for job in selected],
             )
 
-        failures: list[str] = []
-        saved = 0
-        for result in open_generate.starmap(
-            [arguments(name) for name in todo], order_outputs=False, return_exceptions=True
-        ):
-            if isinstance(result, BaseException):
-                failures.append(f"{type(result).__name__}: {result}")
-                continue
-            name, texts = result
-            (partial / f"{name}.json").write_text(
-                json.dumps(texts, ensure_ascii=False), encoding="utf-8"
-            )
-            corpus_volume.commit()
-            saved += 1
-            _log(f"{name} : lot sauvegardé ({saved}/{len(todo)})")
-        if failures:
-            raise RuntimeError(
-                f"{language} : {len(failures)} lots en échec (les autres sont sauvegardés) : "
-                + " | ".join(failures[:3])
-            )
+        _generate_lots(partial, list(plan), arguments, language)
 
         known = {d["sha256"] for d in humans + claude}
         generated: list[dict[str, Any]] = []
@@ -344,14 +366,235 @@ def build_open(run: str, language: str) -> dict[str, Any]:
 
 
 @app.function(volumes={CORPUS: corpus_volume}, timeout=600)
+def seed_from_v2(run: str, language: str) -> dict[str, Any]:
+    """FR 0.3 : recopie du corpus 0.2 (textes humains, de Claude, de modèles ouverts, mixtes ;
+    même jeu de test gelé detection-v1). Rien n'est écrasé."""
+    import shutil
+
+    base = f"{CORPUS}/{run}/{language}"
+    os.makedirs(base, exist_ok=True)
+    counts = {}
+    for name in ("human", "ai", "ai_open", "mixed"):
+        if not os.path.exists(f"{base}/{name}.jsonl"):
+            shutil.copyfile(f"{CORPUS}/v2/{language}/{name}.jsonl", f"{base}/{name}.jsonl")
+        counts[name] = len(_read(f"{base}/{name}.jsonl"))
+    corpus_volume.commit()
+    return {"language": language, **counts}
+
+
+def _academic_candidates(inventory: Counter[str]) -> list[dict[str, Any]]:
+    """Pages universitaires retenues : français, licence ouverte, publiées avant la date
+    limite, une page par document (la première qui passe le nettoyage, hors page de titre)."""
+    import tempfile
+    import urllib.request
+
+    import pyarrow.parquet as pq
+
+    from train.corpus_v3 import (
+        CUTOFF,
+        FSC_BASE,
+        FSC_COLUMNS,
+        FSC_FILES,
+        academic_licence,
+        clean_academic,
+        human_document,
+        in_period,
+    )
+
+    out: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for name in FSC_FILES:
+        with tempfile.NamedTemporaryFile(suffix=".parquet") as tmp:
+            urllib.request.urlretrieve(f"{FSC_BASE}/{name}", tmp.name)
+            parquet = pq.ParquetFile(tmp.name)
+            for batch in parquet.iter_batches(batch_size=2000, columns=FSC_COLUMNS):
+                for row in batch.to_pylist():
+                    inventory["academic_pages"] += 1
+                    if row["language"] != "fr" or row["id"] in seen or int(row["page"] or 0) < 2:
+                        continue
+                    licence = academic_licence(row["license"])
+                    if licence is None:
+                        continue
+                    inventory["academic_open_licence"] += 1
+                    if not in_period(row["publication_date"], end=CUTOFF):
+                        continue
+                    inventory["academic_in_period"] += 1
+                    text = clean_academic(str(row["text"] or ""))
+                    if text is None:
+                        continue
+                    seen.add(row["id"])
+                    source = str(row["source"] or "").strip() or "inconnue"
+                    out.append(
+                        human_document(
+                            "academic",
+                            text,
+                            f"french-science-commons:{source}",
+                            str(row["doi"] or row["id"]),
+                            f"{licence} ({source}, via PleIAs/French-Science-Commons)",
+                            str(row["publication_date"]),
+                        )
+                    )
+        _log(f"fr : {name} lu, {len(out)} pages universitaires retenues")
+    inventory["academic_cleaned"] = len(out)
+    return out
+
+
+def _legal_candidates(inventory: Counter[str]) -> list[dict[str, Any]]:
+    """Passages de motifs d'arrêts de la Cour de cassation, de 2005 à la date limite, lus au
+    fil du fichier (une ligne sur JURIS_SAMPLE, tirage stable)."""
+    import gzip
+    import urllib.request
+
+    from train.corpus_v3 import (
+        CUTOFF,
+        JURIS_FROM,
+        JURIS_LICENCE,
+        JURIS_URL,
+        clean_legal,
+        human_document,
+        in_period,
+        sample_line,
+    )
+
+    out: list[dict[str, Any]] = []
+    with urllib.request.urlopen(JURIS_URL, timeout=300) as response:
+        with gzip.open(response) as lines:
+            for line in lines:
+                inventory["legal_decisions"] += 1
+                if not sample_line(line):
+                    continue
+                row = json.loads(line)
+                if row.get("type") != "Arrêt":
+                    continue
+                if not in_period(row.get("decision_date"), JURIS_FROM, CUTOFF):
+                    continue
+                inventory["legal_in_period"] += 1
+                text = clean_legal(str(row.get("text") or ""))
+                if text is None:
+                    continue
+                out.append(
+                    human_document(
+                        "legal",
+                        text,
+                        f"judilibre:{row.get('chamber') or 'cour de cassation'}",
+                        f"https://www.courdecassation.fr/decision/{row['id']}",
+                        JURIS_LICENCE,
+                        str(row["decision_date"]),
+                    )
+                )
+    inventory["legal_cleaned"] = len(out)
+    _log(f"fr : {len(out)} passages d'arrêts retenus")
+    return out
+
+
+@app.function(volumes={CORPUS: corpus_volume}, timeout=120 * 60, cpu=2, memory=8192)
+def formal_humans(run: str) -> dict[str, Any]:
+    """Textes humains de registre soutenu (FR 0.3), sans GPU. Inventaire des sources rapporté ;
+    si un registre n'atteint pas son effectif, le run s'arrête avant toute génération. Une
+    fois écrits, ces textes ne sont plus jamais recollectés (la partition test est gelée)."""
+
+    from train.corpus_v3 import SIZES, split_humans
+
+    path = f"{CORPUS}/{run}/fr/human_formal.jsonl"
+    inventory: Counter[str] = Counter()
+    if not os.path.exists(path):
+        candidates = {
+            "academic": _academic_candidates(inventory),
+            "legal": _legal_candidates(inventory),
+        }
+        short = {k: len(v) for k, v in candidates.items() if len(v) < SIZES[k]}
+        if short:
+            raise RuntimeError(f"fr : textes humains insuffisants {short}, inventaire {inventory}")
+        documents = [d for k in candidates for d in split_humans(k, candidates[k])]
+        _write(path, documents)
+        corpus_volume.commit()
+    documents = _read(path)
+    summary = {
+        "inventory": dict(inventory),
+        "selected": dict(Counter(f"{d['category']}:{d['split']}" for d in documents)),
+        "years": dict(sorted(Counter(d["date"][:4] for d in documents).items())),
+        "licences": dict(Counter(d["licence"].split(" (")[0] for d in documents).most_common(8)),
+    }
+    _log(f"fr : textes de registre soutenu {summary}")
+    return summary
+
+
+@app.function(volumes={CORPUS: corpus_volume}, timeout=200 * 60, cpu=2, memory=8192)
+def build_formal(run: str) -> dict[str, Any]:
+    """Un texte généré par texte humain de registre soutenu (même sujet, même genre), puis le
+    jeu gelé detection-v3/fr (partition test), écrit une seule fois."""
+
+    from detection.robustness import chunks
+
+    from train.corpus_v2 import OPEN_GENERATORS, budget
+    from train.corpus_v3 import generated_document, plan_jobs, prompt
+
+    base = f"{CORPUS}/{run}/fr"
+    humans = _read(f"{base}/human_formal.jsonl")
+    if not os.path.exists(f"{base}/ai_formal.jsonl"):
+        jobs = plan_jobs(humans)
+        partial = Path(f"{base}/partial_formal")
+        partial.mkdir(parents=True, exist_ok=True)
+        plan = {
+            f"fr-formal-{name}": (key, idx)
+            for key in jobs
+            for name, idx in chunks(key, jobs[key], OPEN_CHUNK)
+        }
+
+        def arguments(name: str) -> tuple[str, str, list[str], list[int]]:
+            key, idx = plan[name]
+            selected = [jobs[key][i] for i in idx]
+            return (
+                name,
+                OPEN_GENERATORS[key],
+                [prompt(job) for job in selected],
+                [budget(job[3]) for job in selected],
+            )
+
+        _generate_lots(partial, list(plan), arguments, "fr (registre soutenu)")
+        known = {
+            d["sha256"]
+            for name in ("human", "ai", "ai_open")
+            for d in _read(f"{base}/{name}.jsonl")
+        }
+        known |= {d["sha256"] for d in humans}
+        generated: list[dict[str, Any]] = []
+        for name, (key, idx) in plan.items():
+            texts = json.loads((partial / f"{name}.json").read_text(encoding="utf-8"))
+            for i, raw in zip(idx, texts, strict=True):
+                document = generated_document(jobs[key][i], key, raw)
+                if document is None or document["sha256"] in known:
+                    continue
+                known.add(document["sha256"])
+                generated.append(document)
+        _write(f"{base}/ai_formal.jsonl", sorted(generated, key=lambda d: d["id"]))
+        corpus_volume.commit()
+    generated = _read(f"{base}/ai_formal.jsonl")
+    testset = f"{CORPUS}/{FORMAL}/fr.jsonl"
+    if not os.path.exists(testset):
+        _write(testset, [d for d in humans + generated if d["split"] == "test"])
+        corpus_volume.commit()
+    summary = {
+        "generated": dict(
+            sorted(Counter(f"{d['category']}:{d['generator']}" for d in generated).items())
+        ),
+        "testset": dict(Counter(d["category"] for d in _read(testset))),
+    }
+    _log(f"fr : corpus FR 0.3 {summary}")
+    return summary
+
+
+@app.function(volumes={CORPUS: corpus_volume}, timeout=600)
 def manifests(run: str, language: str) -> list[dict[str, Any]]:
     """Manifeste du corpus (sans texte) : à commiter."""
     from corpus.manifest import manifest_entries
 
     base = f"{CORPUS}/{run}/{language}"
     documents = _read(f"{base}/human.jsonl") + _read(f"{base}/ai.jsonl")
-    # Corpus 0.2 (absents en v1 et pour le pilote).
-    documents += _read(f"{base}/ai_open.jsonl") + _read(f"{base}/mixed.jsonl")
+    # Corpus 0.2 (absents en v1 et pour le pilote) et FR 0.3 (registre soutenu, partition test
+    # comprise : c'est le manifeste du jeu detection-v3).
+    for name in ("ai_open", "mixed", "human_formal", "ai_formal"):
+        documents += _read(f"{base}/{name}.jsonl")
     return manifest_entries(documents)
 
 
@@ -374,11 +617,16 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
     from train.samples import label_of, labelled_passages
 
     reference = reference_for(language, run)
-    # Veritas 0.2 : lissage des étiquettes, classes équilibrées, combinaison plus régularisée.
-    v2 = run == "v2"
+    # Veritas 0.2 et FR 0.3 : lissage des étiquettes, classes équilibrées, combinaison plus
+    # régularisée.
+    v2 = run in ("v2", "v3")
     base = f"{CORPUS}/{run}/{language}"
     documents = _read(f"{base}/human.jsonl") + _read(f"{base}/ai.jsonl")
     documents += _read(f"{base}/ai_open.jsonl") + _read(f"{base}/mixed.jsonl")
+    # FR 0.3 : registre soutenu, sans sa partition test (jeu detection-v3, mesuré à part : la
+    # partition « test » de ce corpus reste celle de detection-v1).
+    for name in ("human_formal", "ai_formal"):
+        documents += [d for d in _read(f"{base}/{name}.jsonl") if d["split"] != "test"]
     split = {
         name: [d for d in documents if d["split"] == name]
         for name in ("train", "calibration", "test")
@@ -449,20 +697,22 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
         return {"manifest": manifest, "report": report}
 
     # Robustesse : jeu gelé detection-v2 (aucun de ses textes ni de ses sources n'est dans le
-    # corpus), mêmes seuils, puis portes de sortie de l'ADR-0011.
+    # corpus), mêmes seuils, puis portes de sortie de l'ADR-0011 ; FR 0.3 : detection-v3 en plus
+    # (ADR-0012).
     from detection.robustness import category_report
 
-    from train.corpus_v2 import check_gates
+    def score_set(testset: str) -> list[dict[str, Any]]:
+        records: list[dict[str, Any]] = []
+        for d in _read(f"{CORPUS}/{testset}/{language}.jsonl"):
+            record = {"id": d["id"], "category": d["category"], "label": d["label"]}
+            scored = score(model.detect(d["text"], language), d["text"], language, thresholds)
+            record["probability"] = round(scored.probability, 4)
+            record["band"] = scored.output.verdict_band.value
+            records.append(record)
+        return records
 
-    records: list[dict[str, Any]] = []
-    for d in _read(f"{CORPUS}/{ROBUSTNESS}/{language}.jsonl"):
-        record = {"id": d["id"], "category": d["category"], "label": d["label"]}
-        scored = score(model.detect(d["text"], language), d["text"], language, thresholds)
-        record["probability"] = round(scored.probability, 4)
-        record["band"] = scored.output.verdict_band.value
-        records.append(record)
+    records = score_set(ROBUSTNESS)
     categories = category_report(records)
-    report["gates"] = check_gates(report["metrics"], categories)
     robustness = {
         "language": language,
         "testset": f"{ROBUSTNESS}/{language}",
@@ -471,7 +721,20 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
         "categories": categories,
         "records": records,
     }
-    return {"manifest": manifest, "report": report, "robustness": robustness}
+    out: dict[str, Any] = {"manifest": manifest, "report": report, "robustness": robustness}
+    if run == "v3":
+        from train.corpus_v3 import check_gates as check_gates_v3
+
+        formal_records = score_set(FORMAL)
+        formal_categories = category_report(formal_records)
+        report["gates"] = check_gates_v3(report["metrics"], categories, formal_categories)
+        out["formal"] = {**robustness, "testset": f"{FORMAL}/{language}"}
+        out["formal"].update(categories=formal_categories, records=formal_records)
+    else:
+        from train.corpus_v2 import check_gates
+
+        report["gates"] = check_gates(report["metrics"], categories)
+    return out
 
 
 @app.local_entrypoint()
@@ -499,9 +762,20 @@ def main(
     # Corpus des langues en parallèle (CPU, lots Claude simultanés) ; entraînement une langue
     # après l'autre : jamais plus d'un GPU à la fois (garde-fou de coût). v2 : génération par
     # lots sur 8 GPU L4 au plus, puis les deux langues entraînées en parallèle (ADR-0011).
+    if run == "v3" and langs != ["fr"]:
+        raise SystemExit("run v3 (ADR-0012) : français seulement, languages doit valoir « fr »")
     if stage in ("corpus", "all"):
         _log(f"corpus : {', '.join(langs)}")
-        if run == "v2":
+        if run == "v3":
+            from train.corpus_v2 import BY_LANGUAGE, OPEN_GENERATORS
+
+            _log(f"corpus 0.2 recopié : {seed_from_v2.remote(run, 'fr')}")
+            # Textes humains d'abord, sans GPU : s'ils manquent, rien n'est généré.
+            _log(f"registre soutenu : {formal_humans.remote(run)}")
+            for key in BY_LANGUAGE["fr"]:
+                prefetch.remote(OPEN_GENERATORS[key])
+            _log(f"corpus FR 0.3 : {build_formal.remote(run)}")
+        elif run == "v2":
             from train.corpus_v2 import BY_LANGUAGE, OPEN_GENERATORS
 
             for result in seed_from_v1.starmap([(run, lang) for lang in langs]):
@@ -551,4 +825,15 @@ def main(
                     if k != "_overall"
                 }
                 _log(f"{reference} robustesse (part « Probablement IA ») : {categories}")
+            if "formal" in result:
+                (out_dir / f"robustness-{FORMAL}-{reference}.json").write_text(
+                    json.dumps(result["formal"], indent=1) + "\n", encoding="utf-8"
+                )
+                formal = {
+                    k: v.get("likely_ai")
+                    for k, v in result["formal"]["categories"].items()
+                    if k != "_overall"
+                }
+                _log(f"{reference} registre soutenu (part « Probablement IA ») : {formal}")
+            if "gates" in result["report"]:
                 _log(f"{reference} portes : " + json.dumps(result["report"]["gates"]))

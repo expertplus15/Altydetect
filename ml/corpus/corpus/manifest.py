@@ -19,6 +19,9 @@ MANIFEST_FIELDS = (
     "generator",
     "derived_from",
     "ai_starts_at",
+    # Veritas FR 0.3 : registre (universitaire, juridique) et date du texte humain.
+    "register",
+    "date",
 )
 
 
