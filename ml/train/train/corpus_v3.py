@@ -66,7 +66,9 @@ JURIS_URL = (
     "cour_de_cassation.jsonl.gz"
 )
 JURIS_FROM = "2005-01-01"  # style de rédaction proche de l'actuel
-JURIS_SAMPLE = 25  # une ligne sur 25 lue (≈ 22 000 sur 553 000), tirage stable
+# Une ligne sur 10 lue (≈ 55 000 sur 553 000), tirage stable. Run 43540546372 : une sur 25
+# donnait 4 281 arrêts dans la période et 871 passages retenus, moins que les 1 200 visés.
+JURIS_SAMPLE = 10
 JURIS_LICENCE = "Licence ouverte 2.0 (Etalab), Judilibre, via antoinejeannot/jurisprudence"
 
 REGISTERS = ("academic", "legal")

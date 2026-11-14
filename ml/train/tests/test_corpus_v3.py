@@ -157,7 +157,7 @@ def test_sample_line_is_stable() -> None:
     lines = [f'{{"id": "{i}"}}'.encode() for i in range(10_000)]
     kept = [line for line in lines if sample_line(line)]
     assert kept == [line for line in lines if sample_line(line)]
-    assert 250 < len(kept) < 550
+    assert 800 < len(kept) < 1200
 
 
 def rapport(**categories: tuple[str, float, int]) -> dict:
