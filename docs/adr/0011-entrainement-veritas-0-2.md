@@ -117,8 +117,10 @@ Fiches : `docs/models/VRT-DET-EN-0.2.md`, `docs/models/VRT-DET-FR-0.2.md` ; rapp
 
 **Décision** :
 
-- **Anglais** : VRT-DET-EN-0.2 remplace VRT-DET-EN-0.1 en mode fantôme (paquet et couche 2 dans
-  une PR à part). Servir seul reste soumis à la porte d'accord de la phase 3 (ADR-0010).
+- **Anglais** : VRT-DET-EN-0.2 remplace VRT-DET-EN-0.1 en mode fantôme : paquet livré dans
+  `services/veritas/models/en` ; couche 2 servie par la même application Modal, qui lit les
+  poids par référence (aucun redéploiement). Servir seul reste soumis à la porte d'accord de la
+  phase 3 (ADR-0010).
 - **Français** : VRT-DET-FR-0.1 reste en mode fantôme. VRT-DET-FR-0.2 reconnaît tous les
   générateurs mesurés mais classe « Probablement IA » 8 % des extraits Wikipédia et 2,5 % des
   pages mC4 du jeu de test. Pas de relèvement du seuil choisi sur le jeu de test. Une version

@@ -67,9 +67,9 @@ Voir [`docs/deploiement.md`](./docs/deploiement.md) : Vercel (web), Neon (Postgr
 
 ## État
 
-| Phase | Contenu                                                     | État                                                                                                                 |
-| ----- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| 1     | Squelette SaaS, Réécrire, Écrire, i18n, Stripe              | Code livré ; porte : abonnement Pro en production                                                                    |
-| 2     | Indexa (web + base privée), rapport PDF                     | Code livré ; rappel ≥ 90 % sur le jeu de test plagiat                                                                |
-| 3     | Détection : fournisseur externe, Veritas FR/EN 0.1 en fond  | VRT-DET-FR/EN-0.1 livrés (couche 2 sur Modal) ; contrat fournisseur et activation du mode fantôme à faire (ADR-0010) |
-| 4     | VRT-HUM, modèle multilingue, benchmark public, API publique | À venir                                                                                                              |
+| Phase | Contenu                                                     | État                                                                                                                                |
+| ----- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| 1     | Squelette SaaS, Réécrire, Écrire, i18n, Stripe              | Code livré ; porte : abonnement Pro en production                                                                                   |
+| 2     | Indexa (web + base privée), rapport PDF                     | Code livré ; rappel ≥ 90 % sur le jeu de test plagiat                                                                               |
+| 3     | Détection : fournisseur externe, Veritas FR/EN 0.1 en fond  | VRT-DET-FR-0.1 et VRT-DET-EN-0.2 livrés (couche 2 sur Modal) ; contrat fournisseur et activation du mode fantôme à faire (ADR-0010) |
+| 4     | VRT-HUM, modèle multilingue, benchmark public, API publique | À venir                                                                                                                             |
