@@ -1,9 +1,9 @@
 {
   "comment": "Demande de lancement du workflow « Entraînement Veritas » : tout commit sur main qui modifie ce fichier lance un run avec ces paramètres (ADR-0009).",
-  "requested_at": "2026-11-13T08:15:00Z",
-  "stage": "train",
-  "run": "v2",
-  "languages": "fr,en",
+  "requested_at": "2026-11-14T00:30:00Z",
+  "stage": "corpus",
+  "run": "v3",
+  "languages": "fr",
   "train_size": 4400,
   "test_size": 1000,
   "use_encoder": true,
