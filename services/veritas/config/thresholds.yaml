@@ -12,6 +12,11 @@ bands:
   likely_ai: 0.70 # probabilité ≥ seuil → « Probablement IA »
   likely_human: 0.30 # probabilité ≤ seuil → « Probablement humain »
 
+# Seuil « Probablement IA » propre à un modèle Veritas (ADR-0013), par référence : choisi sur
+# la partition de calibration, entre 0,70 et 0,90, puis mesuré sur les jeux de test gelés.
+# Les autres seuils, et ceux des fournisseurs, restent ceux de `bands`.
+models: {}
+
 # Confiance : écart entre la probabilité du document et 0,5.
 confidence:
   high_margin: 0.35

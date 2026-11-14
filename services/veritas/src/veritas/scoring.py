@@ -1,6 +1,7 @@
 """Normalisation : d'un RawDetection à la sortie du contrat (ADR-0008).
 
-Mêmes règles pour Veritas et pour chaque fournisseur, avec les seuils de thresholds.yaml :
+Mêmes règles pour Veritas et pour chaque fournisseur, avec les seuils de thresholds.yaml (un
+modèle Veritas peut y avoir son propre seuil « Probablement IA », ADR-0013) :
 - chaque phrase reçoit la probabilité moyenne des passages qui la recouvrent, puis une bande ;
 - overall = parts du texte (en mots) par bande, ou parts données par le fournisseur ;
 - confidence selon l'écart de la probabilité du document à 0,5 et la longueur du texte ;
@@ -71,6 +72,9 @@ def _rounded_shares(ai: float, undetermined: float, human: float) -> Overall:
 
 
 def score(raw: RawDetection, text: str, language: str, thresholds: Thresholds) -> Scored:
+    # Un modèle Veritas peut avoir son propre seuil « Probablement IA » (ADR-0013) ; les
+    # fournisseurs gardent les seuils généraux.
+    thresholds = thresholds.for_model(raw.engine)
     sentences = split_sentences(text)
     words = sum(s.words for s in sentences)
     probability = clamp(raw.probability)

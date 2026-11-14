@@ -650,15 +650,13 @@ def manifests(run: str, language: str) -> list[dict[str, Any]]:
 )
 def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> dict[str, Any]:
     """Couches 1 à 3, puis évaluation sur le jeu de test gelé. Écrit le paquet dans le volume."""
-    from detection.metrics import detection_metrics
     from veritas.engine.model import VeritasModel
     from veritas.engine.torch_encoder import TorchEncoder
-    from veritas.scoring import score
     from veritas.settings import thresholds_config
 
     from train.encoder import fine_tune
     from train.layers import build_manifest, fit_combination, fit_layer1, layer1_logits
-    from train.samples import label_of, labelled_passages
+    from train.samples import labelled_passages
 
     reference = reference_for(language, run)
     # Repère du démarrage du conteneur GPU : sépare l'attente d'un GPU et le démarrage de la
@@ -667,14 +665,7 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
     # Veritas 0.2 et FR 0.3 : lissage des étiquettes, classes équilibrées, combinaison plus
     # régularisée.
     v2 = run in ("v2", "v3", "v4")
-    base = f"{CORPUS}/{run}/{language}"
-    documents = _read(f"{base}/human.jsonl") + _read(f"{base}/ai.jsonl")
-    documents += _read(f"{base}/ai_open.jsonl") + _read(f"{base}/mixed.jsonl")
-    # FR 0.3 : registre soutenu, sans sa partition test (jeu detection-v3, mesuré à part : la
-    # partition « test » de ce corpus reste celle de detection-v1).
-    # FR 0.4 : textes supplémentaires (jamais en partition test).
-    for name in ("human_formal", "ai_formal", "human_formal_extra", "ai_formal_extra"):
-        documents += [d for d in _read(f"{base}/{name}.jsonl") if d["split"] != "test"]
+    documents = _corpus_documents(run, language)
     split = {
         name: [d for d in documents if d["split"] == name]
         for name in ("train", "calibration", "test")
@@ -724,26 +715,54 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
     _log(f"{reference} : couche 3 calibrée, paquet écrit ; évaluation sur {len(split['test'])}")
 
     model = VeritasModel.from_manifest(manifest, encoder)
-    thresholds = thresholds_config().get()
+    out = _evaluate(run, language, model, split["test"], thresholds_config().get())
+    out["report"]["sizes"] = {k: len(v) for k, v in split.items()}
+    out["report"]["encoder"] = encoder_info
+    return {"manifest": manifest, **out}
+
+
+def _corpus_documents(run: str, language: str) -> list[dict[str, Any]]:
+    """Documents d'entraînement, de calibration et de test (detection-v1) d'un corpus."""
+    base = f"{CORPUS}/{run}/{language}"
+    documents = _read(f"{base}/human.jsonl") + _read(f"{base}/ai.jsonl")
+    documents += _read(f"{base}/ai_open.jsonl") + _read(f"{base}/mixed.jsonl")
+    # FR 0.3 : registre soutenu, sans sa partition test (jeu detection-v3, mesuré à part : la
+    # partition « test » de ce corpus reste celle de detection-v1).
+    # FR 0.4 : textes supplémentaires (jamais en partition test).
+    for name in ("human_formal", "ai_formal", "human_formal_extra", "ai_formal_extra"):
+        documents += [d for d in _read(f"{base}/{name}.jsonl") if d["split"] != "test"]
+    return documents
+
+
+def _evaluate(
+    run: str, language: str, model: Any, test: list[dict[str, Any]], thresholds: Any
+) -> dict[str, Any]:
+    """Jeu de test gelé detection-v1, puis (v2 et suivants) robustesse et portes de sortie."""
+    from detection.metrics import detection_metrics
+    from veritas.scoring import score
+
+    from train.samples import label_of
+
+    reference = model.reference
     labels, bands, scores = [], [], []
     started = time.perf_counter()
-    for d in split["test"]:
+    for d in test:
         scored = score(model.detect(d["text"], language), d["text"], language, thresholds)
         labels.append(label_of(d))
         bands.append(scored.output.verdict_band.value)
         scores.append(scored.probability)
-    latency = (time.perf_counter() - started) / max(len(split["test"]), 1)
-    report = {
+    latency = (time.perf_counter() - started) / max(len(test), 1)
+    # Seuils réellement appliqués à ce modèle (ADR-0013 : seuil propre possible).
+    applied = thresholds.for_model(reference)
+    report: dict[str, Any] = {
         "reference": reference,
         "testset": f"{TESTSET}/{language}" if run in VERSIONS else f"{run}/{language}",
-        "sizes": {k: len(v) for k, v in split.items()},
         "metrics": detection_metrics(labels, bands, scores),
         "latency_seconds_per_document_gpu": round(latency, 4),
-        "encoder": encoder_info,
-        "thresholds": {"likely_ai": thresholds.likely_ai, "likely_human": thresholds.likely_human},
+        "thresholds": {"likely_ai": applied.likely_ai, "likely_human": applied.likely_human},
     }
-    if not v2:
-        return {"manifest": manifest, "report": report}
+    if run not in ("v2", "v3", "v4"):
+        return {"report": report}
 
     # Robustesse : jeu gelé detection-v2 (aucun de ses textes ni de ses sources n'est dans le
     # corpus), mêmes seuils, puis portes de sortie de l'ADR-0011 ; FR 0.3 : detection-v3 en plus
@@ -770,7 +789,7 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
         "categories": categories,
         "records": records,
     }
-    out: dict[str, Any] = {"manifest": manifest, "report": report, "robustness": robustness}
+    out: dict[str, Any] = {"report": report, "robustness": robustness}
     if run in ("v3", "v4"):
         from train.corpus_v3 import check_gates as check_gates_v3
 
@@ -784,6 +803,56 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
 
         report["gates"] = check_gates(report["metrics"], categories)
     return out
+
+
+@app.function(
+    volumes={CORPUS: corpus_volume, MODELS: models_volume},
+    gpu="L4",
+    # ≈ 6 000 documents notés, sans entraînement : 15 à 20 min (ADR-0013).
+    timeout=60 * 60,
+)
+def threshold(run: str, language: str) -> dict[str, Any]:
+    """Seuil « Probablement IA » propre au modèle déjà entraîné (ADR-0013) : choisi sur la
+    partition de calibration, puis mesuré une seule fois sur les jeux de test gelés."""
+    from dataclasses import replace
+
+    from veritas.engine.model import VeritasModel
+    from veritas.engine.torch_encoder import TorchEncoder
+    from veritas.scoring import score
+    from veritas.settings import thresholds_config
+
+    from train.threshold import choose_threshold
+
+    reference = reference_for(language, run)
+    _log(f"{reference} : conteneur GPU démarré (seuil)")
+    model_dir = f"{MODELS}/{reference}"
+    with open(f"{model_dir}/manifest.json", encoding="utf-8") as f:
+        manifest = json.load(f)
+    encoder = TorchEncoder(f"{model_dir}/encoder") if manifest.get("layer2") else None
+    model = VeritasModel.from_manifest(manifest, encoder)
+    base = thresholds_config().get()
+    documents = _corpus_documents(run, language)
+    calibration = [d for d in documents if d["split"] == "calibration"]
+    _log(f"{reference} : {len(calibration)} documents de calibration")
+    records = []
+    for d in calibration:
+        scored = score(model.detect(d["text"], language), d["text"], language, base)
+        records.append(
+            {
+                "id": d["id"],
+                "category": d.get("category"),
+                "label": d["label"],
+                "probability": round(scored.probability, 4),
+            }
+        )
+    choice = {"reference": reference, **choose_threshold(records), "records": records}
+    _log(f"{reference} : seuil choisi sur la calibration : {choice['chosen']}")
+    if choice["chosen"] is None:
+        # Aucun seuil de la grille ne convient : rien ne change (ADR-0013), pas de mesure.
+        return {"threshold": choice}
+    thresholds = replace(base, model_likely_ai={reference: choice["chosen"]})
+    test = [d for d in documents if d["split"] == "test"]
+    return {"threshold": choice, **_evaluate(run, language, model, test, thresholds)}
 
 
 @app.local_entrypoint()
@@ -866,34 +935,51 @@ def main(
                 _log(f"entraînement : {language}")
                 results.append(train.remote(run, language, use_encoder))
         for language, result in zip(langs, results, strict=True):
+            _write_results(out_dir, reference_for(language, run), result)
+    if stage == "threshold":
+        # Seuil propre au modèle déjà entraîné (ADR-0013) : aucun entraînement, un seul L4.
+        if run != "v4":
+            raise SystemExit("stage threshold (ADR-0013) : run v4 seulement")
+        for language in langs:
             reference = reference_for(language, run)
-            (out_dir / reference).mkdir(exist_ok=True)
-            (out_dir / reference / "manifest.json").write_text(
-                json.dumps(result["manifest"], indent=2) + "\n", encoding="utf-8"
+            result = threshold.remote(run, language)
+            (out_dir / f"threshold-{reference}.json").write_text(
+                json.dumps(result.pop("threshold"), indent=1) + "\n", encoding="utf-8"
             )
-            (out_dir / f"report-{TESTSET}-{reference}.json").write_text(
-                json.dumps(result["report"], indent=2) + "\n", encoding="utf-8"
-            )
-            _log(f"{reference} : " + json.dumps(result["report"]["metrics"]))
-            if "robustness" in result:
-                (out_dir / f"robustness-{ROBUSTNESS}-{reference}.json").write_text(
-                    json.dumps(result["robustness"], indent=1) + "\n", encoding="utf-8"
-                )
-                categories = {
-                    k: v.get("likely_ai")
-                    for k, v in result["robustness"]["categories"].items()
-                    if k != "_overall"
-                }
-                _log(f"{reference} robustesse (part « Probablement IA ») : {categories}")
-            if "formal" in result:
-                (out_dir / f"robustness-{FORMAL}-{reference}.json").write_text(
-                    json.dumps(result["formal"], indent=1) + "\n", encoding="utf-8"
-                )
-                formal = {
-                    k: v.get("likely_ai")
-                    for k, v in result["formal"]["categories"].items()
-                    if k != "_overall"
-                }
-                _log(f"{reference} registre soutenu (part « Probablement IA ») : {formal}")
-            if "gates" in result["report"]:
-                _log(f"{reference} portes : " + json.dumps(result["report"]["gates"]))
+            if result:
+                _write_results(out_dir, reference, result)
+
+
+def _write_results(out_dir: Path, reference: str, result: dict[str, Any]) -> None:
+    """Paquet (s'il a changé), rapports et portes d'un modèle, sans aucun texte."""
+    if "manifest" in result:
+        (out_dir / reference).mkdir(exist_ok=True)
+        (out_dir / reference / "manifest.json").write_text(
+            json.dumps(result["manifest"], indent=2) + "\n", encoding="utf-8"
+        )
+    (out_dir / f"report-{TESTSET}-{reference}.json").write_text(
+        json.dumps(result["report"], indent=2) + "\n", encoding="utf-8"
+    )
+    _log(f"{reference} : " + json.dumps(result["report"]["metrics"]))
+    if "robustness" in result:
+        (out_dir / f"robustness-{ROBUSTNESS}-{reference}.json").write_text(
+            json.dumps(result["robustness"], indent=1) + "\n", encoding="utf-8"
+        )
+        categories = {
+            k: v.get("likely_ai")
+            for k, v in result["robustness"]["categories"].items()
+            if k != "_overall"
+        }
+        _log(f"{reference} robustesse (part « Probablement IA ») : {categories}")
+    if "formal" in result:
+        (out_dir / f"robustness-{FORMAL}-{reference}.json").write_text(
+            json.dumps(result["formal"], indent=1) + "\n", encoding="utf-8"
+        )
+        formal = {
+            k: v.get("likely_ai")
+            for k, v in result["formal"]["categories"].items()
+            if k != "_overall"
+        }
+        _log(f"{reference} registre soutenu (part « Probablement IA ») : {formal}")
+    if "gates" in result["report"]:
+        _log(f"{reference} portes : " + json.dumps(result["report"]["gates"]))

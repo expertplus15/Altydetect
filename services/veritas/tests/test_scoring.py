@@ -1,3 +1,5 @@
+from dataclasses import replace
+
 import pytest
 from conftest import THRESHOLDS, french_text
 
@@ -67,3 +69,18 @@ def test_agreement_and_concordance() -> None:
     c = score(RawDetection("c", 0.1), text, "fr", THRESHOLDS)
     assert agreement(a, b) == pytest.approx(0.9)
     assert concordant(a, b) and not concordant(a, c)
+
+
+def test_model_threshold_applies_to_its_model_only() -> None:
+    """ADR-0013 : un modèle Veritas peut avoir son propre seuil « Probablement IA »."""
+    thresholds = replace(THRESHOLDS, model_likely_ai={"VRT-DET-FR-0.4": 0.85})
+    text = french_text(320)
+    veritas = score(RawDetection("VRT-DET-FR-0.4", 0.8), text, "fr", thresholds).output
+    assert veritas.verdict_band == VerdictBand.undetermined
+    assert {s.band for s in veritas.sentences} == {VerdictBand.undetermined}
+    # Les fournisseurs et les autres modèles gardent le seuil général (0,70).
+    for engine in ("copyleaks", "VRT-DET-EN-0.2"):
+        other = score(RawDetection(engine, 0.8), text, "fr", thresholds).output
+        assert other.verdict_band == VerdictBand.likely_ai
+    assert thresholds.for_model("copyleaks") is thresholds
+    assert thresholds.for_model("VRT-DET-FR-0.4").likely_ai == 0.85

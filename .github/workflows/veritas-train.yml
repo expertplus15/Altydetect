@@ -10,9 +10,9 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "Étape : all, corpus, train, deploy (inférence), benchmark (fournisseur), robustness"
+        description: "Étape : all, corpus, train, threshold (seuil propre, ADR-0013), deploy (inférence), benchmark (fournisseur), robustness"
         type: choice
-        options: [all, corpus, train, deploy, benchmark, robustness]
+        options: [all, corpus, train, threshold, deploy, benchmark, robustness]
         default: all
       run:
         description: "pilot (essai isolé), v1 (modèles 0.1), v2 (modèles 0.2, ADR-0011) v3 ou v4 (FR 0.3 et 0.4, ADR-0012, languages fr)"
@@ -99,7 +99,7 @@ jobs:
           if [ -n "$bench_selection" ]; then
             [[ "$bench_selection" =~ ^ml/eval/requests/[a-z0-9-]+\.json$ && -f "$bench_selection" ]] || { echo "bench_selection invalide"; exit 1; }
           fi
-          [[ "$stage" =~ ^(all|corpus|train|deploy|benchmark|robustness)$ ]] || { echo "stage invalide"; exit 1; }
+          [[ "$stage" =~ ^(all|corpus|train|threshold|deploy|benchmark|robustness)$ ]] || { echo "stage invalide"; exit 1; }
           [[ "$provider" =~ ^(pangram)$ ]] || { echo "provider invalide"; exit 1; }
           [[ "$bench_human" =~ ^[0-9]{1,4}$ && "$bench_ai" =~ ^[0-9]{1,4}$ ]] || { echo "tailles du benchmark invalides"; exit 1; }
           [[ "$run" =~ ^(pilot|v1|v2|v3|v4)$ ]] || { echo "run invalide"; exit 1; }
@@ -283,7 +283,7 @@ jobs:
         if: always() && steps.p.outputs.stage != 'deploy' && (steps.p.outputs.run == 'v1' || steps.p.outputs.run == 'v2' || steps.p.outputs.run == 'v3' || steps.p.outputs.run == 'v4' || steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness')
         env:
           RUN_ID: ${{ github.run_id }}
-          KIND: ${{ (steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness') && steps.p.outputs.stage || steps.p.outputs.run }}
+          KIND: ${{ (steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness' || steps.p.outputs.stage == 'threshold') && steps.p.outputs.stage || steps.p.outputs.run }}
         run: |
           if [ -z "$(ls -A ml/train/out 2>/dev/null)" ]; then echo "Aucune sortie."; exit 0; fi
           dest="ml/train/runs/$RUN_ID"
