@@ -88,10 +88,16 @@ jobs:
             test=$(jq -r '.test_size' "$f"); encoder=$(jq -r '.use_encoder' "$f")
             provider=$(jq -r '.provider // "pangram"' "$f")
             bench_human=$(jq -r '.bench_human // 500' "$f"); bench_ai=$(jq -r '.bench_ai // 100' "$f")
+            bench_selection=$(jq -r '.bench_selection // ""' "$f")
           else
             stage=$IN_STAGE; run=$IN_RUN; languages=$IN_LANGUAGES
             train=$IN_TRAIN; test=$IN_TEST; encoder=$IN_ENCODER
             provider=$IN_PROVIDER; bench_human=$IN_BENCH_HUMAN; bench_ai=$IN_BENCH_AI
+            bench_selection=""
+          fi
+          # Sélection précise : un fichier de ml/eval/requests/ (identifiants d'un jeu gelé).
+          if [ -n "$bench_selection" ]; then
+            [[ "$bench_selection" =~ ^ml/eval/requests/[a-z0-9-]+\.json$ && -f "$bench_selection" ]] || { echo "bench_selection invalide"; exit 1; }
           fi
           [[ "$stage" =~ ^(all|corpus|train|deploy|benchmark|robustness)$ ]] || { echo "stage invalide"; exit 1; }
           [[ "$provider" =~ ^(pangram)$ ]] || { echo "provider invalide"; exit 1; }
@@ -105,6 +111,7 @@ jobs:
             echo "stage=$stage"; echo "run=$run"; echo "languages=$languages"
             echo "train=$train"; echo "test=$test"; echo "encoder_flag=$flag"
             echo "provider=$provider"; echo "bench_human=$bench_human"; echo "bench_ai=$bench_ai"
+            echo "bench_selection=$bench_selection"
           } >> "$GITHUB_OUTPUT"
           echo "Étape $stage, essai $run, langues $languages, tailles $train / $test, $flag"
 
@@ -210,10 +217,11 @@ jobs:
           LANGUAGES: ${{ steps.p.outputs.languages }}
           HUMANS: ${{ steps.p.outputs.bench_human }}
           AIS: ${{ steps.p.outputs.bench_ai }}
+          SELECTION: ${{ steps.p.outputs.bench_selection }}
         run: >-
           uv run --no-sync modal run ml/eval/detection/provider_benchmark.py
           --provider "$PROVIDER" --languages "$LANGUAGES" --humans "$HUMANS" --ais "$AIS"
-          --out ml/train/out
+          --out ml/train/out --selection "$SELECTION"
 
       - name: Consommation Pangram (mois en cours) et solde
         if: always() && steps.p.outputs.stage == 'benchmark'

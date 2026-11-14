@@ -1,7 +1,7 @@
 {
   "comment": "Demande de lancement du workflow « Entraînement Veritas » : tout commit sur main qui modifie ce fichier lance un run avec ces paramètres (ADR-0009).",
-  "requested_at": "2026-11-14T03:30:00Z",
-  "stage": "train",
+  "requested_at": "2026-11-14T04:30:00Z",
+  "stage": "benchmark",
   "run": "v3",
   "languages": "fr",
   "train_size": 4400,
@@ -9,5 +9,6 @@
   "use_encoder": true,
   "provider": "pangram",
   "bench_human": 500,
-  "bench_ai": 100
+  "bench_ai": 100,
+  "bench_selection": "ml/eval/requests/pangram-fr03-faux-positifs.json"
 }
