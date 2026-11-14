@@ -1,0 +1,5421 @@
+{
+ "language": "fr",
+ "testset": "detection-v3/fr",
+ "references": "VRT-DET-FR-0.3",
+ "thresholds": {
+  "likely_ai": 0.7,
+  "likely_human": 0.3
+ },
+ "categories": {
+  "ai_academic": {
+   "label": "ai",
+   "documents": 196,
+   "errors": 0,
+   "likely_ai": 1.0,
+   "undetermined": 0.0,
+   "likely_human": 0.0,
+   "beta_ai_ge_0_8": 1.0,
+   "mean_probability": 0.9507
+  },
+  "ai_legal": {
+   "label": "ai",
+   "documents": 170,
+   "errors": 0,
+   "likely_ai": 0.9882,
+   "undetermined": 0.0,
+   "likely_human": 0.0118,
+   "beta_ai_ge_0_8": 0.9765,
+   "mean_probability": 0.916
+  },
+  "human_academic": {
+   "label": "human",
+   "documents": 200,
+   "errors": 0,
+   "likely_ai": 0.1,
+   "undetermined": 0.035,
+   "likely_human": 0.865,
+   "beta_ai_ge_0_8": 0.07,
+   "mean_probability": 0.1047
+  },
+  "human_legal": {
+   "label": "human",
+   "documents": 200,
+   "errors": 0,
+   "likely_ai": 0.0,
+   "undetermined": 0.005,
+   "likely_human": 0.995,
+   "beta_ai_ge_0_8": 0.0,
+   "mean_probability": 0.0033
+  },
+  "_overall": {
+   "false_positive_rate": 0.05,
+   "recall": 0.9945,
+   "humans": 400,
+   "ais": 366
+  }
+ },
+ "records": [
+  {
+   "id": "h-fr-01231356a9a6272d",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-02f31336989fc52e",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-05abf760c7fa9aeb",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.8055,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-076ce50555dba847",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-078a4b25825e8b2f",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-08bb9b9f683e0d69",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-096c5654bbfa5f5c",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-0a55a61700cec750",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-0db513174c2a313e",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0081,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-0e1f92a19aa6f62a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-0f3b978694c2eb9c",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-1074ee1bfaf9ceed",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-10c9990b097ded63",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-11a07d9709f8f594",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-1348f9b4e80db411",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-13a8efa4fd1ecf09",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0032,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-141c1e562d1d1103",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.3708,
+   "band": "undetermined"
+  },
+  {
+   "id": "h-fr-14300aebc2914c1a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-14b1a4299c0e9efc",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-1646f739f65442b1",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-171a27232378670a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.8508,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-1a9c2555404efdf9",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-1b5670e2a8b3d1b0",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-1ceef9f17464452d",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-1d4067a3d3697744",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-1e92a377cd86e179",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-20ebe31e1b4a1c01",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-20fba23f13d82a29",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-216b2d61d74c316c",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-217c477fa870f8c5",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-22f4daf1ce43c338",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-241e4ce268448a45",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-262fbbb4650650b9",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-2646df75dbf1c53d",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-2900c9fcb175567d",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.5367,
+   "band": "undetermined"
+  },
+  {
+   "id": "h-fr-2a4b2562a46bf83e",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-2b9942868203273e",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-2bd7b1e484c86811",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-2eb6ab5bfe4ae241",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.5832,
+   "band": "undetermined"
+  },
+  {
+   "id": "h-fr-30edc9b52b250749",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-32b20e0fcb0add71",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.7682,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-32f3b1ef32987071",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3326360b0a8b4c6d",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.3256,
+   "band": "undetermined"
+  },
+  {
+   "id": "h-fr-33c9eca9ef8f9428",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.9054,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-347acf31e083824e",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3592787e36859c51",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-37256a3cdaa1095f",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-392d735b55bea1fa",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0043,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3999d1a56ae800f1",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3b1a3e763227451f",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3c072bdd75ec5fcd",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3cdd12f6b2c1ae49",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3d56e3ccd3f22a7a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3d6e194e35883eca",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3f3ea64fcbd60cd3",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3fe56031a74dbe47",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-412f18a3cbc1de42",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.8677,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-41780e30b590686f",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-42180f735b955b3a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-445adbfc742d5400",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-45c5e481f36fd0a6",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-4a262546a2d8b579",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-4b40e12d6d1ea3c9",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-4d489ff7b8aef67c",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-4e30baab8d87cddf",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-4e6c53260132301e",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-4f271685db901afd",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-538b129628ef0aea",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-56490e9f18f0ba92",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-57a2daed528a4fcb",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-58001ea9267a8904",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-58c5d6edf83a44e3",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-5a296eacd8dfc344",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.7638,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-5a8f1ed56c1b1daf",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-5cfc100eb15bd35b",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.2532,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-5d827e764f160019",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-5eb603e64c2183c4",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-5f30bec10bce5bb2",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-60cfe4f88fa859cd",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-62bdd8bf12765da6",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-64eed45129d42e0a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-651777c4652a8a3e",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.8637,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-652b77a355f8e4cb",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-65a5ddc76a02b0a5",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.6979,
+   "band": "undetermined"
+  },
+  {
+   "id": "h-fr-65f9fe334b332d56",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-68c69d686cd64dfa",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-68cdb818e7ec836b",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-691389d19c27af4f",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0167,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-6b07563d9f7ed293",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.6704,
+   "band": "undetermined"
+  },
+  {
+   "id": "h-fr-6be589f9acebcfa8",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-6cc457f0b95cd7f7",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-6dd8223ace17c615",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-6e4f6bbffd248408",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-6ebd09304fd3be12",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-71649c1f3bba7494",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-735db5803e509d45",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.6281,
+   "band": "undetermined"
+  },
+  {
+   "id": "h-fr-7378243605436d44",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-75c01499a563b96d",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-76eea1bd704e5b37",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-788fd3141aef06ea",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.002,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-79f4924fbaface51",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-7af9aaffca4ac23a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-7b34f55552c9171a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-7ddb69db45089522",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-7e92e1c6f5973b19",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-80a5340c2ff2d399",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8113315f3da7dbbf",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0121,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-82c4c5482b800175",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.7525,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-84077347fd0a05dd",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8521c2c4e2d9b9b4",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8547e2d7f600b26e",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-85c2924a23649d6d",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8703c4b02d51b148",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-880d67fe46b982b0",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-882f29b8c90f93bc",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-88e6f661671ce1a0",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8b35b2fae32aef1d",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8e5201ccf09c4f2a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8e9483261889a497",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8ef464e49fbcb325",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8f639068b4ba3f1b",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8f973b496b0cc7db",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.9274,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-905330af8a111308",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-923c82e389fa52cb",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-938e203640f1e8fc",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-94f4c40c9dd35f5c",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-97855bd2d8cfdfc1",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-998e41f69deb0a76",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.9424,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-99b17498e9dc458f",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-9d433af2d93fd46a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-9de6aa826752cf73",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-9e0b92edaadfd801",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-9f84dcf7f4199ef0",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a1230ec45bfaa7df",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a19ea7effb3a5d42",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a23edd121e128d83",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a672c5c81f9fc203",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a6e5fed42eb5e215",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a7555b58c953c08c",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a8a68caf174f52b9",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a9be7fc29718ee85",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-aaeeb47beca7c2d8",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-acd7314c1df85186",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-ad13187151c88304",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-afde1fbeb7aa111b",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-b0883ae81a096cc8",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-b35a9edeb4ee9ec3",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.7505,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-b4df3936756e1f3a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.93,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-b50f862c61971f57",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0142,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-b5c972d54ecb8fc6",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-b727df4bf66f276e",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-b8c5d174f9bd50a4",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-b9db1390c9b418d4",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-baed1164b2e7503a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-be2f3f149fb2c55f",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0226,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-bfd956ca7ea288a7",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.8087,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-c188a528f139d478",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c2ac29680cadf097",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c2ebb2bed82aa3fa",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c36b65d06dd2e386",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c4b31b5c29fb2ab1",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c9af29c891ba1fa5",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-cb35942f566fc47a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-cbad39cea801b5b4",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-cca6b552afe5f9b8",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-cfa38887587455e7",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d0575f912bae14aa",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d059ec3891808100",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d26faf58af918fb9",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d95bb17e1e44525e",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d9d4b4d121e47b86",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.8165,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-db5912acd28475d8",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-dfcb27e4429264ed",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-dfcc8b6796cb68ff",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e012738c8ec30c04",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e0a7fbca83bca23e",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e4dae796031b24f9",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e5ab5d69304c3731",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e6e4207d2f69e9bb",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e75046159ce17eae",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e886bf2e9fcca083",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e8d03319f566e0ce",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.8894,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-ea63c5acd9d1b61d",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-eb4e797fe2848129",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-ebc605538c5c7555",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-ed1a18f6111a18f7",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.8654,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-ee45f2dc71b09239",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-f0d427eab81da47a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-f20a8faaf74f607f",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-f42a3590fee9703f",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.7908,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-f4b88bdf915578d3",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.8053,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-f623ffab2aa3fff9",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-f63a8bd76df3b317",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-f6541d9b018b19b4",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.7765,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-f7835996f4f52eb3",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-faf2fbacc3f2e33a",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-fbd085f95847669c",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.9158,
+   "band": "likely_ai"
+  },
+  {
+   "id": "h-fr-fcc5a7c50bc46ace",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-fe8e1b26e5cfa56b",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-ffef0aee5474ee95",
+   "category": "human_academic",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-00bf30daaea73ea0",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-01301027faa376f3",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-031ba1ae8f6dc665",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-0348b54b80ebe62a",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-03a31aa2d41f1fae",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-044c2d04189a06b7",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-04d51272e8f64e7b",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-056c5a8a75207662",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-0575db5734c3768e",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-06101137e6c2c7b8",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-09587f9965c57ca8",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-0a619aef51260b2d",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-0c0f6ccc1aa460e3",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-0c8bc91eea293179",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-0c978dc4f09ac25e",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-0e7baa4272d5ffc8",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-0f18ee9443eb66c8",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0035,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-0f6f73c992dd601e",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-114ca6a835bb0b30",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-1167b6cae229cd28",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-12157161eb2ef1d1",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-14cf31a340a1c23b",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-14dd3c00b965aeb8",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-16149b8372fc7295",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-168164253262ca18",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-16bd6b63e306c6d9",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-17c06dda8afb06a9",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-1c788811c336c964",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-1d7c0bb504ab616c",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-1d8c8641957c12fd",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-1ed812b1822193a1",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-209cf65fbd5ec8df",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-224b2b1244747691",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-24fd31f139847dc7",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-2757d034fc1a1272",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0139,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-286d1e6d6b9743ff",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-29b88fc3b7c8c5f5",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-29c7d624fbdfdef3",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0003,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-2a34d4c298fb286a",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-2aafec57f814ae8e",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-2bc4277297219de8",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-2ce62e5ede36cd6e",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-2e19fa9bdbe0dec4",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-2e303becef0924ef",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-2f4aa565fad7d64e",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3058ebf6280b4e5a",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-31b007cf34dcdbaa",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-32e30e9b2ac3db2f",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-32eee1a29bf1d944",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-338a788eb0994b89",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0049,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-33d67d0593cae329",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-352182de719ea155",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-35cf59d1dd28fcfa",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-364bb125beb9e930",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-391c173fcc0c2ed0",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-39ce89b4b85fd568",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-39d35ebbc9582e3d",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3a171ce69654bdc9",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3a305aeea8b7d5ec",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3ca1e0fc8d25c03a",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3d96c53ca26fe36f",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3dee984b41932787",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3e947e96d2545dac",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3f4a8f79a95b9c3f",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-3fe4160d692cd78b",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-4244bc35828e98b0",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-447b2df7808cf3b7",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-4657c9f36bd0b311",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-474f8fd7745413e6",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-479ccebbb6e4e151",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-479d11af720618d3",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-487f93626424866b",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-4eb4eca2d2788215",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-4ef787eba58ac43d",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-4f9a511350add9db",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-51558ebe1dd9e6cc",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-538efa3f7bfd7b6c",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-539fc77b2a5cbc53",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-5521d89a19bb2f7d",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.086,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-594ab11e5a700eba",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-5c4047babbd17b94",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-5c812d5dfe7ed059",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-5e261dedf90ed5f4",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-5e60beefbf11cf88",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-5e79a1e05b068d04",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-5f70a5ace9b3fb73",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-60ab2f09175d3440",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-630daf342db4c096",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-6483d6d787d603c1",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-649d54e80a199b37",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0574,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-64d5c099408a5a6a",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-650921df9a18823e",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-675ce0721ec6d03c",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-6a4a5e7a1564f211",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-6c3eda7de8f3270f",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-6ddba6649fed49ee",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-6eb4b3ec60f6a57a",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-6f72dd1e300a23bb",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-72221833efec5891",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-73902378e5dd0cd2",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-74263af3a62618f4",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-749bf82a3f6c21c0",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-76b3c0c0133f0f33",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-779425482fd8dadb",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-790ed4569485ec75",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-7a836f49814c6cab",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-7d0e9666c3c0b6ae",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8061d1afc5b498c5",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-81ef267a45f5bf7e",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-82eaa7ea6b3191b9",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-850f67a940da5600",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-855e2ceba3653481",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-88cd3639feb278fa",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8920c62b5cbf1a6f",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-893b64b01e9ce428",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-896a383594e65b95",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8cc11fab48bb3532",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8d0ab240f9df7341",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.3922,
+   "band": "undetermined"
+  },
+  {
+   "id": "h-fr-8d9f8d5c5ad78097",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-8e4a5ab528959fa7",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-91b61474240c11a7",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0839,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-972e74cafcc99527",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-977ecaefc7e1635e",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-979602b424ce4d41",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-9870464007806ca5",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-9bf0cd9e1746852e",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-9d94895a07594745",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-9e8ea2605b30e08d",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-9f371a35c676788c",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a031b7afece46a8a",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a08a0185839d9954",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a18754e2e7e1f755",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a1ac32fe4cc475c1",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a4f4935f16a179c6",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-a8480281ca87aedb",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-aaa836820dc1632d",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-af80e45766ed9854",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-b07f5df627c8d3e7",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-b7b64e282e79ad12",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-b7ea7178bdbfaacf",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-bb82a829357499d1",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-bbd27b7063a755ba",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-bc7c66019939b868",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-bd5c57b182eb46b4",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-bf3c9ee754c58281",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-bf9a1742f0e2752f",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c026fdf3bb55eeb1",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c077f1fe73e6688e",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c0d65b17a4e8a1d4",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c1c60c41a372beb9",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c21e242b76dc36e7",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c3e2a91ec5197041",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c724c62db394e3da",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c7440b733ae1101f",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c77078e0ca2c2a5a",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c7d1959fcfe94c66",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c8d47568e9edbaa2",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-c9ec62fbdb82b955",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-ca8651b3466fbf90",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-cdb0716656d700d8",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-cde39ee4022569f7",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-ce16b87b0c75d5df",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-ceabc4c017c387ad",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d01bbf562c399736",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d093ff9c6516c697",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d0a8bcb52ef8c8bb",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d14fa494ec6c1384",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d16a99e3ab64cb69",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d302c26df465b1e6",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0074,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d31124890643e6ad",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d37d44f5cf75d9b0",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-d456aacf90e93b94",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-da3cc33e340eaef1",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-da668f34ececb5fe",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-dd23b940f8a29f5a",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-df77b599286e6e2b",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e122d64d9b7629b4",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e531450cb2de55d7",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e5426226cf626de9",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e59989aae5438ac3",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e6e9f283289e7946",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e71dee23c7cd78da",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e7386517af2d4413",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e7c9a42262cd6317",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-e9aaba5f4e95fe1d",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-ee9b7de4857811ed",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-ef5e1190b4f64352",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-f2eba88cc072baea",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-f30f67fbb68e34eb",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-f570ea1424db1d14",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-f8fafd1fc26093b0",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-f971add63ab7510c",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-fad488c5438d17da",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-fbc08c599a1c998e",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-fc22d6156f287241",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-fcae0e61966e08db",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-fcefb69db6b0e5f4",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0002,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-ff6e599f8f638190",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-ffb7601f72935bf4",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "h-fr-ffc461081f84283c",
+   "category": "human_legal",
+   "label": "human",
+   "probability": 0.0,
+   "band": "likely_human"
+  },
+  {
+   "id": "f-fr-0091384e383fc7b7",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9503,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-00b7d4e6577e1a40",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9074,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-0278c05502f7fc73",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9506,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-0417c6467a188cb8",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8946,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-04b8f256b3470921",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9469,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-055336a5fa2239cb",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9016,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-05fb5b1e5b67cbc2",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9551,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-07c20ff64f101f9a",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9586,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-0984f6b52650614a",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9601,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-0a76968bfa9d4447",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9588,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-0b2b6fc9b5a6f60d",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9361,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-0b67148178462237",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9656,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-0c1410ed690a13fe",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9173,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-0ca9cd3ad2e2d349",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8938,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-0e2a787131e1c1ec",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9502,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-11003566d368856d",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.928,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-13abae9f020b1f3a",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9102,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-15113c8aceea932f",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9376,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-152112a78cb42041",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9324,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-156b0c3918b6e7c2",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9583,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-16963db92c1c8652",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9623,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1715796de0971033",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.8931,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1743c7d65d538d42",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8787,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-191fcac52bdf10f6",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9422,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1a325e2131e98674",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9578,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1a87a4f9a51467a8",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9591,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1b8f36031553a0fc",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.965,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1ba79ce28f49f9ca",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9332,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1bc6c78d80916061",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9696,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1c3b55649b8591b0",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9603,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1c8d154d89cd60d6",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.897,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1cfc1877b3eba97a",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.934,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1db203602c0be67f",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.944,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1dd01b0cc230023a",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9551,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1e242593616c0597",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9646,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-1f9436f0d7d583a3",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9461,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-21075f98983216fc",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8242,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-211440e9bd3cf660",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.79,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-225e2f3055a9d3e1",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9216,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-226ce98a7861725a",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9681,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-22cd6eb8675f90e9",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9761,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-22dd61d6b91835f5",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9582,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-23c621b54592c8ca",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9167,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-24262e7d7d921f4f",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.908,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-2492b8b15ec7d157",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9538,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-2499bd61543b12c7",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.944,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-24fd533660bc7c3d",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9574,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-252891b0b56c5e86",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9656,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-25fc3b9812c2331e",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9473,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-267cf573731ec232",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9303,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-269409afb7ce4677",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9643,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-26d50dbda055bf61",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9305,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-26e4aace77ab1924",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9691,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-27c86a0cf6cc4881",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.8908,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-27cad70ca6e2767b",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9387,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-2a66212e48c03056",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9526,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-2a89bd73d5f5e004",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9378,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-2ae9d0f2fe822428",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9371,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-2b687e0129746b69",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9241,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-2eb0b144ffbc24b8",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9179,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-2f10790b330ae090",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9672,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-305bb32a4a4578ed",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9524,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-32241a87acc16924",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9488,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-338bca687ed1751d",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.0006,
+   "band": "likely_human"
+  },
+  {
+   "id": "f-fr-34d1d1d81aedcc7f",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9524,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-34f9fb0a6ec6f091",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9436,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-3555c175a3d52ec1",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9478,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-377133a3bfdb2285",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8978,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-38d0ae76266ddac3",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9141,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-3acb45cccbde863a",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9666,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-3ad78739bbe70612",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9538,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-3b86479ee08f8237",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9527,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-3c75634fab3b6da4",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9462,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-3cc764207c6b8bcb",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9283,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-3d55db6b4f16ae83",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9482,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-3fd5bca1994b3799",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9395,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-4066ea66ff1f9502",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9381,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-407d50d03eb0d6c6",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9317,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-40b86af609687226",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9436,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-410516a7b58933f5",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9372,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-416cf5b480c0abf8",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9572,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-41b3944dafd36509",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9467,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-42daacc25d3fab76",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9072,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-43b7da9c3b964685",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9564,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-442f5f380b85b2fb",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9616,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-450f07352981b2b5",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.962,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-475cb82f6e0a7500",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9459,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-476109820155c6d6",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8957,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-4915d50f296f5fbf",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9042,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-4ae21976b572c789",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9648,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-4afc126a1b0c2ed6",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9432,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-4b74065f26201e0b",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.952,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-4b8f1206ee4645b2",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9404,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-4d8574a396e68bb9",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9395,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-501e99dcdafdd887",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9494,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-503562917fdd6dcd",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9122,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-509c626d9937e055",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.962,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-515ac56ad85c27af",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9595,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-519296e6f06a04b8",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8684,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-52ddcfe9a1ef2435",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9506,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-53416473e2450de1",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9609,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-535398a18474a0b0",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9473,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-53f3d914d5110ab8",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9714,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-5456fc60b0f5476d",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9426,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-545e063729161dea",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9426,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-54b85d60ae9415a1",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9256,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-54ccf968ffd62333",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9616,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-55440bebb8a00982",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9546,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-56a3e5821915c999",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9483,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-56fb9ff21be94bd8",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9139,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-57d349150cb19ce2",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9359,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-57f51d23162f44a9",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9529,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-58ac021e94291602",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.923,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-594e5808a8bca358",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.959,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-5a5d986f5cd61dff",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9272,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-5a6ae4cf8ceeef30",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9239,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-5b602d406c2b1b73",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.956,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-5cdcb0b328cea4b3",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9417,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-5db495b2ce8da1ce",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9388,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-5e058f3997e61299",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9627,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-5edade7a6e54377f",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.955,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-602ad5975414870e",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9044,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-61006919d12a475f",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9446,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6120267eed17392b",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9374,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-621837cff269b659",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9515,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-636ee2aa7eb4ac06",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9206,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6405e46639ff046d",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9185,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6542f92845951dd8",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9496,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-654f87701c25496c",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9601,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-667a89d4b79f7677",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9465,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6709f9d9c38506b7",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9544,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-67263b14140c640a",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9477,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-67295efc46e23c05",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9553,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-691ffbb37a822188",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9398,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-695dd057a4c2267e",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9378,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-69ac3b2b0a6bf0c6",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9471,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6a3fcc57f185bfdc",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9544,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6a5cc681eddef421",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9485,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6a8485f987cbc22d",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.947,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6b27c02c84e00a53",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9514,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6b28ecc1b0105b59",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9566,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6b99c97c5e41a1e4",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9036,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6be68c6095811ad2",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9238,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6c5296c29758a8d3",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.937,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6e03edd3010645ff",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9584,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6e195668b2d3a8aa",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9415,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6e42f716a1250b41",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9496,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6f06a1c89380e35b",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9141,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6f1f390724804225",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.942,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-6f2d35b31dfec62e",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.962,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7030260c098a2288",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8408,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-704f5eaf7f5fa97d",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9585,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-70c37f1633b87a98",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9415,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-70cce990831c8967",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9077,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7196d5d348ac0cdf",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9453,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-724d49928e3979d0",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9383,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7356b604507b6248",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9675,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7427a8141fd26b82",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9083,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-74bb033af32a4286",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9443,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-75cbe9d5865cd763",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9573,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-75db6f14e6130576",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9152,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-764d70c6cf3d2e39",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9625,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-76e92dda3a64a268",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9761,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7845602e023299c8",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9503,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-79ba17d2823f3bf4",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8861,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7cbc2e5ebec03a0a",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9181,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7dbabbb5bfc1536c",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9304,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7dea9ab95ba27198",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9555,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7deacc727feb522c",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9419,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7ec6503d5ccd4134",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9453,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7f05be249ba027a2",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9425,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7f21313d229208d6",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9388,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7f8ad21307afe0fa",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9343,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-7f9de3283b30dcb1",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9349,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-815dd682550f2593",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9494,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-81d5fd99e81a6649",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8794,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-82d3d055b021ed12",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9763,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-832fe6f72b12b938",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9647,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-83da1c37929fe00f",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9486,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-8420153cde903c07",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9546,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-8521922faa92b229",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9663,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-85610771496fe370",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9278,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-862ab00c23833830",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9573,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-866e093de67d70e1",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9587,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-86db83f710799fed",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9551,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-87958c27c09fcb61",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9617,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-87ba45d80950c276",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9569,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-87dc15ccf8006e7d",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9555,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-8a08428343768703",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.949,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-8a2f63cc83710ab9",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9674,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-8a7d5af6f8a7ff1f",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9455,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-8ba49b9fc3a1b389",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9519,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-8befd4ae9eb414c5",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.8651,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-8c541d2e878a9980",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.86,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-8cc44c9d064fe4e8",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8095,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-8cd4d81eded1d537",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9536,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-8d1460e664d05cee",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.956,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-8e179cb73a516fef",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9645,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-8ea74f307e6c88cf",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9413,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-92565db34463f526",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9159,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-9477c476fa00ea87",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9493,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-9518f061b192213b",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9273,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-9591664ac788d64c",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9502,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-9878dd12f0f8d9c3",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9678,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-99ff63fd330a726a",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8907,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-9a582f736ff9754a",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9543,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-9b80a25419269fc5",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9038,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-9c5cbe58f449fbe3",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9139,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-9d994d660051b4ee",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9508,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-9eb8cebaddf4f157",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9342,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-9effbeb785935da2",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9625,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-9f9ffd730eb64d68",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9309,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a08062b6f193410d",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9142,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a13c122da45ca8bc",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9668,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a16dcfb3d30f867a",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.7741,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a17e5a1fc7aa59e7",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9612,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a18bfeba0c963148",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.95,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a20b1b19edda2599",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9519,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a224af8d59aa0cd4",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9391,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a3b9a52a6b637b5f",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9301,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a416f9e3cbb6ceae",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9624,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a5194d80b22f62d1",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8913,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a541b6c572218667",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9411,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a55fe76920a52dc7",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9392,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a58466da0c911f33",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9229,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a60eb116aa2fa8ec",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9594,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a64896d1977a618a",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9418,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a6e85bda4f450c7e",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9509,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a703f6fee075ce41",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9643,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a9358d9ece35c521",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9536,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a9a0d51aeaf95132",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9451,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a9c8a3452242653c",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9235,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-a9ebf044f2f283fa",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8673,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-aa0e58f681895f7c",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9642,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-aa501b7e2ed9ce25",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9587,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ac7cdd9816ab0810",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9247,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-acc066016290a8c2",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9283,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ad4b06d388fdb44e",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.932,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-af6a8690585e8fb5",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9588,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-afa71e6ea132a88e",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9518,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b045a37d3b1572fb",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9634,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b091ea8860562610",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9399,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b1077cf0af31d2fe",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9581,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b12bced1817fc464",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9396,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b1de135a51262725",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.93,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b2a25cab75f22dc2",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9578,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b32146a576716e02",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9666,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b35480f17d72265f",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.878,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b55f1c9903419057",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9663,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b6100b00031606fd",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9382,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b72b0bec46c8170a",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8955,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b76694b8eaa367fb",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.969,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b767fbd81c6d55ad",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9575,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b9094063a9026e2c",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9694,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-b9d7a4cc93d051f4",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9432,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-bc8c556b3156ac39",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9481,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-bdb462d21fb9fbd9",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9714,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-bdd77864e6910124",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9553,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-be7b6c73c3a00065",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.96,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-beadeaa51ddb8c52",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9374,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-bedd545a56b88b3a",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9527,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-bee5cb3738d6e414",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9213,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-bf1a02c4be6559c8",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9616,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c0233e92ffd44b0f",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9424,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c171c2c0b882b156",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9406,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c22a84a087f60777",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9642,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c2af47cdc1583daa",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9591,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c3423b7c51da8abd",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9519,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c3458a1db749fa75",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9088,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c4f79787bd640036",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9526,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c78625b20b29a675",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.941,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c7bba879fc7ecc33",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9295,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c7cf7c2c4a09d640",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8964,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c8239c73dbc52b74",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9635,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c880146e3f10fd80",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9139,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c89e359e125e3e53",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9639,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c8e813fe8d1be8dc",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9137,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c913a5df6725c09a",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9189,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c9555b63b61534d5",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9287,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-c9dcb26a5f62b5eb",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9062,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ca018ba57a40acfc",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9524,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-cb0fb3fa9f05e6d8",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9607,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-cb26cc5bf3543afe",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9504,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-cc247bacb04d405c",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9537,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-cc46d4e95bec07a5",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9613,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ccfefb1fb0528f85",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9256,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ce486c07f676394e",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.93,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-cf0f61f1ba7e4031",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9497,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-cf1f13b414e34adf",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9423,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d0ced062eb9e286a",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9309,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d1b92b8fd6c4352e",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9594,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d249b6cbaf699092",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9416,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d2f3af1907353534",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9522,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d2f519d7784ec9b6",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9417,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d3f6337d81129328",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9485,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d4c747f6e115ca16",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.903,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d4d2f4451d31798d",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9445,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d5364e362189af99",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9123,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d6c280a19c27a8a9",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.883,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d6d7f1f1b5121696",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9701,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d7d2d623ce80dabf",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8879,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d7fd08424698416e",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9268,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d92e78a810759574",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8068,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-d9b9b40fe04b8038",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9653,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-da9e029fe75ad51b",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9536,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-daa2a823b12acb05",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9141,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-daca360c819c0719",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9537,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-dba86e5f5533c8fd",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9462,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-dc6c55497c0c041f",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9323,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-dcc8dea2a9b23cdd",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9414,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-dcdef69e2e330e4a",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9151,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-de549bb3b0fb600e",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9531,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-de717a4fd5ff143d",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9199,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-dfcf24ad64eb6184",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8849,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e01b39c278ac7271",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9681,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e0b851a0f4072a10",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9127,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e135baed7e3ee562",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9367,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e18d8246e73b67c6",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9195,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e1e8473c36a9497a",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.8412,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e2709fba36d1f631",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9493,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e42b79a2831e28b8",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9452,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e5db0d13eb485975",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.2751,
+   "band": "likely_human"
+  },
+  {
+   "id": "f-fr-e5df62f8453cc212",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9582,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e62d454d8d057273",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8935,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e75ba754fb22c680",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9694,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e8568e2c404d9602",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9494,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e895c595a9c46ddf",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9575,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e8bfbbc6797aad68",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9511,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e8d5f6919dac523b",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9697,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-e9c9b7fa15e4d703",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9618,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ea1a81743894e6a1",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9422,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ea99378b800a6f0f",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9571,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-eac5366b85776bb0",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9671,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-eb97c6ab2852338b",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9628,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-eba2007b84f93582",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9489,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ebbbca6da5de5bd5",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9426,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ec3d2178a99ea3ee",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9503,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ec58cbdcf308c558",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9711,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ec7c3ef4adca5e1d",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9317,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ecc27de4cc8f42a6",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9444,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-edb83d518ef93991",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9584,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ede8d83e9ab56c71",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9604,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-efa0c9c27c3af0a2",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9388,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f061ea11c774d8b7",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.957,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f065760316037726",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9659,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f0c23443490171d4",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9718,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f2cac6ba80c85043",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9496,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f365411873501ae7",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9531,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f377ec07a8cdc8ec",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9348,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f4ab20a44e6876a2",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9373,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f5829b016514bdf0",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9522,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f5ed5b2f37b1454b",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.954,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f77c6e739868302b",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.8394,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f7b01c7797afda71",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9545,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f83c63487e404324",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9605,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f899787945041562",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9566,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-f930e40e98bf0ff1",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.918,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-fa239f2fe465f34c",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9536,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-fb7b1127d12bd0f5",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9518,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-fc1546e457e4629c",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9434,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-fca3788ffa6581c9",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.96,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-fcae55df55a12c33",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9686,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-fdcf7ba7fcdcb570",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9503,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-fe6dc4e902f4508a",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9565,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ff469ecfe13bd3d3",
+   "category": "ai_legal",
+   "label": "ai",
+   "probability": 0.9387,
+   "band": "likely_ai"
+  },
+  {
+   "id": "f-fr-ff78576de67706db",
+   "category": "ai_academic",
+   "label": "ai",
+   "probability": 0.9315,
+   "band": "likely_ai"
+  }
+ ]
+}
