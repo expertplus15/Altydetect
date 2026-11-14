@@ -7,6 +7,8 @@ from corpus.clean import count_words
 
 from train.corpus_v2 import BY_LANGUAGE, HELD_OUT, OPEN_GENERATORS
 from train.corpus_v3 import (
+    EXTRA_SIZES,
+    PRIORITY_SHARE,
     PROMPTS,
     SIZES,
     TEST_SIZE,
@@ -17,10 +19,12 @@ from train.corpus_v3 import (
     generated_document,
     human_document,
     in_period,
+    is_priority,
     match_typography,
     plan_jobs,
     prompt,
     sample_line,
+    select_extra,
     split_humans,
 )
 
@@ -226,3 +230,26 @@ def test_cleaners_remove_source_artefacts() -> None:
     )
     legal = clean_legal("\n".join([motif] * 8))
     assert legal is not None and "706-96" in legal and "¿" not in legal
+
+
+def test_select_extra_avoids_used_documents_and_favours_short_or_recent_pages() -> None:
+    docs = []
+    for i in range(4000):
+        words = 220 if i % 3 == 0 else 450
+        date = "2020-01-01" if i % 5 == 0 else "2012-01-01"
+        text = f"{PROSE} Page {i:05d} " + "mot " * (words - 40)
+        docs.append(human_document("academic", text, "test", f"doi-{i}", "CC BY", date))
+    used = {d["url"] for d in docs[:100]} | {docs[200]["sha256"]}
+    extra = select_extra("academic", docs, used)
+    assert len(extra) == EXTRA_SIZES["academic"]
+    assert not {d["url"] for d in extra} & {d["url"] for d in docs[:100]}
+    assert docs[200]["sha256"] not in {d["sha256"] for d in extra}
+    assert {d["split"] for d in extra} <= {"train", "calibration"}
+    assert sum(is_priority(d) for d in extra) >= PRIORITY_SHARE * len(extra)
+    assert select_extra("academic", list(reversed(docs)), used) == extra
+
+
+def test_select_extra_takes_what_is_left_for_legal() -> None:
+    docs = candidats("legal", 500)
+    extra = select_extra("legal", docs, {docs[0]["url"]})
+    assert len(extra) == 499 < EXTRA_SIZES["legal"]
