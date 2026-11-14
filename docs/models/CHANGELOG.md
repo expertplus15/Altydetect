@@ -1,5 +1,18 @@
 # Changelog des modèles et des jeux de test
 
+## 2026-11-14
+
+- **Jeu de test `detection-v3`** (`ml/eval/testset/detection-v3`, français) : registre
+  soutenu, 200 pages universitaires (French Science Commons, licences ouvertes, publiées avant
+  le 30/06/2022), 200 passages de motifs d'arrêts de la Cour de cassation (2005 à mi-2022,
+  Licence ouverte 2.0) et leurs textes générés appariés par Qwen2.5-7B, Mistral-7B v0.3 et
+  Granite-3.3-8B (196 et 170). Nouvelle version ; detection-v1 et detection-v2 inchangés. Gelé :
+  empreinte dans `MANIFEST.json`, vérifiée en test avec l'absence de tout document commun avec
+  les corpus 0.1, 0.2 et 0.3 et les autres jeux de test.
+- **Corpus FR 0.3** (`ml/corpus/manifests/veritas-0.3`, run 43541257510) : corpus 0.2 français
+  inclus, plus 2 000 textes humains de registre soutenu (entraînement et calibration) et 1 853
+  textes générés appariés ; 16 550 documents. ADR-0012.
+
 ## 2026-11-13
 
 - **Corpus 0.2** (`ml/corpus/manifests/veritas-0.2`, run 43366022743) : corpus v1 inclus,

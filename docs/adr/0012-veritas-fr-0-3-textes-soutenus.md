@@ -101,6 +101,30 @@ compte aussi les 400 textes humains de `detection-v3/fr`, et le rappel « géné
 compte les 400 textes générés de `detection-v3/fr`. Le rapport donne aussi le taux de faux
 positifs sur Wikipédia seule, la mesure du défaut à corriger.
 
+## Corpus obtenu (run 43541257510, 14/11/2026)
+
+Premier lancement (run 43540546372) arrêté avant toute génération, comme prévu : 871 passages
+d'arrêts pour 1 200 avec une décision lue sur 25 ; une sur 10 ensuite (PR #41).
+
+| Étape                                   | Universitaire | Juridique      |
+| --------------------------------------- | ------------- | -------------- |
+| Lus                                     | 602 125 pages | 553 075 arrêts |
+| Licence ouverte, français               | 106 784       | —              |
+| Dans la période                         | 28 687        | 10 570 (1/10)  |
+| Après nettoyage (une page par document) | 5 348         | 2 065          |
+| Retenus (dont test)                     | 1 200 (200)   | 1 200 (200)    |
+| Textes générés gardés (dont test)       | 1 176 (196)   | 1 043 (170)    |
+
+- Générés écartés : 2 % en universitaire, 13 % en juridique, surtout Qwen (253 textes
+  juridiques gardés sur ≈ 400) : réponses de moins de 150 mots, comme en 0.2.
+- Dates des textes humains : en majorité 2005 à 2022 ; 85 pages universitaires d'avant
+  2000, dont 3 d'avant 1910 (articles anciens numérisés).
+- Licences : Licence ouverte 2.0 (1 215), CC BY (897), CC BY-SA (236), CC0 (52).
+- Manifestes : `ml/corpus/manifests/veritas-0.3/fr.jsonl` (16 550 documents, corpus 0.2
+  compris), `ml/eval/testset/detection-v3/` (766 documents, gelé).
+- Calcul : 26 lots, 1 h 22 de bout en bout, ≈ 4,3 h de GPU L4 d'après le journal (≈ 3,5 $),
+  sous l'estimation de 5 à 6 $.
+
 ## Conséquences
 
 - **Coût estimé** (tarifs Modal du 10/11/2026, L4 à 0,80 $/h ; débits mesurés en 0.2) :
