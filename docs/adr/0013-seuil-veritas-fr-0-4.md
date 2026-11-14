@@ -1,6 +1,6 @@
 # ADR-0013 — Seuil « Probablement IA » propre à VRT-DET-FR-0.4
 
-- **Statut** : proposé
+- **Statut** : accepté (règle et valeurs validées le 14/11/2026)
 - **Date** : 2026-11-14
 - **Décideurs** : équipe AltyDetect
 
@@ -52,7 +52,7 @@ FR 0.4 (ADR-0012, run 43617175924, 2 h 52, ≈ 4,5 $) franchit trois portes sur 
 - **Lecture** : `Thresholds.for_model(reference)` renvoie les seuils du modèle et, à défaut, les seuils généraux. Le fichier reste relu à chaud.
 - **Contrôle** : le chargement refuse un seuil de modèle hors de [0,70 ; 0,90] ou inférieur à `likely_human`. Le seuil reste lu depuis la configuration, jamais codé en dur (CLAUDE.md §5).
 
-### Règle de choix (à valider)
+### Règle de choix
 
 1. **Documents utilisés** : ceux de la partition `calibration` du corpus 0.4 français, notés document par document comme les jeux de test, soit :
    - 932 textes humains : 435 pages mC4, 185 pages universitaires et arrêts de 0.3, 312 ajoutés en 0.4 ;
