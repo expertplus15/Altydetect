@@ -140,7 +140,7 @@
     "label": "Text editor",
     "placeholder": "Paste or type your text here…",
     "words": "{count, plural, =0 {0 words} one {# word} other {# words}}",
-    "minWords": "{missing, plural, one {# more word} other {# more words}} to reach the {min}-word minimum for detection.",
+    "minWords": "{missing, plural, one {# more word} other {# more words}} to reach the {min}-word minimum.",
     "import": "Import PDF or DOCX",
     "importHint": "10 MB max",
     "importing": "Importing…",
