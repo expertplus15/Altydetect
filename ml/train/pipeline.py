@@ -855,6 +855,52 @@ def threshold(run: str, language: str) -> dict[str, Any]:
     return {"threshold": choice, **_evaluate(run, language, model, test, thresholds)}
 
 
+INCOMING = f"{CORPUS}/incoming"
+
+
+@app.function(volumes={CORPUS: corpus_volume}, timeout=60 * 60, cpu=2, memory=8192)
+def inspect_incoming(name: str) -> dict[str, Any]:
+    """Inspection d'un corpus déposé dans `/corpus/incoming/` (sans GPU, sans texte dans le
+    rapport) : forme, longueurs, langues, doublons, recoupements avec le volume."""
+    import gzip
+    import pathlib
+
+    from corpus.clean import fingerprint
+
+    from train.incoming import inspect, parse_lines, shingles
+
+    path = pathlib.Path(INCOMING) / name
+    if not path.is_file():
+        raise RuntimeError(f"fichier absent du volume : incoming/{name}")
+    _log(f"{name} : {path.stat().st_size / 1e6:.1f} Mo")
+    # Empreintes des documents déjà présents, par corpus ; partition test et jeux detection-*
+    # comptés à part (jeux de test gelés).
+    known: dict[str, set[str]] = {}
+    test_shingles: set[int] = set()
+    root = pathlib.Path(CORPUS)
+    files = [*root.glob("*/*.jsonl"), *root.glob("*/*/*.jsonl")]
+    for file in sorted(files):
+        top = file.relative_to(root).parts[0]
+        if top == "incoming":
+            continue
+        for d in _read(str(file)):
+            text = d.get("text")
+            if not isinstance(text, str):
+                continue
+            is_test = top.startswith("detection-") or d.get("split") == "test"
+            name_ = f"test:{top}" if is_test else f"corpus:{top}"
+            known.setdefault(name_, set()).add(fingerprint(text))
+            if is_test:
+                test_shingles |= shingles(text)
+    _log(f"référence : {sum(len(v) for v in known.values())} empreintes, {len(known)} ensembles")
+    opener = gzip.open if name.endswith(".gz") else open
+    with opener(path, "rb") as f:
+        report = inspect(parse_lines(f), known, test_shingles)
+    report["file"] = {"name": name, "bytes": path.stat().st_size}
+    report["reference_sets"] = {k: len(v) for k, v in sorted(known.items())}
+    return report
+
+
 @app.local_entrypoint()
 def main(
     stage: str = "all",
@@ -864,6 +910,7 @@ def main(
     test_size: int = 1000,
     use_encoder: bool = True,
     out: str = "ml/train/out",
+    incoming: str = "",
 ) -> None:
     import sys
 
@@ -936,6 +983,21 @@ def main(
                 results.append(train.remote(run, language, use_encoder))
         for language, result in zip(langs, results, strict=True):
             _write_results(out_dir, reference_for(language, run), result)
+    if stage == "inspect":
+        # Corpus déposé à la main dans le volume (CPU seul, quelques centimes).
+        import re
+
+        if not re.fullmatch(r"[A-Za-z0-9._-]{1,100}", incoming):
+            raise SystemExit("stage inspect : --incoming doit nommer un fichier de incoming/")
+        report = inspect_incoming.remote(incoming)
+        stem = incoming.split(".")[0]
+        (out_dir / f"inspect-{stem}.json").write_text(
+            json.dumps(report, ensure_ascii=False, indent=1) + "\n", encoding="utf-8"
+        )
+        summary = {k: report[k] for k in ("texts", "languages", "length_buckets", "exact_overlap")}
+        summary["partial_copy_of_testsets"] = report["partial_copy_of_testsets"]
+        _log(f"inspection : {json.dumps(summary, ensure_ascii=False)}")
+        return
     if stage == "threshold":
         # Seuil propre au modèle déjà entraîné (ADR-0013) : aucun entraînement, un seul L4.
         if run != "v4":
