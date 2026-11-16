@@ -1,6 +1,6 @@
 # ADR-0014 — Veritas FR 0.5 : textes humains difficiles et corpus déposé
 
-- **Statut** : proposé
+- **Statut** : accepté et exécuté (run 43901277788, 16/11/2026). FR 0.5 non retenu, voir « Résultats ».
 - **Date** : 2026-11-15
 - **Décideurs** : équipe AltyDetect
 
@@ -89,3 +89,30 @@ Le rapport d'arrêt donne les comptes par motif, sans aucun texte.
 - **Manifestes** : `corpus-fr.json` du run, sans texte. La source et la licence de chaque passage du corpus déposé y figurent. Le fichier déposé reste dans le volume, jamais dans le dépôt.
 - **Limite** : la licence du corpus déposé repose sur la déclaration du déposant. Aucun texte d'utilisateur de l'application n'y entre (`training_opt_in` non concerné).
 - **Limite** : les textes difficiles sont choisis par FR 0.4. FR 0.5 peut donc garder d'autres angles morts, que FR 0.4 n'a pas vus. La vérification sur des textes réels reste nécessaire.
+
+## Résultats (run 43901277788, 16/11/2026)
+
+Détail : `docs/models/VRT-DET-FR-0.5.md`.
+
+- **Arrêts automatiques** : aucun déclenché.
+  - Candidats retenus : 8 847 universitaires, 5 000 pages web, 6 000 passages du corpus déposé.
+  - Corpus déposé : 4 passages sur 86 863 recoupaient un jeu de test (moins de 0,01 %).
+- **Corpus déposé** : sur 170 722 extraits, 113 141 gardés.
+  - Écartés : 26 275 sans année dans le nom du fichier, 20 655 postérieurs à juin 2022, 10 651 non français.
+  - Le 16/11/2026, le déposant déclare détenir des droits écrits pour cet usage.
+- **Textes « difficiles » retenus** : 533 universitaires, 126 pages web, 62 du corpus déposé.
+- **Durée et coût** : 4 h 47 de bout en bout. Le coût est estimé à 6 à 7 $ d'après les durées du journal (5,9 h de L4 pour la génération).
+  - Une attente de 56 minutes sans journal précède la notation, entre la fin des candidats et le début de la notation. Elle est à expliquer avant le prochain run.
+- **Mesure au seuil général (0,70)** : 1,28 % de faux positifs (23 textes humains sur 1 800), contre 1,9 % pour FR 0.4. Porte non franchie.
+  - Pages universitaires : 5,5 % → 2,5 %.
+  - Wikipédia : 2,3 % → 1,33 %.
+  - Pages mC4 : 1,3 % → 1,1 %.
+  - Textes courts : 3 %, inchangé.
+  - Arrêts : 0 %.
+
+  Rappel : Claude 100 %, générateurs vus 99,5 %, Phi 100 %.
+
+- **Seuil propre** : aucun sur la grille.
+  - À 0,90 : 8 faux positifs sur 1 236 textes humains de calibration (0,65 %), pour une cible de 0,5 %.
+  - Les pages universitaires font 31 des 44 faux positifs de calibration à 0,70.
+- **Conséquence** : VRT-DET-FR-0.1 reste en mode fantôme. La suite (encodeur plus grand ou autres sources universitaires) fera l'objet d'un nouvel ADR, avec une estimation de coût.
