@@ -51,11 +51,17 @@ _PARAGRAPH = re.compile(r"\n\s*\n")
 _SENTENCE = re.compile(r"(?<=[.!?…])\s+")
 
 
+_SOURCE_YEAR = re.compile(r"(?<!\d)(19\d\d|20\d\d)(?!\d)")
+
+
 def _date_of(record: dict[str, Any]) -> str | None:
+    """Champ de date s'il existe ; sinon l'année écrite dans le nom de la source (fichier
+    « …_2010.pdf ») : la dernière année plausible du nom, celle de l'édition en général."""
     for key, value in record.items():
         if DATE_KEY.search(key.lower()) and isinstance(value, (str, int)) and str(value).strip():
             return str(value).strip()
-    return None
+    years = _SOURCE_YEAR.findall(str(record.get("source") or ""))
+    return years[-1] if years else None
 
 
 def _plain_prose(text: str) -> bool:

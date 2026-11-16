@@ -33,6 +33,7 @@ Décisions du 15/11/2026 : AltyDetect reste un produit de détection et de plagi
 
 - **Corpus déposé** :
   - seuls les textes **datés** d'avant le 30/06/2022 sont gardés, comme pour les autres sources : un texte plus récent a pu être écrit avec une IA, et il n'y a pas de date d'écriture vérifiable ;
+  - date : un champ de date s'il existe, sinon l'année écrite dans le nom de la source (fichier « …_2010.pdf ») ; le fichier déposé n'a pas de champ de date (champs `text`, `source`, `page`, `extraction`) ;
   - langue française seulement ;
   - découpage en passages de 180 à 900 mots, au plus trois par texte, sans tableaux ni listes de chiffres ;
   - licence et source reprises du fichier quand il les donne.
