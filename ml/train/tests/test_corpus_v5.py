@@ -119,3 +119,18 @@ def test_prompts_for_new_registers() -> None:
     assert job[1] == "ai_web"
     assert "page web" in prompt(job)
     assert {"web", "resource"} <= set(PROMPTS)
+
+
+def test_year_read_from_source_name_when_no_date_field() -> None:
+    lines = [
+        json.dumps(
+            {"text": paragraphes(8), "source": "Gestion-financiere_5ed_2010.pdf", "page": 3}
+        ),
+        json.dumps({"text": paragraphes(8, words=55), "source": "Banque_2024.pdf", "page": 1}),
+        json.dumps({"text": paragraphes(8, words=50), "source": "cours-sans-annee.pdf"}),
+    ]
+    inventory: Counter[str] = Counter()
+    documents = resource_documents(parse_lines(lines), inventory)
+    assert inventory["resource_kept_records"] == 1
+    assert inventory["resource_after_cutoff"] == 1 and inventory["resource_undated"] == 1
+    assert {d["date"] for d in documents} == {"2010"}
