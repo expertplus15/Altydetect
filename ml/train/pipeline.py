@@ -46,10 +46,11 @@ TESTSET = "detection-v1"
 ROBUSTNESS = "detection-v2"
 FORMAL = "detection-v3"
 # « v1 » : corpus et modèles 0.1 ; « v2 » : modèles 0.2 (ADR-0011) ; « v3 » : modèle français 0.3
-# (ADR-0012) ; « v4 » : modèle français 0.4 (ADR-0012, suite) ; tout autre nom (« pilot »)
+# (ADR-0012) ; « v4 » : modèle français 0.4 (ADR-0012, suite) ; « v5 » : modèle français 0.5
+# (ADR-0014) ; tout autre nom (« pilot »)
 # est isolé : corpus à part, références suffixées, jeu de test v1 intact.
 MAIN_RUN = "v1"
-VERSIONS = {"v1": "0.1", "v2": "0.2", "v3": "0.3", "v4": "0.4"}
+VERSIONS = {"v1": "0.1", "v2": "0.2", "v3": "0.3", "v4": "0.4", "v5": "0.5"}
 # Lots de génération du corpus 0.2 : 100 consignes, 8 GPU L4 au plus en parallèle.
 OPEN_CHUNK = 100
 MAX_GPUS = 8
@@ -382,7 +383,9 @@ def seed_from(run: str, language: str, source: str, names: list[str]) -> dict[st
     return {"language": language, **counts}
 
 
-def _academic_candidates(inventory: Counter[str]) -> list[dict[str, Any]]:
+def _academic_candidates(
+    inventory: Counter[str], files: tuple[str, ...] | None = None
+) -> list[dict[str, Any]]:
     """Pages universitaires retenues : français, licence ouverte, publiées avant la date
     limite, une page par document (la première qui passe le nettoyage, hors page de titre)."""
     import tempfile
@@ -403,7 +406,7 @@ def _academic_candidates(inventory: Counter[str]) -> list[dict[str, Any]]:
 
     out: list[dict[str, Any]] = []
     seen: set[str] = set()
-    for name in FSC_FILES:
+    for name in files or FSC_FILES:
         with tempfile.NamedTemporaryFile(suffix=".parquet") as tmp:
             urllib.request.urlretrieve(f"{FSC_BASE}/{name}", tmp.name)
             parquet = pq.ParquetFile(tmp.name)
@@ -620,6 +623,236 @@ def build_formal(run: str, extra: bool = False) -> dict[str, Any]:
     return summary
 
 
+def _test_reference(base: str) -> tuple[set[str], set[str], set[int]]:
+    """Empreintes et adresses déjà utilisées (corpus du run et jeux de test), empreintes des
+    jeux de test et leurs suites de 8 mots (copies partielles)."""
+    from corpus.clean import fingerprint
+
+    from train.incoming import shingles
+
+    used: set[str] = set()
+    tests: set[str] = set()
+    test_shingles: set[int] = set()
+    files = [*Path(base).glob("*.jsonl"), *Path(CORPUS).glob("detection-*/fr.jsonl")]
+    for file in files:
+        is_testset = file.parent.name.startswith("detection-")
+        for d in _read(str(file)):
+            text = d.get("text")
+            if not isinstance(text, str):
+                continue
+            digest = fingerprint(text)
+            used.add(digest)
+            if d.get("url"):
+                used.add(str(d["url"]))
+            if is_testset or d.get("split") == "test":
+                tests.add(digest)
+                test_shingles |= shingles(text)
+    return used, tests, test_shingles
+
+
+@app.function(volumes={CORPUS: corpus_volume}, timeout=150 * 60, cpu=2, memory=16384)
+def v5_candidates(run: str) -> dict[str, Any]:
+    """FR 0.5 : candidats humains des trois sources, sans GPU, hors de tout document déjà
+    utilisé et de toute copie d'un jeu de test. Arrêt avant notation et génération si une
+    source est insuffisante ou si le corpus déposé recoupe trop les jeux de test."""
+    import gzip
+    import urllib.request
+
+    from corpus.human import collect, iter_records
+    from corpus.sources import SOURCES
+
+    from train.corpus_v5 import (
+        FSC_FILES_V5,
+        INCOMING_FILE,
+        MAX_CANDIDATES,
+        WEB_SHARD,
+        cap_candidates,
+        check_sources,
+        resource_documents,
+        web_document,
+    )
+    from train.incoming import PARTIAL_COPY, SHINGLE_STRIDE, parse_lines, shingles
+
+    base = f"{CORPUS}/{run}/fr"
+    path = f"{base}/candidates_v5.jsonl"
+    inventory: Counter[str] = Counter()
+    if not os.path.exists(path):
+        used, tests, test_shingles = _test_reference(base)
+        _log(f"fr : référence {len(used)} empreintes et adresses, {len(tests)} textes de test")
+        incoming = Path(INCOMING) / INCOMING_FILE
+        if not incoming.is_file():
+            raise RuntimeError(f"corpus déposé absent du volume : incoming/{INCOMING_FILE}")
+        with gzip.open(incoming, "rb") as f:
+            resource = resource_documents(parse_lines(f), inventory)
+        _log(f"fr : corpus déposé, {len(resource)} passages ({dict(inventory)})")
+        academic = _academic_candidates(inventory, FSC_FILES_V5)
+        source = SOURCES["fr"]
+        with urllib.request.urlopen(source.url(WEB_SHARD), timeout=300) as response:
+            pages = collect(iter_records(response), source, WEB_SHARD, 2 * MAX_CANDIDATES["web"])
+        web = [web_document(page) for page in pages]
+        _log(f"fr : {len(web)} pages web mC4 (fragment 2)")
+
+        def fresh(register: str, documents: list[dict[str, Any]]) -> list[dict[str, Any]]:
+            kept = []
+            for d in documents:
+                if d["sha256"] in used or (d.get("url") and d["url"] in used):
+                    inventory[f"{register}_already_used"] += 1
+                    continue
+                sample = shingles(d["text"], SHINGLE_STRIDE)
+                if d["sha256"] in tests or (
+                    sample and len(sample & test_shingles) / len(sample) >= PARTIAL_COPY
+                ):
+                    inventory[f"{register}_test_overlap"] += 1
+                    continue
+                kept.append(d)
+            return cap_candidates(register, kept)
+
+        candidates = {
+            "academic": fresh("academic", academic),
+            "web": fresh("web", web),
+            "resource": fresh("resource", resource),
+        }
+        overlap = inventory["resource_test_overlap"] / max(len(resource), 1)
+        counts = {k: len(v) for k, v in candidates.items()}
+        problems = check_sources(counts, overlap)
+        if problems:
+            raise RuntimeError(f"fr 0.5 : arrêt avant notation : {problems} ; {dict(inventory)}")
+        _write(path, [d for k in candidates for d in candidates[k]])
+        corpus_volume.commit()
+    documents = _read(path)
+    summary = {
+        "inventory": dict(inventory),
+        "candidates": dict(Counter(d["register"] for d in documents)),
+    }
+    _log(f"fr : candidats FR 0.5 {summary}")
+    return summary
+
+
+def _load_model(reference: str) -> Any:
+    """Paquet Veritas du volume des modèles, couche 2 comprise."""
+    from veritas.engine.model import VeritasModel
+    from veritas.engine.torch_encoder import TorchEncoder
+
+    model_dir = f"{MODELS}/{reference}"
+    with open(f"{model_dir}/manifest.json", encoding="utf-8") as f:
+        manifest = json.load(f)
+    encoder = TorchEncoder(f"{model_dir}/encoder") if manifest.get("layer2") else None
+    return VeritasModel.from_manifest(manifest, encoder)
+
+
+@app.function(volumes={CORPUS: corpus_volume, MODELS: models_volume}, gpu="L4", timeout=90 * 60)
+def v5_score(run: str) -> dict[str, Any]:
+    """FR 0.5 : probabilité donnée par FR 0.4 à chaque candidat (un seul L4, sans entraîner)."""
+    base = f"{CORPUS}/{run}/fr"
+    path = f"{base}/candidates_v5_scored.jsonl"
+    if not os.path.exists(path):
+        _log("fr : notation des candidats par VRT-DET-FR-0.4")
+        model = _load_model("VRT-DET-FR-0.4")
+        documents = _read(f"{base}/candidates_v5.jsonl")
+        for i, d in enumerate(documents, 1):
+            d["prior_probability"] = round(float(model.detect(d["text"], "fr").probability), 4)
+            if i % 2000 == 0:
+                _log(f"fr : {i}/{len(documents)} candidats notés")
+        _write(path, documents)
+        corpus_volume.commit()
+    from train.corpus_v5 import HARD_MIN
+
+    documents = _read(path)
+    summary = {
+        register: {
+            "candidates": sum(d["register"] == register for d in documents),
+            "hard": sum(
+                d["register"] == register and d["prior_probability"] >= HARD_MIN for d in documents
+            ),
+        }
+        for register in sorted({d["register"] for d in documents})
+    }
+    _log(f"fr : candidats notés {summary}")
+    return summary
+
+
+@app.function(volumes={CORPUS: corpus_volume}, timeout=600, cpu=2, memory=8192)
+def v5_select(run: str) -> dict[str, Any]:
+    """FR 0.5 : textes humains retenus (difficiles d'abord), sans GPU."""
+    from train.corpus_v5 import HARD_MIN, SIZES_V5, select_v5
+
+    base = f"{CORPUS}/{run}/fr"
+    path = f"{base}/human_v5.jsonl"
+    if not os.path.exists(path):
+        scored = _read(f"{base}/candidates_v5_scored.jsonl")
+        chosen = [
+            d
+            for register in SIZES_V5
+            for d in select_v5(register, [d for d in scored if d["register"] == register])
+        ]
+        _write(path, chosen)
+        corpus_volume.commit()
+    documents = _read(path)
+    summary = {
+        "selected": dict(Counter(f"{d['category']}:{d['split']}" for d in documents)),
+        "hard": dict(
+            Counter(d["register"] for d in documents if d["prior_probability"] >= HARD_MIN)
+        ),
+    }
+    _log(f"fr : textes humains FR 0.5 {summary}")
+    return summary
+
+
+@app.function(volumes={CORPUS: corpus_volume}, timeout=200 * 60, cpu=2, memory=8192)
+def build_paired(run: str) -> dict[str, Any]:
+    """FR 0.5 : un texte généré par texte humain retenu (même sujet, même genre), lots de 100
+    consignes sur 8 L4 au plus, chaque lot sauvegardé (reprise sans régénérer)."""
+    from detection.robustness import chunks
+
+    from train.corpus_v2 import OPEN_GENERATORS, budget
+    from train.corpus_v3 import generated_document, plan_jobs, prompt
+
+    base = f"{CORPUS}/{run}/fr"
+    humans = _read(f"{base}/human_v5.jsonl")
+    target = f"{base}/ai_v5.jsonl"
+    if not os.path.exists(target):
+        jobs = plan_jobs(humans)
+        partial = Path(f"{base}/partial_v5")
+        partial.mkdir(parents=True, exist_ok=True)
+        plan = {
+            f"fr-v5-{name}": (key, idx)
+            for key in jobs
+            for name, idx in chunks(key, jobs[key], OPEN_CHUNK)
+        }
+
+        def arguments(name: str) -> tuple[str, str, list[str], list[int]]:
+            key, idx = plan[name]
+            selected = [jobs[key][i] for i in idx]
+            return (
+                name,
+                OPEN_GENERATORS[key],
+                [prompt(job) for job in selected],
+                [budget(job[3]) for job in selected],
+            )
+
+        _generate_lots(partial, list(plan), arguments, "fr (FR 0.5)")
+        known = {d["sha256"] for file in Path(base).glob("*.jsonl") for d in _read(str(file))}
+        generated: list[dict[str, Any]] = []
+        for name, (key, idx) in plan.items():
+            texts = json.loads((partial / f"{name}.json").read_text(encoding="utf-8"))
+            for i, raw in zip(idx, texts, strict=True):
+                document = generated_document(jobs[key][i], key, raw)
+                if document is None or document["sha256"] in known:
+                    continue
+                known.add(document["sha256"])
+                generated.append(document)
+        _write(target, sorted(generated, key=lambda d: d["id"]))
+        corpus_volume.commit()
+    generated = _read(target)
+    summary = {
+        "generated": dict(
+            sorted(Counter(f"{d['category']}:{d['generator']}" for d in generated).items())
+        )
+    }
+    _log(f"fr : corpus FR 0.5 {summary}")
+    return summary
+
+
 @app.function(volumes={CORPUS: corpus_volume}, timeout=600)
 def manifests(run: str, language: str) -> list[dict[str, Any]]:
     """Manifeste du corpus (sans texte) : à commiter."""
@@ -636,6 +869,8 @@ def manifests(run: str, language: str) -> list[dict[str, Any]]:
         "ai_formal",
         "human_formal_extra",
         "ai_formal_extra",
+        "human_v5",
+        "ai_v5",
     )
     for name in names:
         documents += _read(f"{base}/{name}.jsonl")
@@ -664,7 +899,7 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
     _log(f"{reference} : conteneur GPU démarré")
     # Veritas 0.2 et FR 0.3 : lissage des étiquettes, classes équilibrées, combinaison plus
     # régularisée.
-    v2 = run in ("v2", "v3", "v4")
+    v2 = run in ("v2", "v3", "v4", "v5")
     documents = _corpus_documents(run, language)
     split = {
         name: [d for d in documents if d["split"] == name]
@@ -729,7 +964,9 @@ def _corpus_documents(run: str, language: str) -> list[dict[str, Any]]:
     # FR 0.3 : registre soutenu, sans sa partition test (jeu detection-v3, mesuré à part : la
     # partition « test » de ce corpus reste celle de detection-v1).
     # FR 0.4 : textes supplémentaires (jamais en partition test).
-    for name in ("human_formal", "ai_formal", "human_formal_extra", "ai_formal_extra"):
+    # FR 0.5 : textes humains difficiles et textes générés appariés (jamais en partition test).
+    names = ("human_formal", "ai_formal", "human_formal_extra", "ai_formal_extra")
+    for name in (*names, "human_v5", "ai_v5"):
         documents += [d for d in _read(f"{base}/{name}.jsonl") if d["split"] != "test"]
     return documents
 
@@ -761,7 +998,7 @@ def _evaluate(
         "latency_seconds_per_document_gpu": round(latency, 4),
         "thresholds": {"likely_ai": applied.likely_ai, "likely_human": applied.likely_human},
     }
-    if run not in ("v2", "v3", "v4"):
+    if run not in ("v2", "v3", "v4", "v5"):
         return {"report": report}
 
     # Robustesse : jeu gelé detection-v2 (aucun de ses textes ni de ses sources n'est dans le
@@ -790,7 +1027,7 @@ def _evaluate(
         "records": records,
     }
     out: dict[str, Any] = {"report": report, "robustness": robustness}
-    if run in ("v3", "v4"):
+    if run in ("v3", "v4", "v5"):
         from train.corpus_v3 import check_gates as check_gates_v3
 
         formal_records = score_set(FORMAL)
@@ -855,6 +1092,52 @@ def threshold(run: str, language: str) -> dict[str, Any]:
     return {"threshold": choice, **_evaluate(run, language, model, test, thresholds)}
 
 
+INCOMING = f"{CORPUS}/incoming"
+
+
+@app.function(volumes={CORPUS: corpus_volume}, timeout=60 * 60, cpu=2, memory=8192)
+def inspect_incoming(name: str) -> dict[str, Any]:
+    """Inspection d'un corpus déposé dans `/corpus/incoming/` (sans GPU, sans texte dans le
+    rapport) : forme, longueurs, langues, doublons, recoupements avec le volume."""
+    import gzip
+    import pathlib
+
+    from corpus.clean import fingerprint
+
+    from train.incoming import inspect, parse_lines, shingles
+
+    path = pathlib.Path(INCOMING) / name
+    if not path.is_file():
+        raise RuntimeError(f"fichier absent du volume : incoming/{name}")
+    _log(f"{name} : {path.stat().st_size / 1e6:.1f} Mo")
+    # Empreintes des documents déjà présents, par corpus ; partition test et jeux detection-*
+    # comptés à part (jeux de test gelés).
+    known: dict[str, set[str]] = {}
+    test_shingles: set[int] = set()
+    root = pathlib.Path(CORPUS)
+    files = [*root.glob("*/*.jsonl"), *root.glob("*/*/*.jsonl")]
+    for file in sorted(files):
+        top = file.relative_to(root).parts[0]
+        if top == "incoming":
+            continue
+        for d in _read(str(file)):
+            text = d.get("text")
+            if not isinstance(text, str):
+                continue
+            is_test = top.startswith("detection-") or d.get("split") == "test"
+            name_ = f"test:{top}" if is_test else f"corpus:{top}"
+            known.setdefault(name_, set()).add(fingerprint(text))
+            if is_test:
+                test_shingles |= shingles(text)
+    _log(f"référence : {sum(len(v) for v in known.values())} empreintes, {len(known)} ensembles")
+    opener = gzip.open if name.endswith(".gz") else open
+    with opener(path, "rb") as f:
+        report = inspect(parse_lines(f), known, test_shingles)
+    report["file"] = {"name": name, "bytes": path.stat().st_size}
+    report["reference_sets"] = {k: len(v) for k, v in sorted(known.items())}
+    return report
+
+
 @app.local_entrypoint()
 def main(
     stage: str = "all",
@@ -864,6 +1147,7 @@ def main(
     test_size: int = 1000,
     use_encoder: bool = True,
     out: str = "ml/train/out",
+    incoming: str = "",
 ) -> None:
     import sys
 
@@ -880,11 +1164,33 @@ def main(
     # Corpus des langues en parallèle (CPU, lots Claude simultanés) ; entraînement une langue
     # après l'autre : jamais plus d'un GPU à la fois (garde-fou de coût). v2 : génération par
     # lots sur 8 GPU L4 au plus, puis les deux langues entraînées en parallèle (ADR-0011).
-    if run in ("v3", "v4") and langs != ["fr"]:
+    if run in ("v3", "v4", "v5") and langs != ["fr"]:
         raise SystemExit(f"run {run} (ADR-0012) : français seulement, languages doit valoir « fr »")
     if stage in ("corpus", "all"):
         _log(f"corpus : {', '.join(langs)}")
-        if run == "v4":
+        if run == "v5":
+            from train.corpus_v2 import BY_LANGUAGE, OPEN_GENERATORS
+
+            names = [
+                "human",
+                "ai",
+                "ai_open",
+                "mixed",
+                "human_formal",
+                "ai_formal",
+                "human_formal_extra",
+                "ai_formal_extra",
+            ]
+            _log(f"corpus 0.4 recopié : {seed_from.remote(run, 'fr', 'v4', names)}")
+            # Candidats sans GPU, puis notation par FR 0.4 et sélection : s'il manque des
+            # textes, ou si le corpus déposé recoupe les jeux de test, rien n'est généré.
+            _log(f"candidats : {v5_candidates.remote(run)}")
+            _log(f"notation : {v5_score.remote(run)}")
+            _log(f"sélection : {v5_select.remote(run)}")
+            for key in BY_LANGUAGE["fr"]:
+                prefetch.remote(OPEN_GENERATORS[key])
+            _log(f"corpus FR 0.5 : {build_paired.remote(run)}")
+        elif run == "v4":
             from train.corpus_v2 import BY_LANGUAGE, OPEN_GENERATORS
 
             names = ["human", "ai", "ai_open", "mixed", "human_formal", "ai_formal"]
@@ -936,33 +1242,57 @@ def main(
                 results.append(train.remote(run, language, use_encoder))
         for language, result in zip(langs, results, strict=True):
             _write_results(out_dir, reference_for(language, run), result)
+        # FR 0.5 : seuil propre choisi sur la calibration dans le même run (ADR-0013, ADR-0014).
+        if run == "v5":
+            _run_threshold(out_dir, run, langs, suffix="-seuil")
+    if stage == "inspect":
+        # Corpus déposé à la main dans le volume (CPU seul, quelques centimes).
+        import re
+
+        if not re.fullmatch(r"[A-Za-z0-9._-]{1,100}", incoming):
+            raise SystemExit("stage inspect : --incoming doit nommer un fichier de incoming/")
+        report = inspect_incoming.remote(incoming)
+        stem = incoming.split(".")[0]
+        (out_dir / f"inspect-{stem}.json").write_text(
+            json.dumps(report, ensure_ascii=False, indent=1) + "\n", encoding="utf-8"
+        )
+        summary = {k: report[k] for k in ("texts", "languages", "length_buckets", "exact_overlap")}
+        summary["partial_copy_of_testsets"] = report["partial_copy_of_testsets"]
+        _log(f"inspection : {json.dumps(summary, ensure_ascii=False)}")
+        return
     if stage == "threshold":
         # Seuil propre au modèle déjà entraîné (ADR-0013) : aucun entraînement, un seul L4.
-        if run != "v4":
-            raise SystemExit("stage threshold (ADR-0013) : run v4 seulement")
-        for language in langs:
-            reference = reference_for(language, run)
-            result = threshold.remote(run, language)
-            (out_dir / f"threshold-{reference}.json").write_text(
-                json.dumps(result.pop("threshold"), indent=1) + "\n", encoding="utf-8"
-            )
-            if result:
-                _write_results(out_dir, reference, result)
+        if run not in ("v4", "v5"):
+            raise SystemExit("stage threshold (ADR-0013) : run v4 ou v5 seulement")
+        _run_threshold(out_dir, run, langs)
 
 
-def _write_results(out_dir: Path, reference: str, result: dict[str, Any]) -> None:
-    """Paquet (s'il a changé), rapports et portes d'un modèle, sans aucun texte."""
+def _run_threshold(out_dir: Path, run: str, langs: list[str], suffix: str = "") -> None:
+    """Seuil choisi sur la calibration, puis mesure unique sur les jeux de test (ADR-0013)."""
+    for language in langs:
+        reference = reference_for(language, run)
+        result = threshold.remote(run, language)
+        (out_dir / f"threshold-{reference}.json").write_text(
+            json.dumps(result.pop("threshold"), indent=1) + "\n", encoding="utf-8"
+        )
+        if result:
+            _write_results(out_dir, reference, result, suffix)
+
+
+def _write_results(out_dir: Path, reference: str, result: dict[str, Any], suffix: str = "") -> None:
+    """Paquet (s'il a changé), rapports et portes d'un modèle, sans aucun texte. `suffix` :
+    rapports au seuil propre, à côté de ceux du seuil général."""
     if "manifest" in result:
         (out_dir / reference).mkdir(exist_ok=True)
         (out_dir / reference / "manifest.json").write_text(
             json.dumps(result["manifest"], indent=2) + "\n", encoding="utf-8"
         )
-    (out_dir / f"report-{TESTSET}-{reference}.json").write_text(
+    (out_dir / f"report-{TESTSET}-{reference}{suffix}.json").write_text(
         json.dumps(result["report"], indent=2) + "\n", encoding="utf-8"
     )
     _log(f"{reference} : " + json.dumps(result["report"]["metrics"]))
     if "robustness" in result:
-        (out_dir / f"robustness-{ROBUSTNESS}-{reference}.json").write_text(
+        (out_dir / f"robustness-{ROBUSTNESS}-{reference}{suffix}.json").write_text(
             json.dumps(result["robustness"], indent=1) + "\n", encoding="utf-8"
         )
         categories = {
@@ -972,7 +1302,7 @@ def _write_results(out_dir: Path, reference: str, result: dict[str, Any]) -> Non
         }
         _log(f"{reference} robustesse (part « Probablement IA ») : {categories}")
     if "formal" in result:
-        (out_dir / f"robustness-{FORMAL}-{reference}.json").write_text(
+        (out_dir / f"robustness-{FORMAL}-{reference}{suffix}.json").write_text(
             json.dumps(result["formal"], indent=1) + "\n", encoding="utf-8"
         )
         formal = {

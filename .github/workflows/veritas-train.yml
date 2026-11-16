@@ -10,14 +10,14 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "Étape : all, corpus, train, threshold (seuil propre, ADR-0013), deploy (inférence), benchmark (fournisseur), robustness"
+        description: "Étape : all, corpus, train, threshold (seuil propre, ADR-0013), inspect (corpus déposé), deploy (inférence), benchmark (fournisseur), robustness"
         type: choice
-        options: [all, corpus, train, threshold, deploy, benchmark, robustness]
+        options: [all, corpus, train, threshold, inspect, deploy, benchmark, robustness]
         default: all
       run:
-        description: "pilot (essai isolé), v1 (modèles 0.1), v2 (modèles 0.2, ADR-0011) v3 ou v4 (FR 0.3 et 0.4, ADR-0012, languages fr)"
+        description: "pilot (essai isolé), v1 (modèles 0.1), v2 (modèles 0.2, ADR-0011) v3, v4 ou v5 (FR 0.3 à 0.5, ADR-0012 et ADR-0014, languages fr)"
         type: choice
-        options: [pilot, v1, v2, v3, v4]
+        options: [pilot, v1, v2, v3, v4, v5]
         default: pilot
       languages:
         description: "Langues, séparées par des virgules"
@@ -43,6 +43,9 @@ on:
       bench_ai:
         description: "Benchmark : textes générés du jeu de test, par langue"
         default: "100"
+      incoming:
+        description: "Inspect : nom du fichier déposé dans incoming/ du volume des corpus"
+        default: ""
   push:
     branches: [main]
     paths: ["ml/train/requests/run.json"]
@@ -80,6 +83,7 @@ jobs:
           IN_PROVIDER: ${{ inputs.provider }}
           IN_BENCH_HUMAN: ${{ inputs.bench_human }}
           IN_BENCH_AI: ${{ inputs.bench_ai }}
+          IN_INCOMING: ${{ inputs.incoming }}
         run: |
           if [ "$EVENT" = "push" ]; then
             f=ml/train/requests/run.json
@@ -89,20 +93,27 @@ jobs:
             provider=$(jq -r '.provider // "pangram"' "$f")
             bench_human=$(jq -r '.bench_human // 500' "$f"); bench_ai=$(jq -r '.bench_ai // 100' "$f")
             bench_selection=$(jq -r '.bench_selection // ""' "$f")
+            incoming=$(jq -r '.incoming // ""' "$f")
           else
             stage=$IN_STAGE; run=$IN_RUN; languages=$IN_LANGUAGES
             train=$IN_TRAIN; test=$IN_TEST; encoder=$IN_ENCODER
             provider=$IN_PROVIDER; bench_human=$IN_BENCH_HUMAN; bench_ai=$IN_BENCH_AI
-            bench_selection=""
+            bench_selection=""; incoming=$IN_INCOMING
           fi
           # Sélection précise : un fichier de ml/eval/requests/ (identifiants d'un jeu gelé).
           if [ -n "$bench_selection" ]; then
             [[ "$bench_selection" =~ ^ml/eval/requests/[a-z0-9-]+\.json$ && -f "$bench_selection" ]] || { echo "bench_selection invalide"; exit 1; }
           fi
-          [[ "$stage" =~ ^(all|corpus|train|threshold|deploy|benchmark|robustness)$ ]] || { echo "stage invalide"; exit 1; }
+          [[ "$stage" =~ ^(all|corpus|train|threshold|inspect|deploy|benchmark|robustness)$ ]] || { echo "stage invalide"; exit 1; }
+          # Inspect : un nom de fichier simple, sans chemin.
+          if [ "$stage" = inspect ]; then
+            [[ "$incoming" =~ ^[A-Za-z0-9._-]{1,100}$ ]] || { echo "incoming invalide"; exit 1; }
+          else
+            incoming=""
+          fi
           [[ "$provider" =~ ^(pangram)$ ]] || { echo "provider invalide"; exit 1; }
           [[ "$bench_human" =~ ^[0-9]{1,4}$ && "$bench_ai" =~ ^[0-9]{1,4}$ ]] || { echo "tailles du benchmark invalides"; exit 1; }
-          [[ "$run" =~ ^(pilot|v1|v2|v3|v4)$ ]] || { echo "run invalide"; exit 1; }
+          [[ "$run" =~ ^(pilot|v1|v2|v3|v4|v5)$ ]] || { echo "run invalide"; exit 1; }
           [[ "$languages" =~ ^(fr|en)(,(fr|en))?$ ]] || { echo "languages invalide"; exit 1; }
           [[ "$train" =~ ^[0-9]{1,5}$ && "$test" =~ ^[0-9]{1,5}$ ]] || { echo "tailles invalides"; exit 1; }
           [[ "$encoder" =~ ^(true|false)$ ]] || { echo "use_encoder invalide"; exit 1; }
@@ -111,7 +122,7 @@ jobs:
             echo "stage=$stage"; echo "run=$run"; echo "languages=$languages"
             echo "train=$train"; echo "test=$test"; echo "encoder_flag=$flag"
             echo "provider=$provider"; echo "bench_human=$bench_human"; echo "bench_ai=$bench_ai"
-            echo "bench_selection=$bench_selection"
+            echo "bench_selection=$bench_selection"; echo "incoming=$incoming"
           } >> "$GITHUB_OUTPUT"
           echo "Étape $stage, essai $run, langues $languages, tailles $train / $test, $flag"
 
@@ -258,10 +269,13 @@ jobs:
           TRAIN: ${{ steps.p.outputs.train }}
           TEST: ${{ steps.p.outputs.test }}
           ENCODER_FLAG: ${{ steps.p.outputs.encoder_flag }}
+          # Valeur « none » hors du stage inspect (un argument vide est mal transmis).
+          INCOMING: ${{ steps.p.outputs.incoming || 'none' }}
         run: >-
           uv run --no-sync modal run ml/train/pipeline.py
           --stage "$STAGE" --run "$RUN" --languages "$LANGUAGES"
-          --train-size "$TRAIN" --test-size "$TEST" "$ENCODER_FLAG" --out ml/train/out
+          --train-size "$TRAIN" --test-size "$TEST" "$ENCODER_FLAG" --incoming "$INCOMING"
+          --out ml/train/out
 
       - name: Déployer l'inférence de la couche 2 (mise à l'échelle jusqu'à zéro)
         if: steps.p.outputs.stage == 'deploy'
@@ -279,11 +293,11 @@ jobs:
       # Sorties de v1, v2 et v3 (manifestes, paquets, rapports : aucun texte) poussées sur une
       # branche `ml/sorties-<v1|v2|v3>-<run>`, d'où une PR les range (jeu de test gelé, fiches des modèles).
       # L'artefact reste disponible 30 jours.
-      - name: Sorties sur une branche (v1 à v4, benchmark, robustness)
-        if: always() && steps.p.outputs.stage != 'deploy' && (steps.p.outputs.run == 'v1' || steps.p.outputs.run == 'v2' || steps.p.outputs.run == 'v3' || steps.p.outputs.run == 'v4' || steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness')
+      - name: Sorties sur une branche (v1 à v5, benchmark, robustness, inspect)
+        if: always() && steps.p.outputs.stage != 'deploy' && (steps.p.outputs.run == 'v1' || steps.p.outputs.run == 'v2' || steps.p.outputs.run == 'v3' || steps.p.outputs.run == 'v4' || steps.p.outputs.run == 'v5' || steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness' || steps.p.outputs.stage == 'inspect')
         env:
           RUN_ID: ${{ github.run_id }}
-          KIND: ${{ (steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness' || steps.p.outputs.stage == 'threshold') && steps.p.outputs.stage || steps.p.outputs.run }}
+          KIND: ${{ (steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness' || steps.p.outputs.stage == 'threshold' || steps.p.outputs.stage == 'inspect') && steps.p.outputs.stage || steps.p.outputs.run }}
         run: |
           if [ -z "$(ls -A ml/train/out 2>/dev/null)" ]; then echo "Aucune sortie."; exit 0; fi
           dest="ml/train/runs/$RUN_ID"

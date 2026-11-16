@@ -289,6 +289,19 @@ PROMPTS = {
         "ce début. Réponds uniquement par le texte, en paragraphes, sans titre, sans liste ni "
         "commentaire."
     ),
+    # FR 0.5 (ADR-0014) : pages web mC4 et corpus déposé, même principe d'appariement.
+    "web": (
+        "Voici le début d'une page web en français :\n\n« {start} »\n\n"
+        "Écris une page web originale d'environ {words} mots sur le même sujet, dans le même "
+        "genre et le même ton. Ne recopie pas ce début. Réponds uniquement par le texte, en "
+        "paragraphes, sans titre, sans liste ni commentaire."
+    ),
+    "resource": (
+        "Voici le début d'un texte en français :\n\n« {start} »\n\n"
+        "Écris un texte original d'environ {words} mots sur le même sujet, dans le même genre "
+        "et le même registre. Ne recopie pas ce début. Réponds uniquement par le texte, en "
+        "paragraphes, sans titre, sans liste ni commentaire."
+    ),
 }
 
 
