@@ -1,6 +1,6 @@
 # ADR-0015 — Veritas, seul moteur de détection, et VRT-DET-FR-0.6 (encodeur plus grand)
 
-- **Statut** : proposé
+- **Statut** : accepté (16/11/2026)
 - **Date** : 2026-11-16
 - **Décideurs** : équipe AltyDetect (décision « Veritas seul » du 16/11/2026)
 - **Remplace en partie** : ADR-0001 (fournisseur externe principal), ADR-0010 (mode fantôme, porte d'accord)
@@ -63,8 +63,8 @@ La porte d'accord avec un fournisseur externe (phase 3, `routing.yaml` → `agre
 - **Corpus** : le corpus 0.5, recopié à l'identique (manifeste `ml/corpus/manifests/veritas-0.5/fr.jsonl`). Aucune nouvelle source, aucune génération, aucun appel à l'API Claude.
 - **Couche 2** : `almanach/camembert-large` (≈ 335 M de paramètres, licence MIT) au lieu de `almanach/camembert-base` (≈ 110 M).
   - Taux d'apprentissage 1e-5 au lieu de 2e-5 : un encodeur large est moins stable avec un taux élevé.
-  - Réglages inchangés : 2 époques, lissage des étiquettes 0,1, classes équilibrées, lots de 16.
-  - Si la mémoire du L4 ne suffit pas, on passe à des lots de 8 avec accumulation sur 2 pas. L'effet est le même, rien d'autre ne change.
+  - Réglages inchangés : 2 époques, lissage des étiquettes 0,1, classes équilibrées, lot effectif de 16.
+  - Le lot de 16 est formé de deux lots de 8 dont le gradient est accumulé, pour tenir sans risque dans la mémoire du L4. L'effet est le même qu'un lot de 16, rien d'autre ne change.
 - **Couches 1 et 3** : inchangées.
 - **Dans le même run** :
   1. entraînement ;

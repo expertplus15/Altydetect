@@ -54,3 +54,46 @@ def test_combination_with_layer2_and_modal_reference() -> None:
 def test_layer1_needs_two_classes() -> None:
     with pytest.raises(ValueError):
         fit_layer1([[REGULAR]] * 4, [1] * 4, "fr")
+
+
+def test_encoder_settings_large_only_for_french_0_6() -> None:
+    from train.encoder import BASE_MODELS, encoder_settings, optimizer_steps
+
+    large = encoder_settings("v6", "fr")
+    assert large.base_model == "almanach/camembert-large"
+    assert large.learning_rate == 1e-5
+    # Lot effectif inchangé (16) : lots de 8 accumulés sur 2 pas.
+    assert large.batch_size * large.accumulation == 16
+    for run, language in (("v5", "fr"), ("v2", "en"), ("v6", "en")):
+        settings = encoder_settings(run, language)
+        assert settings.base_model == BASE_MODELS[language]
+        assert (settings.learning_rate, settings.batch_size, settings.accumulation) == (
+            2e-5,
+            16,
+            1,
+        )
+    # Même nombre de pas de l'optimiseur pour un même lot effectif ; le dernier lot incomplet
+    # d'une époque compte pour un pas.
+    base = encoder_settings("v5", "fr")
+    assert optimizer_steps(65_678, base, 2) == 8_210
+    assert optimizer_steps(65_678, large, 2) == 8_210
+    assert optimizer_steps(17, large, 1) == 2
+
+
+def test_pipeline_versions_and_corpus_files() -> None:
+    import ast
+    from pathlib import Path
+
+    tree = ast.parse((Path(__file__).parents[1] / "pipeline.py").read_text(encoding="utf-8"))
+    values = {
+        t.id: ast.literal_eval(node.value)
+        for node in tree.body
+        if isinstance(node, ast.Assign)
+        for t in node.targets
+        if isinstance(t, ast.Name) and t.id in ("VERSIONS", "CORPUS_V5_FILES", "V2_RUNS")
+    }
+    assert values["VERSIONS"]["v6"] == "0.6"
+    assert "v6" in values["V2_RUNS"]
+    # FR 0.6 recopie tout le corpus 0.5, textes difficiles compris.
+    assert values["CORPUS_V5_FILES"][-2:] == ["human_v5", "ai_v5"]
+    assert len(set(values["CORPUS_V5_FILES"])) == 10

@@ -104,7 +104,8 @@ DATABASE_URL=… pnpm -C apps/web db:migrate
      rien n'est comparé et Détecter reste indisponible : Veritas ne répond jamais seul
      (`veritas_fallback: false` dans `routing.yaml`).
   2. Déployer la couche 2 : workflow « Entraînement Veritas », étape `deploy` (à la main, ou
-     `"stage": "deploy"` dans `ml/train/requests/run.json`). Application
+     `"stage": "deploy"` dans `ml/train/requests/run.json`, avec `run` et `cost_usd`, obligatoires).
+     Application
      `altydetect-veritas-encoder` : aucun coût tant qu'elle n'est pas appelée.
   3. Sur `veritas-api` **et** `veritas-shadow` : `VERITAS_MODEL_DIR=/app/services/veritas/models`,
      `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET`. L'API en a besoin pour décider des comparaisons et
