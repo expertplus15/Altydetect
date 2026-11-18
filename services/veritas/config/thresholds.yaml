@@ -15,7 +15,11 @@ bands:
 # Seuil « Probablement IA » propre à un modèle Veritas (ADR-0013), par référence : choisi sur
 # la partition de calibration, entre 0,70 et 0,90, puis mesuré sur les jeux de test gelés.
 # Les autres seuils, et ceux des fournisseurs, restent ceux de `bands`.
-models: {}
+models:
+  # Run 44352541251 (ADR-0015) : 0,45 % de faux positifs en calibration ; portes franchies.
+  # Même valeur que `bands` : l'inscrire atteste qu'un seuil propre a été choisi.
+  VRT-DET-EN-0.2: { likely_ai: 0.70 }
+  # VRT-DET-FR-0.6 : aucun seuil propre (0,65 % en calibration à 0,90), donc pas d'entrée.
 
 # Confiance : écart entre la probabilité du document et 0,5.
 confidence:

@@ -1,6 +1,6 @@
 # ADR-0015 — Veritas, seul moteur de détection, et VRT-DET-FR-0.6 (encodeur plus grand)
 
-- **Statut** : accepté (16/11/2026)
+- **Statut** : accepté (16/11/2026) et exécuté (run 44352541251, 18/11/2026). FR 0.6 non retenu, EN 0.2 remplit le critère ; voir « Résultats ».
 - **Date** : 2026-11-16
 - **Décideurs** : équipe AltyDetect (décision « Veritas seul » du 16/11/2026)
 - **Remplace en partie** : ADR-0001 (fournisseur externe principal), ADR-0010 (mode fantôme, porte d'accord)
@@ -134,3 +134,21 @@ Estimation sur les tarifs Modal du 10/11/2026 (L4 à 0,80 $/h) et les durées me
 - **Veritas est vendu seul.** Ses fiches modèles et le benchmark public de la phase 4 deviennent la seule garantie de qualité présentée aux clients.
 
 **À revoir** : à l'ouverture de chaque langue (coût réel, latence, vérification sur textes réels), puis à chaque nouveau modèle.
+
+## Résultats (run 44352541251, 18/11/2026)
+
+Détail : `docs/models/VRT-DET-FR-0.6.md` et `docs/models/VRT-DET-EN-0.2.md`.
+
+- **Durée et coût** : 2 h 34 de bout en bout, dont environ 2 h 10 de L4. Coût estimé à environ 2 $ d'après les durées du journal, sous le plafond de 5 $.
+  - Affinage de `camembert-large` : 8 210 pas en 1 h 32, perte finale 0,216.
+  - Une attente de 23 minutes précède le démarrage du conteneur GPU d'entraînement. Comme les 56 minutes du run FR 0.5, elle reste à expliquer.
+- **FR 0.6, seuil général (0,70)** : les quatre portes sont franchies, pour la première fois en français.
+  - Faux positifs : 0,89 % (16 textes humains sur 1 800), contre 1,28 % pour FR 0.5.
+  - Pages universitaires : 2,5 % → 0,5 %. Wikipédia : 1,33 %, inchangé. Textes courts : 3 % → 4 %. Arrêts : 0 %.
+  - Rappel : Claude 100 %, générateurs vus 99,5 %, Phi 100 %. Textes mixtes : 68 % → 97 %.
+- **FR 0.6, seuil propre** : aucun sur la grille.
+  - Calibration à 0,70 : 14 faux positifs sur 1 236 (FR 0.5 : 44). À 0,90 : 8 (0,65 %), pour une cible de 0,5 %.
+  - Les 14 erreurs restantes sont notées entre 0,78 et 0,95 ; 8 des 14 sont des pages universitaires.
+- **Décision pour le français (§4)** : le critère du §2 n'est pas rempli. Le français reste indisponible. La suite fera l'objet d'un nouvel ADR, sans nouvel essai de seuil sur les mêmes jeux de test.
+- **EN 0.2** : seuil propre 0,70 (2 faux positifs sur 449 en calibration, 0,45 %), inscrit dans `thresholds.yaml`. Mesure unique à ce seuil : faux positifs 0,14 %, les quatre portes franchies.
+- **Décision pour l'anglais (§4)** : le critère du §2 est rempli. L'anglais s'ouvrira après la vérification sur des textes réels, dont le protocole sera fixé dans l'ADR d'ouverture.

@@ -74,6 +74,12 @@ def test_invalid_first_version_fails(tmp_path: Path) -> None:
         thresholds_config(tmp_path).get()
 
 
+def test_delivered_model_thresholds() -> None:
+    """ADR-0015 : seuil propre d'EN 0.2 inscrit ; aucun pour le français."""
+    raw = yaml.safe_load((CONFIG_DIR / "thresholds.yaml").read_text(encoding="utf-8"))
+    assert Thresholds.parse(raw).model_likely_ai == {"VRT-DET-EN-0.2": 0.70}
+
+
 def _thresholds(models: str) -> dict[str, Any]:
     raw: dict[str, Any] = yaml.safe_load(
         "min_words: 150\nbands: {likely_ai: 0.70, likely_human: 0.30}\n"

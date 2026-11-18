@@ -14,7 +14,8 @@
 - **Jeux de test** : `ml/eval/testset/detection-v1/en.jsonl`,
   `ml/eval/testset/detection-v2/en.jsonl` (robustesse), gelés
 - **Rapports** : `docs/models/reports/detection-v1-VRT-DET-EN-0.2.json`,
-  `docs/models/reports/robustness-detection-v2-VRT-DET-EN-0.2.json`
+  `docs/models/reports/robustness-detection-v2-VRT-DET-EN-0.2.json` ; seuil propre (run 44352541251) : `threshold-VRT-DET-EN-0.2.json`, `detection-v1-VRT-DET-EN-0.2-seuil.json`,
+  `robustness-detection-v2-VRT-DET-EN-0.2-seuil.json`
 - **Voir aussi** : `VRT-DET-EN-0.1.md`, `VRT-DET-FR-0.2.md`, ADR-0011
 
 ## Méthode (ADR-0008, réglages d'ADR-0011)
@@ -88,5 +89,19 @@ pour comparaison.
   lissage des étiquettes n'a pas suffi.
 - **Textes mixtes** : 43 % « Probablement IA », 54 % « Probablement humain ». Le score du
   document ne dit pas quelle partie est générée ; l'analyse par phrase n'est pas mesurée ici.
-- **Écart avec le fournisseur externe : non mesuré.** Servir seul reste soumis à la porte
-  d'accord de la phase 3 (ADR-0010).
+- **Écart avec le fournisseur externe : non mesuré.** Depuis ADR-0015, Veritas est le seul
+  moteur : la porte d'accord de la phase 3 est remplacée par le critère d'ADR-0015 §2 et une
+  vérification sur des textes réels.
+
+## Seuil propre (ADR-0013, ADR-0015 ; run 44352541251, 18/11/2026)
+
+- **Seuil retenu : 0,70**, le plus petit de la grille 0,70 à 0,90. Sur la partition de
+  calibration (449 textes humains, 743 générés) : 2 faux positifs (0,45 %, cible ≤ 0,5 %),
+  rappel 99,7 %. Le nombre de faux positifs reste 1 ou 2 sur toute la grille.
+- Inscrit dans la section `models` de `services/veritas/config/thresholds.yaml`. Même valeur que
+  le seuil général : les bandes servies ne changent pas.
+- **Mesure unique à ce seuil** (rapports `-seuil`), identique à la mesure du 13/11 : faux
+  positifs 0,14 % (2 sur 1 400 textes humains de detection-v1 et detection-v2), rappel 100 % sur
+  Claude, sur les générateurs vus et sur Phi-3.5-mini. Les quatre portes sont franchies.
+- **Critère d'ADR-0015 §2 rempli.** L'anglais peut s'ouvrir après la vérification sur des
+  textes réels, dont le protocole sera fixé dans l'ADR d'ouverture.
