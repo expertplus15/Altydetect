@@ -47,10 +47,28 @@ ROBUSTNESS = "detection-v2"
 FORMAL = "detection-v3"
 # « v1 » : corpus et modèles 0.1 ; « v2 » : modèles 0.2 (ADR-0011) ; « v3 » : modèle français 0.3
 # (ADR-0012) ; « v4 » : modèle français 0.4 (ADR-0012, suite) ; « v5 » : modèle français 0.5
-# (ADR-0014) ; tout autre nom (« pilot »)
+# (ADR-0014) ; « v6 » : modèle français 0.6, corpus 0.5 et encodeur large (ADR-0015) ; tout
+# autre nom (« pilot »)
 # est isolé : corpus à part, références suffixées, jeu de test v1 intact.
 MAIN_RUN = "v1"
-VERSIONS = {"v1": "0.1", "v2": "0.2", "v3": "0.3", "v4": "0.4", "v5": "0.5"}
+VERSIONS = {"v1": "0.1", "v2": "0.2", "v3": "0.3", "v4": "0.4", "v5": "0.5", "v6": "0.6"}
+# Runs à réglages 0.2 (lissage, classes équilibrées, robustesse et portes).
+V2_RUNS = ("v2", "v3", "v4", "v5", "v6")
+# Runs français à registre soutenu (detection-v3 et ses portes).
+FORMAL_RUNS = ("v3", "v4", "v5", "v6")
+# Corpus 0.5 complet (FR 0.5, recopié tel quel pour FR 0.6).
+CORPUS_V5_FILES = [
+    "human",
+    "ai",
+    "ai_open",
+    "mixed",
+    "human_formal",
+    "ai_formal",
+    "human_formal_extra",
+    "ai_formal_extra",
+    "human_v5",
+    "ai_v5",
+]
 # Lots de génération du corpus 0.2 : 100 consignes, 8 GPU L4 au plus en parallèle.
 OPEN_CHUNK = 100
 MAX_GPUS = 8
@@ -880,8 +898,9 @@ def manifests(run: str, language: str) -> list[dict[str, Any]]:
 @app.function(
     volumes={CORPUS: corpus_volume, MODELS: models_volume},
     gpu="L4",
-    # v1 réaliste : 50 à 75 min par langue ; v2 (corpus ≈ 1,5 fois plus grand) : 80 à 120 min.
-    timeout=210 * 60,
+    # v1 réaliste : 50 à 75 min par langue ; v2 (corpus ≈ 1,5 fois plus grand) : 80 à 120 min ;
+    # FR 0.6 (encodeur large, ≈ 3 fois plus de calcul) : 1 h 40 à 2 h, mesure comprise.
+    timeout=300 * 60,
 )
 def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> dict[str, Any]:
     """Couches 1 à 3, puis évaluation sur le jeu de test gelé. Écrit le paquet dans le volume."""
@@ -889,7 +908,7 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
     from veritas.engine.torch_encoder import TorchEncoder
     from veritas.settings import thresholds_config
 
-    from train.encoder import fine_tune
+    from train.encoder import encoder_settings, fine_tune
     from train.layers import build_manifest, fit_combination, fit_layer1, layer1_logits
     from train.samples import labelled_passages
 
@@ -899,7 +918,7 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
     _log(f"{reference} : conteneur GPU démarré")
     # Veritas 0.2 et FR 0.3 : lissage des étiquettes, classes équilibrées, combinaison plus
     # régularisée.
-    v2 = run in ("v2", "v3", "v4", "v5")
+    v2 = run in V2_RUNS
     documents = _corpus_documents(run, language)
     split = {
         name: [d for d in documents if d["split"] == name]
@@ -930,6 +949,7 @@ def train(run: str, language: str, use_encoder: bool = True, seed: int = 0) -> d
             language,
             [(" ".join(p), y) for p, y in zip(train_x, train_y, strict=True)],
             f"{out_dir}/encoder",
+            settings=encoder_settings(run, language),
             seed=seed,
             label_smoothing=0.1 if v2 else 0.0,
             balanced=v2,
@@ -998,7 +1018,7 @@ def _evaluate(
         "latency_seconds_per_document_gpu": round(latency, 4),
         "thresholds": {"likely_ai": applied.likely_ai, "likely_human": applied.likely_human},
     }
-    if run not in ("v2", "v3", "v4", "v5"):
+    if run not in V2_RUNS:
         return {"report": report}
 
     # Robustesse : jeu gelé detection-v2 (aucun de ses textes ni de ses sources n'est dans le
@@ -1027,7 +1047,7 @@ def _evaluate(
         "records": records,
     }
     out: dict[str, Any] = {"report": report, "robustness": robustness}
-    if run in ("v3", "v4", "v5"):
+    if run in FORMAL_RUNS:
         from train.corpus_v3 import check_gates as check_gates_v3
 
         formal_records = score_set(FORMAL)
@@ -1164,23 +1184,17 @@ def main(
     # Corpus des langues en parallèle (CPU, lots Claude simultanés) ; entraînement une langue
     # après l'autre : jamais plus d'un GPU à la fois (garde-fou de coût). v2 : génération par
     # lots sur 8 GPU L4 au plus, puis les deux langues entraînées en parallèle (ADR-0011).
-    if run in ("v3", "v4", "v5") and langs != ["fr"]:
+    if run in FORMAL_RUNS and langs != ["fr"]:
         raise SystemExit(f"run {run} (ADR-0012) : français seulement, languages doit valoir « fr »")
     if stage in ("corpus", "all"):
         _log(f"corpus : {', '.join(langs)}")
-        if run == "v5":
+        if run == "v6":
+            # FR 0.6 (ADR-0015) : corpus 0.5 recopié tel quel, sans génération ni API.
+            _log(f"corpus 0.5 recopié : {seed_from.remote(run, 'fr', 'v5', CORPUS_V5_FILES)}")
+        elif run == "v5":
             from train.corpus_v2 import BY_LANGUAGE, OPEN_GENERATORS
 
-            names = [
-                "human",
-                "ai",
-                "ai_open",
-                "mixed",
-                "human_formal",
-                "ai_formal",
-                "human_formal_extra",
-                "ai_formal_extra",
-            ]
+            names = CORPUS_V5_FILES[:-2]
             _log(f"corpus 0.4 recopié : {seed_from.remote(run, 'fr', 'v4', names)}")
             # Candidats sans GPU, puis notation par FR 0.4 et sélection : s'il manque des
             # textes, ou si le corpus déposé recoupe les jeux de test, rien n'est généré.
@@ -1242,9 +1256,13 @@ def main(
                 results.append(train.remote(run, language, use_encoder))
         for language, result in zip(langs, results, strict=True):
             _write_results(out_dir, reference_for(language, run), result)
-        # FR 0.5 : seuil propre choisi sur la calibration dans le même run (ADR-0013, ADR-0014).
-        if run == "v5":
+        # FR 0.5 et 0.6 : seuil propre choisi sur la calibration dans le même run (ADR-0013,
+        # ADR-0014, ADR-0015).
+        if run in ("v5", "v6"):
             _run_threshold(out_dir, run, langs, suffix="-seuil")
+        # FR 0.6 : critère d'ouverture d'ADR-0015 appliqué aussi à EN 0.2 (déjà entraîné).
+        if run == "v6":
+            _run_threshold(out_dir, "v2", ["en"], suffix="-seuil")
     if stage == "inspect":
         # Corpus déposé à la main dans le volume (CPU seul, quelques centimes).
         import re
@@ -1262,8 +1280,8 @@ def main(
         return
     if stage == "threshold":
         # Seuil propre au modèle déjà entraîné (ADR-0013) : aucun entraînement, un seul L4.
-        if run not in ("v4", "v5"):
-            raise SystemExit("stage threshold (ADR-0013) : run v4 ou v5 seulement")
+        if run not in ("v2", "v4", "v5", "v6"):
+            raise SystemExit("stage threshold (ADR-0013) : run v2, v4, v5 ou v6 seulement")
         _run_threshold(out_dir, run, langs)
 
 
