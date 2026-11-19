@@ -80,7 +80,7 @@ def reference_for(language: str, run: str) -> str:
     return f"{REFERENCES[language]}-{run}"
 
 
-image = (
+_base_image = (
     modal.Image.debian_slim(python_version="3.12")
     .pip_install(
         "torch==2.8.0",
@@ -104,12 +104,23 @@ image = (
             "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
         }
     )
-    .add_local_python_source("veritas")
-    .add_local_dir(REPO / "ml/corpus/corpus", "/root/corpus")
-    .add_local_dir(REPO / "ml/train/train", "/root/train")
-    .add_local_dir(REPO / "ml/eval/detection", "/root/detection")
-    .add_local_dir(REPO / "services/veritas/config", "/root/config")
 )
+
+
+def _with_sources(base: modal.Image) -> modal.Image:
+    """Code du dépôt, ajouté en dernier (Modal n'accepte plus d'étape de construction après)."""
+    return (
+        base.add_local_python_source("veritas")
+        .add_local_dir(REPO / "ml/corpus/corpus", "/root/corpus")
+        .add_local_dir(REPO / "ml/train/train", "/root/train")
+        .add_local_dir(REPO / "ml/eval/detection", "/root/detection")
+        .add_local_dir(REPO / "services/veritas/config", "/root/config")
+    )
+
+
+image = _with_sources(_base_image)
+# Jeu de vérification (ADR-0016) : 7-Zip pour lire les vidages Stack Exchange.
+verify_image = _with_sources(_base_image.apt_install("p7zip-full"))
 corpus_volume = modal.Volume.from_name("altydetect-veritas-corpus", create_if_missing=True)
 models_volume = modal.Volume.from_name("altydetect-veritas-models", create_if_missing=True)
 # Poids des modèles ouverts (partagé avec le test de robustesse).
@@ -641,7 +652,7 @@ def build_formal(run: str, extra: bool = False) -> dict[str, Any]:
     return summary
 
 
-def _test_reference(base: str) -> tuple[set[str], set[str], set[int]]:
+def _test_reference(base: str, language: str = "fr") -> tuple[set[str], set[str], set[int]]:
     """Empreintes et adresses déjà utilisées (corpus du run et jeux de test), empreintes des
     jeux de test et leurs suites de 8 mots (copies partielles)."""
     from corpus.clean import fingerprint
@@ -651,7 +662,7 @@ def _test_reference(base: str) -> tuple[set[str], set[str], set[int]]:
     used: set[str] = set()
     tests: set[str] = set()
     test_shingles: set[int] = set()
-    files = [*Path(base).glob("*.jsonl"), *Path(CORPUS).glob("detection-*/fr.jsonl")]
+    files = [*Path(base).glob("*.jsonl"), *Path(CORPUS).glob(f"detection-*/{language}.jsonl")]
     for file in files:
         is_testset = file.parent.name.startswith("detection-")
         for d in _read(str(file)):
@@ -1158,6 +1169,239 @@ def inspect_incoming(name: str) -> dict[str, Any]:
     return report
 
 
+# --- Jeu de vérification verification-en-v1 (ADR-0016) ---
+
+VERIFICATION = "verification-en-v1"
+VERIFICATION_DIR = f"{CORPUS}/{VERIFICATION}"
+# Identification générique auprès d'archive.org et d'arXiv (aucune donnée personnelle).
+USER_AGENT = "AltyDetect-verification/1.0"
+
+
+def _fetch(url: str, attempts: int = 6) -> bytes:
+    """Requête HTTP avec reprise : arXiv répond 503 avec Retry-After quand il faut ralentir."""
+    import urllib.error
+    import urllib.request
+
+    for attempt in range(attempts):
+        request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        try:
+            with urllib.request.urlopen(request, timeout=300) as response:
+                body: bytes = response.read()
+                return body
+        except urllib.error.HTTPError as error:
+            if error.code not in (429, 500, 502, 503) or attempt == attempts - 1:
+                raise
+            wait = int(error.headers.get("Retry-After") or 10)
+        except (urllib.error.URLError, TimeoutError):
+            if attempt == attempts - 1:
+                raise
+            wait = 10 * (attempt + 1)
+        _log(f"nouvel essai dans {min(wait, 120)} s : {url[:80]}")
+        time.sleep(min(wait, 120))
+    raise RuntimeError("inaccessible")
+
+
+def _stack_exchange(site: str, inventory: Counter[str]) -> list[dict[str, Any]]:
+    """Messages retenus d'un site, lus en flux dans Posts.xml du vidage (rien n'est gardé
+    sur le disque du conteneur après la lecture)."""
+    import shutil
+    import subprocess
+    import urllib.request
+
+    from train.verification import STACK_EXCHANGE_DUMP, iter_posts, stack_exchange_document
+
+    archive = f"/tmp/{site}.7z"
+    request = urllib.request.Request(
+        STACK_EXCHANGE_DUMP.format(site=site), headers={"User-Agent": USER_AGENT}
+    )
+    with urllib.request.urlopen(request, timeout=600) as response, open(archive, "wb") as f:
+        shutil.copyfileobj(response, f, length=1 << 20)
+    _log(f"Stack Exchange {site} : {os.path.getsize(archive) / 1e6:.0f} Mo téléchargés")
+    process = subprocess.Popen(
+        ["7z", "e", "-so", archive, "Posts.xml"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
+    )
+    assert process.stdout is not None
+    documents = []
+    for row in iter_posts(process.stdout):
+        document = stack_exchange_document(row, site, inventory)
+        if document is not None:
+            documents.append(document)
+    if process.wait() != 0:
+        raise RuntimeError(f"Stack Exchange {site} : archive illisible")
+    os.remove(archive)
+    _log(f"Stack Exchange {site} : {len(documents)} messages utilisables")
+    return documents
+
+
+def _arxiv(inventory: Counter[str], needed: int) -> list[dict[str, Any]]:
+    """Résumés arXiv sous licence ouverte, par l'interface OAI-PMH (une page toutes les 3 s)."""
+    import urllib.parse
+
+    from train.verification import ARXIV_OAI, ARXIV_WINDOW, arxiv_document, arxiv_page
+
+    start, end = ARXIV_WINDOW
+    url: str | None = f"{ARXIV_OAI}?verb=ListRecords&metadataPrefix=arXiv&from={start}&until={end}"
+    documents: list[dict[str, Any]] = []
+    pages = 0
+    while url and pages < 40 and len(documents) < needed:
+        records, token = arxiv_page(_fetch(url))
+        pages += 1
+        documents += [d for r in records if (d := arxiv_document(r, inventory)) is not None]
+        inventory["arxiv_records"] += len(records)
+        url = (
+            f"{ARXIV_OAI}?verb=ListRecords&resumptionToken={urllib.parse.quote(token)}"
+            if token
+            else None
+        )
+        time.sleep(3)
+    _log(f"arXiv : {len(documents)} résumés utilisables ({pages} pages)")
+    return documents
+
+
+@app.function(
+    image=verify_image, volumes={CORPUS: corpus_volume}, timeout=90 * 60, cpu=2, memory=8192
+)
+def verify_collect() -> dict[str, Any]:
+    """Textes humains publics du jeu de vérification (CPU seul) : Stack Exchange et arXiv,
+    hors de tout texte du corpus d'EN 0.2 et des jeux de test anglais."""
+    from train.verification import (
+        FORUM_SITES,
+        NON_NATIVE_SITE,
+        QUOTAS,
+        exclude_known,
+        manifest_entry,
+        select,
+        select_forum,
+    )
+
+    path = f"{VERIFICATION_DIR}/public.jsonl"
+    inventory: Counter[str] = Counter()
+    if not os.path.exists(path):
+        used, tests, test_shingles = _test_reference(f"{CORPUS}/v2/en", "en")
+        _log(f"en : référence {len(used)} empreintes et adresses, {len(tests)} textes de test")
+        candidates: list[dict[str, Any]] = []
+        for site in (NON_NATIVE_SITE, *FORUM_SITES):
+            candidates += _stack_exchange(site, inventory)
+        candidates += _arxiv(inventory, needed=4 * QUOTAS["human_abstract"])
+        fresh = exclude_known(candidates, used, tests, test_shingles, inventory)
+
+        def of(category: str) -> list[dict[str, Any]]:
+            return [d for d in fresh if d["category"] == category]
+
+        public = (
+            select(of("human_non_native"), QUOTAS["human_non_native"])
+            + select_forum(of("human_forum"))
+            + select(of("human_abstract"), QUOTAS["human_abstract"])
+        )
+        counts = Counter(d["category"] for d in public)
+        short = {c: counts[c] for c, quota in QUOTAS.items() if counts[c] < quota}
+        if short:
+            raise RuntimeError(
+                f"{VERIFICATION} : sources insuffisantes {short} ; {dict(inventory)}"
+            )
+        _write(path, public)
+        corpus_volume.commit()
+    public = _read(path)
+    summary = {
+        "inventory": dict(inventory),
+        "counts": dict(Counter(d["category"] for d in public)),
+        "manifest": [manifest_entry(d) for d in public],
+    }
+    _log(f"{VERIFICATION} : textes publics {summary['counts']} {summary['inventory']}")
+    return summary
+
+
+def _deposit_files() -> list[Path]:
+    return sorted(Path(INCOMING, VERIFICATION).glob("*.jsonl"))
+
+
+@app.function(volumes={CORPUS: corpus_volume}, timeout=30 * 60, cpu=2, memory=8192)
+def verify_prepare() -> dict[str, Any]:
+    """Textes publics et dépôt de l'équipe réunis (CPU seul). Arrêt avant toute dépense GPU
+    s'il manque des textes ou si la mesure a déjà eu lieu (une seule mesure, ADR-0016)."""
+    from train.verification import check_sizes, exclude_known, parse_deposit
+
+    if os.path.exists(f"{VERIFICATION_DIR}/measured.json"):
+        raise RuntimeError(f"{VERIFICATION} : déjà mesuré, aucune nouvelle mesure (ADR-0016)")
+    public = _read(f"{VERIFICATION_DIR}/public.jsonl")
+    if not public:
+        raise RuntimeError(f"{VERIFICATION} : lancer d'abord l'étape verify-collect")
+    inventory: Counter[str] = Counter()
+    files = _deposit_files()
+    deposit = [
+        d
+        for file in files
+        for d, _ in parse_deposit(file.read_bytes().splitlines(), inventory)
+        if d is not None
+    ]
+    used, tests, test_shingles = _test_reference(f"{CORPUS}/v2/en", "en")
+    used |= {d["sha256"] for d in public}
+    deposit = exclude_known(deposit, used, tests, test_shingles, inventory)
+    documents = public + deposit
+    counts = dict(Counter(d["category"] for d in documents))
+    problems = check_sizes(counts)
+    summary = {"files": len(files), "counts": counts, "inventory": dict(inventory)}
+    _log(f"{VERIFICATION} : {summary}")
+    if problems:
+        raise RuntimeError(f"{VERIFICATION} : arrêt avant notation : {problems}")
+    _write(f"{VERIFICATION_DIR}/scoring.jsonl", documents)
+    corpus_volume.commit()
+    return summary
+
+
+@app.function(volumes={CORPUS: corpus_volume, MODELS: models_volume}, gpu="L4", timeout=45 * 60)
+def verify_score() -> list[dict[str, Any]]:
+    """Notation unique par VRT-DET-EN-0.2, à son seuil propre (thresholds.yaml). Rien d'autre
+    que l'identifiant, la catégorie, la probabilité et la bande ne sort du conteneur."""
+    from veritas.scoring import score
+    from veritas.settings import thresholds_config
+
+    from train.verification import LANGUAGE, REFERENCE
+
+    _log(f"{REFERENCE} : conteneur GPU démarré ({VERIFICATION})")
+    corpus_volume.reload()
+    model = _load_model(REFERENCE)
+    thresholds = thresholds_config().get()
+    records = []
+    for d in _read(f"{VERIFICATION_DIR}/scoring.jsonl"):
+        scored = score(model.detect(d["text"], LANGUAGE), d["text"], LANGUAGE, thresholds)
+        record = {"id": d["id"], "category": d["category"], "label": d["label"]}
+        if d["category"] != "human_volunteer":
+            record["source"] = d.get("source")
+        record["probability"] = round(scored.probability, 4)
+        record["band"] = scored.output.verdict_band.value
+        records.append(record)
+    _log(f"{REFERENCE} : {len(records)} textes notés")
+    return records
+
+
+@app.function(volumes={CORPUS: corpus_volume}, timeout=10 * 60)
+def verify_finish(report: dict[str, Any]) -> dict[str, Any]:
+    """Après la mesure : jeu gelé sans les volontaires, textes des volontaires effacés du
+    dépôt (et lignes refusées), marque « mesuré » qui interdit une seconde mesure."""
+    from train.verification import keep_line, manifest_entry, parse_deposit
+
+    documents = _read(f"{VERIFICATION_DIR}/scoring.jsonl")
+    manifest = [manifest_entry(d) for d in documents]
+    _write(
+        f"{VERIFICATION_DIR}/en.jsonl",
+        [d for d in documents if d["category"] != "human_volunteer"],
+    )
+    os.remove(f"{VERIFICATION_DIR}/scoring.jsonl")
+    erased = 0
+    for file in _deposit_files():
+        lines = file.read_bytes().splitlines()
+        parsed = parse_deposit(lines, Counter())
+        kept = [raw for d, raw in parsed if keep_line(d)]
+        erased += len(parsed) - len(kept)
+        file.write_bytes(b"".join(bytes(raw) + b"\n" for raw in kept))
+    with open(f"{VERIFICATION_DIR}/measured.json", "w", encoding="utf-8") as f:
+        json.dump({"measured_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), **report}, f)
+    corpus_volume.commit()
+    _log(f"{VERIFICATION} : jeu gelé écrit, {erased} lignes effacées du dépôt")
+    return {"manifest": manifest, "erased_lines": erased}
+
+
 @app.local_entrypoint()
 def main(
     stage: str = "all",
@@ -1263,6 +1507,13 @@ def main(
         # FR 0.6 : critère d'ouverture d'ADR-0015 appliqué aussi à EN 0.2 (déjà entraîné).
         if run == "v6":
             _run_threshold(out_dir, "v2", ["en"], suffix="-seuil")
+    if stage in ("verify-collect", "verify"):
+        # Vérification de VRT-DET-EN-0.2 sur des textes réels (ADR-0016) : anglais, modèle du
+        # run v2, sans entraînement.
+        if run != "v2" or langs != ["en"]:
+            raise SystemExit(f"stage {stage} (ADR-0016) : run v2 et languages « en » seulement")
+        _verify(stage, out_dir)
+        return
     if stage == "inspect":
         # Corpus déposé à la main dans le volume (CPU seul, quelques centimes).
         import re
@@ -1283,6 +1534,39 @@ def main(
         if run not in ("v2", "v4", "v5", "v6"):
             raise SystemExit("stage threshold (ADR-0013) : run v2, v4, v5 ou v6 seulement")
         _run_threshold(out_dir, run, langs)
+
+
+def _verify(stage: str, out_dir: Path) -> None:
+    """verify-collect : textes publics (CPU). verify : dépôt vérifié (CPU), notation unique
+    (un L4), portes d'ADR-0016, puis effacement des textes des volontaires."""
+    from detection.robustness import category_report
+
+    from train.verification import REFERENCE, check_gates
+
+    def write(name: str, value: Any) -> None:
+        (out_dir / name).write_text(
+            json.dumps(value, ensure_ascii=False, indent=1) + "\n", encoding="utf-8"
+        )
+
+    if stage == "verify-collect":
+        summary = verify_collect.remote()
+        write(f"manifest-{VERIFICATION}-public.json", summary)
+        return
+    prepared = verify_prepare.remote()
+    records = verify_score.remote()
+    gates = check_gates(records)
+    report = {
+        "reference": REFERENCE,
+        "testset": VERIFICATION,
+        "prepared": prepared,
+        "gates": gates,
+        "categories": category_report(records),
+        "records": records,
+    }
+    write(f"verification-{VERIFICATION}-{REFERENCE}.json", report)
+    finished = verify_finish.remote({"passed": gates["passed"], "checks": gates["checks"]})
+    write(f"manifest-{VERIFICATION}.json", finished)
+    _log(f"{REFERENCE} {VERIFICATION} portes : " + json.dumps(gates, ensure_ascii=False))
 
 
 def _run_threshold(out_dir: Path, run: str, langs: list[str], suffix: str = "") -> None:
