@@ -1,6 +1,6 @@
 # ADR-0016 — Ouverture de l'anglais : vérification de VRT-DET-EN-0.2 sur des textes réels
 
-- **Statut** : proposé
+- **Statut** : accepté (19/11/2026). Portes, tailles et sources validées telles quelles. Mise en œuvre : `ml/eval/testset/verification-en-v1/README.md`.
 - **Date** : 2026-11-19
 - **Décideurs** : équipe AltyDetect
 - **Suite de** : ADR-0015 (Veritas seul moteur, critère d'ouverture d'une langue)
@@ -36,16 +36,16 @@ Un jeu nouveau, jamais utilisé, mesuré **une seule fois**. Il ne sert ni à l'
 
 **Textes humains (au moins 600)** : sources jamais utilisées, datées d'avant le 30/11/2022 (sortie de ChatGPT), sous une licence qui permet un usage commercial.
 
-| Catégorie                   | Source proposée                                                          | Textes | Licence                          |
-| --------------------------- | ------------------------------------------------------------------------ | ------ | -------------------------------- |
-| Anglais non natif, forum    | English Language Learners Stack Exchange (questions et réponses)         | 150    | CC BY-SA (vidage Stack Exchange) |
-| Forum, questions techniques | Autres sites Stack Exchange, hors code (Academia, Workplace, Writing…)   | 150    | CC BY-SA                         |
-| Résumés scientifiques       | Résumés arXiv, auteurs du monde entier, beaucoup de non-natifs           | 200    | CC0 (métadonnées arXiv)          |
-| Textes de volontaires       | Textes anglais écrits avant 2022 par des personnes qui y consentent (§2) | ≥ 100  | consentement écrit               |
+| Catégorie                   | Source proposée                                                          | Textes | Licence                                            |
+| --------------------------- | ------------------------------------------------------------------------ | ------ | -------------------------------------------------- |
+| Anglais non natif, forum    | English Language Learners Stack Exchange (questions et réponses)         | 150    | CC BY-SA (vidage Stack Exchange)                   |
+| Forum, questions techniques | Autres sites Stack Exchange, hors code (Academia, Workplace, Writing…)   | 150    | CC BY-SA                                           |
+| Résumés scientifiques       | Résumés arXiv, auteurs du monde entier, beaucoup de non-natifs           | 200    | CC BY, CC BY-SA ou CC0 (licence de chaque article) |
+| Textes de volontaires       | Textes anglais écrits avant 2022 par des personnes qui y consentent (§2) | ≥ 100  | consentement écrit                                 |
 
 - Longueur : au moins 150 mots (en dessous, aucun score n'est rendu) ; blocs de code, citations et listes retirés.
 - Exclusions : tout texte (empreinte), adresse ou suite de 8 mots partagée à plus de 20 % avec le corpus d'EN 0.2, `detection-v1` ou `detection-v2`.
-- La licence de chaque source est vérifiée dans la PR de code, avant tout téléchargement. Une source qui ne convient pas est remplacée par une source de même genre, signalée dans la PR.
+- La licence de chaque source est vérifiée dans la PR de code, avant tout téléchargement. arXiv : la licence est lue article par article, et seuls CC BY, CC BY-SA et CC0 sont gardés (la licence des métadonnées n'a pas pu être vérifiée depuis l'environnement de développement). Une source qui ne convient pas est remplacée par une source de même genre, signalée dans la PR.
 
 **Textes générés (au moins 100)** : déposés par l'équipe, produits à la main dans les interfaces web des assistants commerciaux (ChatGPT, Gemini, Copilot), sur des consignes de même genre que les textes humains (essai, lettre, courriel, réponse à une question). Aucun appel d'API nouveau, aucune dépendance nouvelle.
 
@@ -124,13 +124,13 @@ Le coût réel de Modal est relevé au bout d'un mois et comparé à l'estimatio
 
 **Risques**
 
-- **Peu de volontaires** : avec moins de 100 textes, la catégorie est mesurée et publiée, mais la porte « chaque catégorie ≤ 2 % » ne s'y applique pas (trop peu de textes pour conclure). Les autres catégories suffisent alors à décider.
+- **Peu de volontaires** : sans 600 textes humains au total, le run s'arrête avant toute dépense GPU. Il faut alors compléter le dépôt, ou modifier cet ADR. Une catégorie de moins de 100 textes reste mesurée, sans porte propre (trop peu de textes pour conclure).
 - **Textes de volontaires mal datés** : un texte retouché avec un outil de génération serait compté comme humain. Le consentement le fait déclarer ; c'est une limite, mentionnée dans le rapport.
 - **Biais de sélection** : Stack Exchange et arXiv ne représentent pas les essais d'étudiants ni les lettres de motivation. Les volontaires comblent une partie de l'écart.
 
 **À revoir** : après un mois d'ouverture (coût réel, latence, répartition des bandes), puis à chaque nouveau modèle anglais.
 
-## Valeurs à valider avant acceptation
+## Valeurs validées (19/11/2026)
 
 - Tailles : 600 textes humains au moins, dont 100 de volontaires ; 100 textes d'assistants commerciaux.
 - Portes : faux positifs ≤ 1 % au total et ≤ 2 % par catégorie ; rappel ≥ 60 % sur les assistants commerciaux.
