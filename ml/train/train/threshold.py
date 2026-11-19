@@ -1,8 +1,9 @@
 """Seuil « Probablement IA » propre à un modèle Veritas (ADR-0013).
 
 Choisi sur la partition de calibration du corpus, par une règle fixée à l'avance : le plus
-petit seuil de la grille (0,70 à 0,90, pas de 0,01) qui donne au plus 0,5 % de faux positifs sur
-les textes humains de calibration. Aucun seuil ne convient : `chosen` vaut None et rien ne change.
+petit seuil de la grille (0,70 à 0,95 depuis ADR-0017, pas de 0,01) qui donne au plus 0,5 %
+de faux positifs sur les textes humains de calibration. Aucun seuil ne convient : `chosen` vaut
+None et rien ne change.
 """
 
 from collections import Counter

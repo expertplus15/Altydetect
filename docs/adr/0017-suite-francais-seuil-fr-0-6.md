@@ -1,6 +1,6 @@
 # ADR-0017 — Suite du français : seuil propre de FR 0.6 sur une grille élargie, mesuré sur un jeu neuf
 
-- **Statut** : proposé
+- **Statut** : accepté (19/11/2026). Valeurs validées telles quelles. Mise en œuvre : `ml/eval/testset/detection-v4/README.md`.
 - **Date** : 2026-11-19
 - **Décideurs** : équipe AltyDetect
 - **Suite de** : ADR-0015 §4 (FR 0.6 ne remplit pas le critère d'ouverture), ADR-0013 (règle du seuil propre)
@@ -93,13 +93,13 @@ Une PR par intention :
 
 **Coût** (tarifs Modal du 10/11/2026, L4 à 0,80 $/h ; débits des runs précédents)
 
-| Étape                                                   | Calcul               | Coût                       |
-| ------------------------------------------------------- | -------------------- | -------------------------- |
-| Textes humains (mC4, Wikipédia, universitaires, arrêts) | CPU                  | ≈ 0,10 à 0,20 $            |
-| 300 textes de Claude (200 et 100 pour les mixtes)       | API Claude, par lots | ≈ 1 à 2 $                  |
-| 500 textes de modèles ouverts et 100 reformulations     | ≈ 1 h à 1 h 30 de L4 | ≈ 0,80 à 1,20 $            |
-| Seuil propre (calibration) et mesure sur detection-v4   | ≈ 20 min de L4       | ≈ 0,30 $                   |
-| **Total**                                               |                      | **≈ 3 à 4 $, plafond 6 $** |
+| Étape                                                                 | Calcul               | Coût                          |
+| --------------------------------------------------------------------- | -------------------- | ----------------------------- |
+| Textes humains (mC4, Wikipédia, universitaires, arrêts)               | CPU                  | ≈ 0,10 à 0,20 $               |
+| 360 demandes à Claude (200 et 100 pour les mixtes, + 20 % de marge)   | API Claude, par lots | ≈ 1,20 à 2,40 $               |
+| 480 textes de modèles ouverts et 120 reformulations (+ 20 % de marge) | ≈ 1 h à 1 h 30 de L4 | ≈ 0,80 à 1,20 $               |
+| Seuil propre (calibration) et mesure sur detection-v4                 | ≈ 20 min de L4       | ≈ 0,30 $                      |
+| **Total**                                                             |                      | **≈ 3 à 4,50 $, plafond 6 $** |
 
 **Ce qui devient plus simple** : si la piste A réussit, le français peut s'ouvrir sans nouvel entraînement, avec le modèle déjà mesuré.
 
@@ -115,7 +115,7 @@ Une PR par intention :
 
 **À revoir** : après la mesure sur `detection-v4`, puis à chaque nouveau modèle français.
 
-## Valeurs à valider avant acceptation
+## Valeurs validées (19/11/2026)
 
 - Piste A d'abord, piste B ensuite si A échoue.
 - Borne haute de la grille d'ADR-0013 : 0,95.
