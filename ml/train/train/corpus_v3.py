@@ -435,8 +435,9 @@ def check_gates(v1: dict[str, Any], v2: dict[str, Any], v3: dict[str, Any]) -> d
     return {"gates": GATES, "measured": measured, "checks": checks, "passed": all(checks.values())}
 
 
-def sample_line(line: bytes, every: int = JURIS_SAMPLE) -> bool:
-    """Tirage stable d'une ligne sur `every` (même sélection d'un run à l'autre)."""
+def sample_line(line: bytes, every: int = JURIS_SAMPLE, residue: int = 0) -> bool:
+    """Tirage stable d'une ligne sur `every` (même sélection d'un run à l'autre). `residue`
+    choisit une autre tranche, sans recouvrement avec la tranche 0 (detection-v4)."""
     import zlib
 
-    return zlib.crc32(line) % every == 0
+    return zlib.crc32(line) % every == residue

@@ -89,13 +89,13 @@ def _thresholds(models: str) -> dict[str, Any]:
 
 
 def test_model_thresholds_are_parsed_and_bounded() -> None:
-    """ADR-0013 : seuil propre à un modèle, entre 0,70 et 0,90."""
+    """ADR-0013, ADR-0017 : seuil propre à un modèle, entre 0,70 et 0,95."""
     assert Thresholds.parse(_thresholds("")).model_likely_ai == {}
     assert Thresholds.parse(_thresholds("models: {}\n")).model_likely_ai == {}
     parsed = Thresholds.parse(_thresholds("models: {VRT-DET-FR-0.4: {likely_ai: 0.84}}\n"))
     assert parsed.model_likely_ai == {"VRT-DET-FR-0.4": 0.84}
     assert parsed.for_model("VRT-DET-FR-0.4").likely_ai == 0.84
     assert parsed.for_model("VRT-DET-FR-0.4").likely_human == 0.30
-    for value in (0.69, 0.91):
+    for value in (0.69, 0.96):
         with pytest.raises(ValueError, match=r"VRT-DET-FR-0\.4"):
             Thresholds.parse(_thresholds(f"models: {{VRT-DET-FR-0.4: {{likely_ai: {value}}}}}\n"))

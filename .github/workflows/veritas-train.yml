@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "Étape : all, corpus, train, threshold (seuil propre, ADR-0013), inspect (corpus déposé), deploy (inférence), benchmark (fournisseur), robustness, verify-collect et verify (vérification EN 0.2, ADR-0016 : run v2, languages en)"
+        description: "Étape : all, corpus, train, threshold (seuil propre, ADR-0013), inspect (corpus déposé), deploy (inférence), benchmark (fournisseur), robustness, verify-collect et verify (vérification EN 0.2, ADR-0016 : run v2, languages en), testset-v4 et measure-v4 (jeu detection-v4 et mesure de FR 0.6, ADR-0017 : run v6, languages fr)"
         type: choice
         options:
           [
@@ -27,6 +27,8 @@ on:
             robustness,
             verify-collect,
             verify,
+            testset-v4,
+            measure-v4,
           ]
         default: choisir
       run:
@@ -129,8 +131,12 @@ jobs:
           if [ -n "$bench_selection" ]; then
             [[ "$bench_selection" =~ ^ml/eval/requests/[a-z0-9-]+\.json$ && -f "$bench_selection" ]] || { echo "bench_selection invalide"; exit 1; }
           fi
-          [[ "$stage" =~ ^(all|corpus|train|threshold|inspect|deploy|benchmark|robustness|verify-collect|verify)$ ]] || { echo "stage invalide"; exit 1; }
+          [[ "$stage" =~ ^(all|corpus|train|threshold|inspect|deploy|benchmark|robustness|verify-collect|verify|testset-v4|measure-v4)$ ]] || { echo "stage invalide"; exit 1; }
           # Vérification (ADR-0016) : EN 0.2 seulement, modèle du run v2.
+          # detection-v4 (ADR-0017) : FR 0.6 seulement, modèle du run v6.
+          if [[ "$stage" == *-v4 ]]; then
+            [ "$run" = v6 ] && [ "$languages" = fr ] || { echo "::error::Étape $stage : run v6 et languages fr."; exit 1; }
+          fi
           if [[ "$stage" == verify* ]]; then
             [ "$run" = v2 ] && [ "$languages" = en ] || { echo "::error::Étape $stage : run v2 et languages en."; exit 1; }
           fi
@@ -168,7 +174,7 @@ jobs:
           missing=()
           [ "$HAS_MODAL_ID" = true ] || missing+=(MODAL_TOKEN_ID)
           [ "$HAS_MODAL_SECRET" = true ] || missing+=(MODAL_TOKEN_SECRET)
-          if [ "$STAGE" = all ] || [ "$STAGE" = corpus ]; then
+          if [ "$STAGE" = all ] || [ "$STAGE" = corpus ] || [ "$STAGE" = testset-v4 ]; then
             [ "$HAS_ANTHROPIC" = true ] || missing+=(ANTHROPIC_API_KEY)
           fi
           if [ "$STAGE" = benchmark ]; then
@@ -198,7 +204,7 @@ jobs:
           bad=()
           [[ "$id" == ak-* ]] || bad+=("MODAL_TOKEN_ID (doit commencer par ak-)")
           [[ "$secret" == as-* ]] || bad+=("MODAL_TOKEN_SECRET (doit commencer par as-)")
-          if [ "$STAGE" = all ] || [ "$STAGE" = corpus ]; then
+          if [ "$STAGE" = all ] || [ "$STAGE" = corpus ] || [ "$STAGE" = testset-v4 ]; then
             # Vérification auprès de l'API (gratuite, aucun texte généré) plutôt que par préfixe :
             # plusieurs formats de clé existent.
             code=$(curl -s -o /dev/null -w '%{http_code}' https://api.anthropic.com/v1/models \
@@ -240,7 +246,7 @@ jobs:
       - run: uv sync --all-packages --frozen
 
       - name: Secret Modal de l'API Claude
-        if: steps.p.outputs.stage == 'all' || steps.p.outputs.stage == 'corpus'
+        if: steps.p.outputs.stage == 'all' || steps.p.outputs.stage == 'corpus' || steps.p.outputs.stage == 'testset-v4'
         run: uv run --no-sync modal secret create altydetect-anthropic ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY_CLEAN" --force
 
       - name: Secret Modal de l'API Pangram
@@ -323,11 +329,11 @@ jobs:
       # Sorties de v1, v2 et v3 (manifestes, paquets, rapports : aucun texte) poussées sur une
       # branche `ml/sorties-<v1|v2|v3>-<run>`, d'où une PR les range (jeu de test gelé, fiches des modèles).
       # L'artefact reste disponible 30 jours.
-      - name: Sorties sur une branche (v1 à v6, benchmark, robustness, inspect, verify)
-        if: always() && steps.p.outputs.stage != 'deploy' && (steps.p.outputs.run == 'v1' || steps.p.outputs.run == 'v2' || steps.p.outputs.run == 'v3' || steps.p.outputs.run == 'v4' || steps.p.outputs.run == 'v5' || steps.p.outputs.run == 'v6' || steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness' || steps.p.outputs.stage == 'inspect' || steps.p.outputs.stage == 'verify-collect' || steps.p.outputs.stage == 'verify')
+      - name: Sorties sur une branche (v1 à v6, benchmark, robustness, inspect, verify, detection-v4)
+        if: always() && steps.p.outputs.stage != 'deploy' && (steps.p.outputs.run == 'v1' || steps.p.outputs.run == 'v2' || steps.p.outputs.run == 'v3' || steps.p.outputs.run == 'v4' || steps.p.outputs.run == 'v5' || steps.p.outputs.run == 'v6' || steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness' || steps.p.outputs.stage == 'inspect' || steps.p.outputs.stage == 'verify-collect' || steps.p.outputs.stage == 'verify' || steps.p.outputs.stage == 'testset-v4' || steps.p.outputs.stage == 'measure-v4')
         env:
           RUN_ID: ${{ github.run_id }}
-          KIND: ${{ (steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness' || steps.p.outputs.stage == 'threshold' || steps.p.outputs.stage == 'inspect' || steps.p.outputs.stage == 'verify-collect' || steps.p.outputs.stage == 'verify') && steps.p.outputs.stage || steps.p.outputs.run }}
+          KIND: ${{ (steps.p.outputs.stage == 'benchmark' || steps.p.outputs.stage == 'robustness' || steps.p.outputs.stage == 'threshold' || steps.p.outputs.stage == 'inspect' || steps.p.outputs.stage == 'verify-collect' || steps.p.outputs.stage == 'verify' || steps.p.outputs.stage == 'testset-v4' || steps.p.outputs.stage == 'measure-v4') && steps.p.outputs.stage || steps.p.outputs.run }}
         run: |
           if [ -z "$(ls -A ml/train/out 2>/dev/null)" ]; then echo "Aucune sortie."; exit 0; fi
           dest="ml/train/runs/$RUN_ID"

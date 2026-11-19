@@ -471,7 +471,7 @@ def _academic_candidates(
     return out
 
 
-def _legal_candidates(inventory: Counter[str]) -> list[dict[str, Any]]:
+def _legal_candidates(inventory: Counter[str], residue: int = 0) -> list[dict[str, Any]]:
     """Passages de motifs d'arrêts de la Cour de cassation, de 2005 à la date limite, lus au
     fil du fichier (une ligne sur JURIS_SAMPLE, tirage stable)."""
     import gzip
@@ -493,7 +493,7 @@ def _legal_candidates(inventory: Counter[str]) -> list[dict[str, Any]]:
         with gzip.open(response) as lines:
             for line in lines:
                 inventory["legal_decisions"] += 1
-                if not sample_line(line):
+                if not sample_line(line, residue=residue):
                     continue
                 row = json.loads(line)
                 if row.get("type") != "Arrêt":
@@ -1073,33 +1073,12 @@ def _evaluate(
     return out
 
 
-@app.function(
-    volumes={CORPUS: corpus_volume, MODELS: models_volume},
-    gpu="L4",
-    # ≈ 6 000 documents notés, sans entraînement : 15 à 20 min (ADR-0013).
-    timeout=60 * 60,
-)
-def threshold(run: str, language: str) -> dict[str, Any]:
-    """Seuil « Probablement IA » propre au modèle déjà entraîné (ADR-0013) : choisi sur la
-    partition de calibration, puis mesuré une seule fois sur les jeux de test gelés."""
-    from dataclasses import replace
-
-    from veritas.engine.model import VeritasModel
-    from veritas.engine.torch_encoder import TorchEncoder
+def _calibration_records(
+    reference: str, model: Any, documents: list[dict[str, Any]], language: str, base: Any
+) -> list[dict[str, Any]]:
+    """Probabilité de chaque document de la partition de calibration (seuils généraux)."""
     from veritas.scoring import score
-    from veritas.settings import thresholds_config
 
-    from train.threshold import choose_threshold
-
-    reference = reference_for(language, run)
-    _log(f"{reference} : conteneur GPU démarré (seuil)")
-    model_dir = f"{MODELS}/{reference}"
-    with open(f"{model_dir}/manifest.json", encoding="utf-8") as f:
-        manifest = json.load(f)
-    encoder = TorchEncoder(f"{model_dir}/encoder") if manifest.get("layer2") else None
-    model = VeritasModel.from_manifest(manifest, encoder)
-    base = thresholds_config().get()
-    documents = _corpus_documents(run, language)
     calibration = [d for d in documents if d["split"] == "calibration"]
     _log(f"{reference} : {len(calibration)} documents de calibration")
     records = []
@@ -1113,6 +1092,36 @@ def threshold(run: str, language: str) -> dict[str, Any]:
                 "probability": round(scored.probability, 4),
             }
         )
+    return records
+
+
+@app.function(
+    volumes={CORPUS: corpus_volume, MODELS: models_volume},
+    gpu="L4",
+    # ≈ 6 000 documents notés, sans entraînement : 15 à 20 min (ADR-0013).
+    timeout=60 * 60,
+)
+def threshold(run: str, language: str) -> dict[str, Any]:
+    """Seuil « Probablement IA » propre au modèle déjà entraîné (ADR-0013) : choisi sur la
+    partition de calibration, puis mesuré une seule fois sur les jeux de test gelés."""
+    from dataclasses import replace
+
+    from veritas.engine.model import VeritasModel
+    from veritas.engine.torch_encoder import TorchEncoder
+    from veritas.settings import thresholds_config
+
+    from train.threshold import choose_threshold
+
+    reference = reference_for(language, run)
+    _log(f"{reference} : conteneur GPU démarré (seuil)")
+    model_dir = f"{MODELS}/{reference}"
+    with open(f"{model_dir}/manifest.json", encoding="utf-8") as f:
+        manifest = json.load(f)
+    encoder = TorchEncoder(f"{model_dir}/encoder") if manifest.get("layer2") else None
+    model = VeritasModel.from_manifest(manifest, encoder)
+    base = thresholds_config().get()
+    documents = _corpus_documents(run, language)
+    records = _calibration_records(reference, model, documents, language, base)
     choice = {"reference": reference, **choose_threshold(records), "records": records}
     _log(f"{reference} : seuil choisi sur la calibration : {choice['chosen']}")
     if choice["chosen"] is None:
@@ -1167,6 +1176,410 @@ def inspect_incoming(name: str) -> dict[str, Any]:
     report["file"] = {"name": name, "bytes": path.stat().st_size}
     report["reference_sets"] = {k: len(v) for k, v in sorted(known.items())}
     return report
+
+
+# --- Jeu de test gelé detection-v4 et mesure unique de FR 0.6 (ADR-0017) ---
+
+V4_DIR = f"{CORPUS}/detection-v4"
+V4_BUILD = f"{V4_DIR}/build"
+
+
+def _fresh(
+    documents: list[dict[str, Any]],
+    reference: tuple[set[str], set[str], set[int]],
+    inventory: Counter[str],
+    name: str,
+) -> list[dict[str, Any]]:
+    """Retire doublons, textes et adresses déjà vus, et copies partielles d'un jeu de test."""
+    from train.incoming import PARTIAL_COPY, SHINGLE_STRIDE, shingles
+
+    used, tests, test_shingles = reference
+    kept, seen = [], set()
+    for d in documents:
+        if d["sha256"] in seen:
+            continue
+        seen.add(d["sha256"])
+        if d["sha256"] in used or (d.get("url") and d["url"] in used):
+            inventory[f"{name}_already_used"] += 1
+            continue
+        sample = shingles(d["text"], SHINGLE_STRIDE)
+        if d["sha256"] in tests or (
+            sample and len(sample & test_shingles) / len(sample) >= PARTIAL_COPY
+        ):
+            inventory[f"{name}_test_overlap"] += 1
+            continue
+        kept.append(d)
+    inventory[f"{name}_fresh"] = len(kept)
+    return kept
+
+
+def _wikipedia_v4(inventory: Counter[str]) -> list[dict[str, Any]]:
+    """Extraits d'articles Wikipédia du 01/03/2022, fragment jamais utilisé."""
+    import tempfile
+    import urllib.request
+
+    import pyarrow.parquet as pq
+    from corpus.clean import fingerprint
+    from detection.robustness import WIKIPEDIA, WIKIPEDIA_LICENCE, wiki_excerpt
+
+    from train.testset_v4 import WIKIPEDIA_SHARD
+
+    out = []
+    with tempfile.NamedTemporaryFile(suffix=".parquet") as tmp:
+        urllib.request.urlretrieve(f"{WIKIPEDIA}/{WIKIPEDIA_SHARD}", tmp.name)
+        table = pq.read_table(tmp.name, columns=["url", "text"])
+    urls, texts = table.column("url"), table.column("text")
+    rows = list(range(table.num_rows))
+    random.Random("detection-v4-wikipedia").shuffle(rows)
+    for row in rows:
+        if len(out) >= 3000:  # largement assez pour tirer 300 extraits frais
+            break
+        inventory["wikipedia_articles"] += 1
+        excerpt = wiki_excerpt(texts[row].as_py())
+        if excerpt is None:
+            continue
+        digest = fingerprint(excerpt)
+        out.append(
+            {
+                "id": f"w-fr-{digest[:16]}",
+                "sha256": digest,
+                "text": excerpt,
+                "url": urls[row].as_py(),
+                "licence": WIKIPEDIA_LICENCE,
+                "source": f"wikipedia:{WIKIPEDIA_SHARD}",
+            }
+        )
+    _log(f"fr : {len(out)} extraits Wikipédia")
+    return out
+
+
+@app.function(volumes={CORPUS: corpus_volume}, timeout=150 * 60, cpu=2, memory=16384)
+def v4_humans() -> dict[str, Any]:
+    """Textes humains de detection-v4 (CPU seul), hors du corpus 0.5 et des jeux v1 à v3.
+    Arrêt avant toute génération si une catégorie obligatoire manque de textes."""
+    import urllib.request
+
+    from corpus.human import collect, iter_records
+    from corpus.sources import SOURCES
+    from detection.robustness import truncate
+
+    from train.testset_v4 import (
+        FSC_FILES_V4,
+        HUMAN_SIZES,
+        LEGAL_RESIDUE,
+        OPTIONAL,
+        WEB_POOLS,
+        WEB_SHARD,
+        as_category,
+        document,
+        pick,
+        split_web,
+    )
+
+    path = f"{V4_BUILD}/humans.jsonl"
+    inventory: Counter[str] = Counter()
+    if not os.path.exists(path):
+        reference = _test_reference(f"{CORPUS}/v5/fr", "fr")
+        _log(f"fr : référence {len(reference[0])} empreintes et adresses")
+        source = SOURCES["fr"]
+        with urllib.request.urlopen(source.url(WEB_SHARD), timeout=300) as response:
+            pages = collect(iter_records(response), source, WEB_SHARD, 3 * sum(WEB_POOLS.values()))
+        pools = split_web(_fresh(pages, reference, inventory, "web"))
+        wikipedia = _fresh(_wikipedia_v4(inventory), reference, inventory, "wikipedia")
+        academic = _fresh(
+            _academic_candidates(inventory, FSC_FILES_V4), reference, inventory, "academic"
+        )
+        legal = _fresh(_legal_candidates(inventory, LEGAL_RESIDUE), reference, inventory, "legal")
+        humans = [as_category(p, "human_web") for p in pools["human_web"]]
+        humans += [
+            as_category(d, "human_wikipedia")
+            for d in pick(wikipedia, HUMAN_SIZES["human_wikipedia"], "wikipedia")
+        ]
+        humans += [
+            as_category(d, "human_academic")
+            for d in pick(academic, HUMAN_SIZES["human_academic"], "academic")
+        ]
+        humans += [
+            as_category(d, "human_legal") for d in pick(legal, HUMAN_SIZES["human_legal"], "legal")
+        ]
+        shorts = []
+        for page in pools["short_source"]:
+            text = truncate(page["text"])
+            if text is not None:
+                shorts.append(
+                    document(
+                        "human_short",
+                        "human",
+                        text,
+                        url=page["url"],
+                        licence=page["licence"],
+                        source=page["source"],
+                        derived_from=page["id"],
+                    )
+                )
+        humans += shorts[: HUMAN_SIZES["human_short"]]
+        counts = Counter(d["category"] for d in humans)
+        missing = {
+            c: counts[c] for c, n in HUMAN_SIZES.items() if counts[c] < n and c not in OPTIONAL
+        }
+        web_short = {p: len(pools[p]) for p, n in WEB_POOLS.items() if len(pools[p]) < n}
+        if missing or web_short:
+            raise RuntimeError(
+                f"detection-v4 : textes humains insuffisants {missing} {web_short} ; "
+                f"{dict(inventory)}"
+            )
+        os.makedirs(V4_BUILD, exist_ok=True)
+        with open(f"{V4_BUILD}/web_pools.json", "w", encoding="utf-8") as f:
+            json.dump(pools, f, ensure_ascii=False)
+        _write(path, humans)
+        corpus_volume.commit()
+    humans = _read(path)
+    summary = {"inventory": dict(inventory), "humans": dict(Counter(d["category"] for d in humans))}
+    _log(f"detection-v4 : textes humains {summary}")
+    return summary
+
+
+@app.function(
+    volumes={CORPUS: corpus_volume},
+    timeout=24 * 3600,
+    secrets=[modal.Secret.from_name("altydetect-anthropic")],
+)
+def v4_claude(model: str) -> dict[str, Any]:
+    """Textes de Claude (API Message Batches) : sur 240 pages de la catégorie web, et sur les
+    120 débuts des textes mixtes. Reprise possible (identifiant du lot gardé dans le volume)."""
+    import anthropic
+    from corpus.generate import ai_document, batch_request
+
+    from train.testset_v4 import CLAUDE_TOPICS, pick
+
+    path = f"{V4_BUILD}/claude.jsonl"
+    if os.path.exists(path):
+        return {"claude": len(_read(path))}
+    with open(f"{V4_BUILD}/web_pools.json", encoding="utf-8") as f:
+        pools = json.load(f)
+    topics = pick(pools["human_web"], CLAUDE_TOPICS, "claude") + pools["mixed_source"]
+    by_id = {h["id"]: h for h in topics}
+    client = anthropic.Anthropic()
+    state = f"{V4_BUILD}/batch.json"
+    if os.path.exists(state):
+        with open(state, encoding="utf-8") as f:
+            batch_id = json.load(f)["batch_id"]
+    else:
+        batch = client.messages.batches.create(
+            requests=[batch_request(h, model) for h in topics]  # type: ignore[misc]
+        )
+        batch_id = batch.id
+        with open(state, "w", encoding="utf-8") as f:
+            json.dump({"batch_id": batch_id, "requests": len(topics)}, f)
+        corpus_volume.commit()
+        _log(f"detection-v4 : lot Claude {batch_id} soumis ({len(topics)} demandes)")
+    while True:
+        batch = client.messages.batches.retrieve(batch_id)
+        counts = batch.request_counts
+        _log(
+            f"detection-v4 : lot {batch.processing_status}, {counts.succeeded} réussies, "
+            f"{counts.processing} en cours, {counts.errored} en erreur"
+        )
+        if batch.processing_status == "ended":
+            break
+        time.sleep(60)
+    texts, failed = [], 0
+    for result in client.messages.batches.results(batch_id):
+        human = by_id.get(result.custom_id.replace("a-", "h-", 1))
+        if result.result.type != "succeeded" or human is None:
+            failed += 1
+            continue
+        message = result.result.message
+        text = "".join(b.text for b in message.content if b.type == "text")
+        generated = ai_document(result.custom_id, text, human, model)
+        if generated is None:
+            failed += 1
+            continue
+        texts.append(generated)
+    _write(path, texts)
+    os.remove(state)
+    corpus_volume.commit()
+    _log(f"detection-v4 : {len(texts)} textes de Claude, {failed} rejetés")
+    return {"claude": len(texts), "failed": failed, "batch_id": batch_id}
+
+
+@app.function(volumes={CORPUS: corpus_volume}, timeout=200 * 60, cpu=2, memory=8192)
+def v4_assemble(model: str) -> list[dict[str, Any]]:
+    """Textes des modèles ouverts (lots sur 8 L4 au plus, sauvegardés un à un), textes
+    mixtes, puis jeu gelé `detection-v4/fr.jsonl`. Rien n'est régénéré si le jeu existe."""
+    from corpus.generate import prompt_for
+    from detection.robustness import REFORMULATE, chunks, clean_generation, mix
+
+    from train.corpus_v2 import budget
+    from train.testset_v4 import (
+        AI_SIZES,
+        GENERATORS,
+        LICENCES,
+        check_sizes,
+        document,
+        manifest,
+        pick,
+        plan_open_jobs,
+    )
+
+    final = f"{V4_DIR}/fr.jsonl"
+    if os.path.exists(final):
+        _log("detection-v4 existe déjà : jeu gelé, rien n'est régénéré")
+        return manifest(_read(final))
+    humans = _read(f"{V4_BUILD}/humans.jsonl")
+    claude = _read(f"{V4_BUILD}/claude.jsonl")
+    with open(f"{V4_BUILD}/web_pools.json", encoding="utf-8") as f:
+        pools = json.load(f)
+    web_ids = {p["id"] for p in pools["human_web"]}
+    claude_web = [c for c in claude if c["paired_with"] in web_ids]
+    jobs = plan_open_jobs(pools["human_web"] + pools["open_source"], claude_web)
+    plan = {f"v4-{n}": (key, idx) for key in jobs for n, idx in chunks(key, jobs[key], OPEN_CHUNK)}
+    for key in sorted({key for key, _ in plan.values()}):
+        prefetch.remote(GENERATORS[key])
+
+    def arguments(name: str) -> tuple[str, str, list[str], list[int]]:
+        key, idx = plan[name]
+        selected = [jobs[key][i] for i in idx]
+        prompts = [
+            REFORMULATE["fr"].format(text=src["text"])
+            if category == "ai_reformulated"
+            else prompt_for(src)
+            for _, category, src, _ in selected
+        ]
+        return name, GENERATORS[key], prompts, [budget(words) for _, _, _, words in selected]
+
+    partial = Path(f"{V4_BUILD}/partial")
+    partial.mkdir(parents=True, exist_ok=True)
+    _generate_lots(partial, list(plan), arguments, "detection-v4")
+
+    generated: dict[str, list[dict[str, Any]]] = {c: [] for c in AI_SIZES}
+    for name, (key, idx) in plan.items():
+        texts = json.loads((partial / f"{name}.json").read_text(encoding="utf-8"))
+        for i, raw in zip(idx, texts, strict=True):
+            _, category, src, _ = jobs[key][i]
+            text = clean_generation(raw)
+            if text is None:
+                continue
+            generated[category].append(
+                document(
+                    category,
+                    "ai",
+                    text,
+                    generator=GENERATORS[key],
+                    source=f"generated:{GENERATORS[key]}",
+                    licence=f"Généré par {GENERATORS[key]} ({LICENCES[key]})",
+                    derived_from=src["id"],
+                )
+            )
+    for c in claude_web:
+        generated["ai_claude"].append(
+            document(
+                "ai_claude",
+                "ai",
+                c["text"],
+                generator=model,
+                source=c["source"],
+                licence=c["licence"],
+                derived_from=c["paired_with"],
+            )
+        )
+    claude_by_human = {c["paired_with"]: c for c in claude}
+    for page in pools["mixed_source"]:
+        ai = claude_by_human.get(page["id"])
+        mixed = mix(page["text"], ai["text"]) if ai else None
+        if mixed is None or ai is None:
+            continue
+        text, boundary = mixed
+        generated["mixed"].append(
+            document(
+                "mixed",
+                "mixed",
+                text,
+                source="mixed:mc4+claude",
+                licence=f"{page['licence']} ; {ai['licence']}",
+                derived_from=[page["id"], ai["id"]],
+                ai_starts_at=boundary,
+            )
+        )
+    known = {d["sha256"] for d in humans}
+    documents = list(humans)
+    for category, size in AI_SIZES.items():
+        unique = [d for d in generated[category] if d["sha256"] not in known]
+        chosen = pick(unique, size, category)
+        known |= {d["sha256"] for d in chosen}
+        documents += chosen
+    counts = dict(Counter(d["category"] for d in documents))
+    problems = check_sizes(counts)
+    _log(f"detection-v4 : {counts}")
+    if problems:
+        raise RuntimeError(f"detection-v4 : effectifs insuffisants {problems}")
+    _write(final, sorted(documents, key=lambda d: d["id"]))
+    corpus_volume.commit()
+    return manifest(documents)
+
+
+@app.function(volumes={CORPUS: corpus_volume, MODELS: models_volume}, gpu="L4", timeout=90 * 60)
+def v4_measure() -> dict[str, Any]:
+    """Seuil propre de FR 0.6 choisi sur la calibration (grille d'ADR-0017), puis mesure
+    unique sur detection-v4. Une seconde mesure est refusée."""
+    from dataclasses import replace
+
+    from detection.robustness import category_report
+    from veritas.scoring import score
+    from veritas.settings import thresholds_config
+
+    from train.testset_v4 import LANGUAGE, REFERENCE, RUN, check_gates
+    from train.threshold import choose_threshold
+
+    marker = f"{V4_DIR}/measured-{REFERENCE}.json"
+    if os.path.exists(marker):
+        raise RuntimeError(f"detection-v4 : {REFERENCE} déjà mesuré (ADR-0017)")
+    testset = _read(f"{V4_DIR}/fr.jsonl")
+    if not testset:
+        raise RuntimeError("detection-v4 : jeu absent, lancer d'abord l'étape testset-v4")
+    _log(f"{REFERENCE} : conteneur GPU démarré (detection-v4)")
+    model = _load_model(REFERENCE)
+    base = thresholds_config().get()
+    records = _calibration_records(
+        REFERENCE, model, _corpus_documents(RUN, LANGUAGE), LANGUAGE, base
+    )
+    choice = {"reference": REFERENCE, **choose_threshold(records), "records": records}
+    _log(f"{REFERENCE} : seuil choisi sur la calibration : {choice['chosen']}")
+    result: dict[str, Any] = {"threshold": choice}
+    if choice["chosen"] is not None:
+        thresholds = replace(base, model_likely_ai={REFERENCE: choice["chosen"]})
+        scored_records = []
+        for d in testset:
+            scored = score(model.detect(d["text"], LANGUAGE), d["text"], LANGUAGE, thresholds)
+            scored_records.append(
+                {
+                    "id": d["id"],
+                    "category": d["category"],
+                    "label": d["label"],
+                    "probability": round(scored.probability, 4),
+                    "band": scored.output.verdict_band.value,
+                }
+            )
+        categories = category_report(scored_records)
+        result["report"] = {
+            "reference": REFERENCE,
+            "testset": f"detection-v4/{LANGUAGE}",
+            "thresholds": {"likely_ai": choice["chosen"], "likely_human": base.likely_human},
+            "gates": check_gates(categories),
+            "categories": categories,
+            "records": scored_records,
+        }
+    with open(marker, "w", encoding="utf-8") as f:
+        json.dump(
+            {
+                "measured_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                "chosen": choice["chosen"],
+                "passed": result.get("report", {}).get("gates", {}).get("passed"),
+            },
+            f,
+        )
+    corpus_volume.commit()
+    return result
 
 
 # --- Jeu de vérification verification-en-v1 (ADR-0016) ---
@@ -1507,6 +1920,12 @@ def main(
         # FR 0.6 : critère d'ouverture d'ADR-0015 appliqué aussi à EN 0.2 (déjà entraîné).
         if run == "v6":
             _run_threshold(out_dir, "v2", ["en"], suffix="-seuil")
+    if stage in ("testset-v4", "measure-v4"):
+        # detection-v4 et mesure unique de FR 0.6 (ADR-0017) : français, modèle du run v6.
+        if run != "v6" or langs != ["fr"]:
+            raise SystemExit(f"stage {stage} (ADR-0017) : run v6 et languages « fr » seulement")
+        _testset_v4(stage, out_dir, model)
+        return
     if stage in ("verify-collect", "verify"):
         # Vérification de VRT-DET-EN-0.2 sur des textes réels (ADR-0016) : anglais, modèle du
         # run v2, sans entraînement.
@@ -1534,6 +1953,34 @@ def main(
         if run not in ("v2", "v4", "v5", "v6"):
             raise SystemExit("stage threshold (ADR-0013) : run v2, v4, v5 ou v6 seulement")
         _run_threshold(out_dir, run, langs)
+
+
+def _testset_v4(stage: str, out_dir: Path, model: str) -> None:
+    """testset-v4 : textes humains (CPU), Claude (lot), modèles ouverts (L4), jeu gelé.
+    measure-v4 : seuil choisi sur la calibration, mesure unique sur detection-v4 (un L4)."""
+
+    def write(name: str, value: Any) -> None:
+        (out_dir / name).write_text(
+            json.dumps(value, ensure_ascii=False, indent=1) + "\n", encoding="utf-8"
+        )
+
+    if stage == "testset-v4":
+        _log(f"detection-v4 : {v4_humans.remote()}")
+        _log(f"detection-v4 : {v4_claude.remote(model)}")
+        entries = v4_assemble.remote(model)
+        (out_dir / "detection-v4-fr.jsonl").write_text(
+            "".join(json.dumps(e, ensure_ascii=False, sort_keys=True) + "\n" for e in entries),
+            encoding="utf-8",
+        )
+        _log(f"detection-v4 : {dict(Counter(e['category'] for e in entries))}")
+        return
+    result = v4_measure.remote()
+    choice = result["threshold"]
+    write(f"threshold-{choice['reference']}-detection-v4.json", choice)
+    if "report" in result:
+        report = result["report"]
+        write(f"robustness-detection-v4-{report['reference']}-seuil.json", report)
+        _log(f"{report['reference']} detection-v4 portes : " + json.dumps(report["gates"]))
 
 
 def _verify(stage: str, out_dir: Path) -> None:

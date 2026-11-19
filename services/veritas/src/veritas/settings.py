@@ -17,8 +17,9 @@ CONFIG_DIR = Path(os.environ.get("VERITAS_CONFIG_DIR", Path(__file__).parents[2]
 
 Serve = Literal["external", "veritas", "both"]
 Level = Literal["high", "medium", "low"]
-# Bornes d'un seuil « Probablement IA » propre à un modèle (ADR-0013).
-MODEL_LIKELY_AI_RANGE = (0.70, 0.90)
+# Bornes d'un seuil « Probablement IA » propre à un modèle (ADR-0013 ; borne haute portée à
+# 0,95 par ADR-0017 : les probabilités plafonnent vers 0,96 avec le lissage des étiquettes).
+MODEL_LIKELY_AI_RANGE = (0.70, 0.95)
 LEVEL_RANK: dict[str, int] = {"low": 0, "medium": 1, "high": 2}
 
 
