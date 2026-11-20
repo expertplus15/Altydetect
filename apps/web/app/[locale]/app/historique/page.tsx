@@ -145,7 +145,13 @@ export default async function HistoryPage({
                       key={doc.id}
                       className={`border-b border-gray-100 last:border-0 ${selected?.id === doc.id ? "bg-accent/5" : ""}`}
                     >
-                      <td className="max-w-0 truncate px-4 py-3 font-medium">{doc.title}</td>
+                      {/* Le titre prend toute la largeur restante ; les autres colonnes gardent celle de leur contenu. */}
+                      <td
+                        className="w-full max-w-0 truncate px-4 py-3 font-medium"
+                        title={doc.title}
+                      >
+                        {doc.title}
+                      </td>
                       <td className="whitespace-nowrap px-4 py-3 text-gray-600">{kind}</td>
                       <td className="whitespace-nowrap px-4 py-3 tabular-nums text-gray-600">
                         {t("words", { count: doc.wordCount })}
@@ -156,7 +162,7 @@ export default async function HistoryPage({
                           timeStyle: "short",
                         })}
                       </td>
-                      <td className="px-4 py-3 text-right">
+                      <td className="whitespace-nowrap px-4 py-3 text-right">
                         <Link
                           href={{
                             pathname: "/app/historique",

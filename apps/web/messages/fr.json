@@ -140,7 +140,7 @@
     "label": "Éditeur de texte",
     "placeholder": "Collez ou saisissez votre texte ici…",
     "words": "{count, plural, =0 {0 mot} one {# mot} other {# mots}}",
-    "minWords": "Encore {missing, plural, one {# mot} other {# mots}} pour atteindre le minimum de {min} mots demandé par la détection.",
+    "minWords": "Encore {missing, plural, one {# mot} other {# mots}} pour atteindre le minimum de {min} mots.",
     "import": "Importer PDF ou DOCX",
     "importHint": "10 Mo maximum",
     "importing": "Import en cours…",
