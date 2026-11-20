@@ -1,6 +1,12 @@
 """Le jeu de test de détection reste gelé et ne recoupe jamais le corpus d'entraînement."""
 
-from detection.testset import verify_frozen, verify_frozen_v2, verify_frozen_v3
+from detection.testset import (
+    V4_SIZES,
+    verify_frozen,
+    verify_frozen_v2,
+    verify_frozen_v3,
+    verify_frozen_v4,
+)
 
 
 def test_jeu_de_test_detection_gele() -> None:
@@ -34,3 +40,13 @@ def test_jeu_de_registre_soutenu_detection_v3_gele() -> None:
     counts = manifest["documents"]["fr"]
     assert counts["human_academic"] == 200 and counts["human_legal"] == 200
     assert counts["ai_academic"] > 150 and counts["ai_legal"] > 150
+
+
+def test_jeu_detection_v4_gele() -> None:
+    """ADR-0017 : 1 100 textes humains, 800 générés ou mixtes, rien en commun avec les corpus."""
+    manifest = verify_frozen_v4()
+    assert manifest["version"] == "detection-v4"
+    counts = manifest["documents"]["fr"]
+    assert counts == V4_SIZES
+    assert sum(v for k, v in counts.items() if k.startswith("human_")) == 1100
+    assert sum(v for k, v in counts.items() if not k.startswith("human_")) == 800

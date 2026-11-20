@@ -2,6 +2,7 @@
 
 - **Référence** : `VRT-DET-FR-0.1`
 - **Date** : 2026-11-11
+- **Statut** : remplacé par VRT-DET-FR-0.6 le 2026-11-20 (ADR-0017).
 - **Run** : [42928107614](https://github.com/expertplus15/Altydetect/actions/runs/42928107614) (ADR-0009)
 - **Paquet** : `services/veritas/models/fr/manifest.json` (poids de l'encodeur dans le
   volume Modal `altydetect-veritas-models`, jamais dans le dépôt)

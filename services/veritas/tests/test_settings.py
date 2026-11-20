@@ -75,9 +75,12 @@ def test_invalid_first_version_fails(tmp_path: Path) -> None:
 
 
 def test_delivered_model_thresholds() -> None:
-    """ADR-0015 : seuil propre d'EN 0.2 inscrit ; aucun pour le français."""
+    """ADR-0015, ADR-0017 : seuils propres d'EN 0.2 et de FR 0.6 inscrits."""
     raw = yaml.safe_load((CONFIG_DIR / "thresholds.yaml").read_text(encoding="utf-8"))
-    assert Thresholds.parse(raw).model_likely_ai == {"VRT-DET-EN-0.2": 0.70}
+    assert Thresholds.parse(raw).model_likely_ai == {
+        "VRT-DET-EN-0.2": 0.70,
+        "VRT-DET-FR-0.6": 0.93,
+    }
 
 
 def _thresholds(models: str) -> dict[str, Any]:
