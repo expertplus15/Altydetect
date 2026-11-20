@@ -1,6 +1,6 @@
 # ADR-0010 — Activation de Veritas 0.1 en mode fantôme
 
-- **Statut** : proposé
+- **Statut** : remplacé en partie par ADR-0015 (19/11/2026) : sans fournisseur externe, le mode fantôme et la porte d'accord n'ont plus d'objet (`shadow.enabled: false`). Statut précédent : proposé.
 - **Date** : 2026-11-11
 - **Décideurs** : équipe AltyDetect
 
