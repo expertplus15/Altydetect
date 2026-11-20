@@ -1,4 +1,5 @@
-"""Jeux de test gelés `detection-v1` et `detection-v2`, manifestes du corpus de Veritas 0.1.
+"""Jeux de test gelés `detection-v1`, `detection-v2` et `detection-v3`, manifestes des corpus de
+Veritas.
 
 `detection-v1` (ADR-0009) :
 
@@ -18,6 +19,13 @@ huit catégories, gelés dans `ml/eval/testset/detection-v2/` ; jamais utilisés
 l'entraînement, ni directement ni par leurs sources.
 
     uv run --no-sync python -m detection.testset <dossier du run> --created AAAA-MM-JJ --v2
+
+`detection-v3` (Veritas FR 0.3, ADR-0012) : partition test du corpus de registre soutenu
+(200 textes humains universitaires, 200 juridiques et leurs textes générés appariés), gelée
+dans `ml/eval/testset/detection-v3/` ; le reste du corpus (entraînement et calibration) va
+dans `ml/corpus/manifests/veritas-0.3/`.
+
+    uv run --no-sync python -m detection.testset <dossier du run> --created AAAA-MM-JJ --v3
 """
 
 import argparse
@@ -173,13 +181,94 @@ def verify_frozen_v2() -> dict[str, Any]:
     return manifest
 
 
+V3 = "detection-v3"
+V3_DIR = REPO / "ml/eval/testset" / V3
+V3_CORPUS_DIR = REPO / "ml/corpus/manifests/veritas-0.3"
+V3_CATEGORIES = ("human_academic", "human_legal", "ai_academic", "ai_legal")
+V3_LICENCE = (
+    "Textes humains : French Science Commons (CC BY, CC BY-SA, CC0, Licence ouverte, par "
+    "document) et décisions de la Cour de cassation (Judilibre, Licence ouverte 2.0) ; textes "
+    "générés : Qwen2.5-7B-Instruct, Mistral-7B-Instruct-v0.3, Granite-3.3-8B-Instruct "
+    "(Apache-2.0)"
+)
+
+
+def freeze_v3(run_dir: Path, created: str, run_id: str) -> dict[str, Any]:
+    """Gèle detection-v3/fr et écrit les manifestes du corpus FR 0.3 (entraînement et
+    calibration ; la partition test de detection-v1 reste dans detection-v1)."""
+    if (V3_DIR / "MANIFEST.json").exists():
+        raise RuntimeError(f"{V3} est gelé : créer une nouvelle version du jeu de test")
+    entries = json.loads((run_dir / "corpus-fr.json").read_text(encoding="utf-8"))
+    if any("text" in e for e in entries):
+        raise ValueError("fr : un manifeste ne doit contenir aucun texte")
+    test = sorted(
+        (e for e in entries if e["split"] == "test" and e.get("category") in V3_CATEGORIES),
+        key=lambda e: e["id"],
+    )
+    corpus = sorted((e for e in entries if e["split"] != "test"), key=lambda e: e["id"])
+    V3_DIR.mkdir(parents=True, exist_ok=True)
+    V3_CORPUS_DIR.mkdir(parents=True, exist_ok=True)
+    (V3_DIR / "fr.jsonl").write_text(_jsonl(test), encoding="utf-8")
+    (V3_CORPUS_DIR / "fr.jsonl").write_text(_jsonl(corpus), encoding="utf-8")
+    manifest = {
+        "version": V3,
+        "created": created,
+        "run": run_id,
+        "licence": V3_LICENCE,
+        "generator": "ml/train/pipeline.py (run v3, ml/train/train/corpus_v3.py)",
+        "documents": {"fr": dict(sorted(Counter(e["category"] for e in test).items()))},
+        "files": {"fr.jsonl": _sha256(V3_DIR / "fr.jsonl")},
+    }
+    (V3_DIR / "MANIFEST.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    return manifest
+
+
+def verify_frozen_v3() -> dict[str, Any]:
+    """Empreinte de detection-v3, absence de texte, aucun document commun avec les corpus
+    d'entraînement 0.1, 0.2 et 0.3 ni avec detection-v1 et detection-v2, et chaque texte
+    généré apparié à un texte humain du jeu."""
+    manifest: dict[str, Any] = json.loads((V3_DIR / "MANIFEST.json").read_text(encoding="utf-8"))
+    if _sha256(V3_DIR / "fr.jsonl") != manifest["files"]["fr.jsonl"]:
+        raise AssertionError(f"{V3}/fr.jsonl modifié : le jeu de test est gelé")
+    entries = _read_jsonl(V3_DIR / "fr.jsonl")
+    if any("text" in e for e in entries):
+        raise AssertionError("fr : texte présent dans un manifeste")
+    others: set[str] = set()
+    for path in (
+        CORPUS_DIR / "fr.jsonl",
+        REPO / "ml/corpus/manifests/veritas-0.2/fr.jsonl",
+        V3_CORPUS_DIR / "fr.jsonl",
+        TESTSET_DIR / "fr.jsonl",
+        V2_DIR / "fr.jsonl",
+    ):
+        others |= {e["sha256"] for e in _read_jsonl(path)}
+    shared = {e["sha256"] for e in entries} & others
+    if shared:
+        raise AssertionError(f"fr : {len(shared)} documents communs avec un autre corpus ou jeu")
+    humans = {e["id"] for e in entries if e["label"] == "human"}
+    for e in entries:
+        if e["label"] == "ai" and e.get("paired_with") not in humans:
+            raise AssertionError(f"{e['id']} : texte humain apparié absent de {V3}")
+    counts = dict(sorted(Counter(e["category"] for e in entries).items()))
+    if counts != manifest["documents"]["fr"]:
+        raise AssertionError("fr : effectifs différents du manifeste")
+    return manifest
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("run_dir", type=Path)
     parser.add_argument("--created", required=True)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--v2", action="store_true", help="geler detection-v2")
+    parser.add_argument("--v3", action="store_true", help="geler detection-v3 (FR 0.3)")
     args = parser.parse_args()
+    if args.v3:
+        print(json.dumps(freeze_v3(args.run_dir, args.created, args.run_id), indent=2))
+        verify_frozen_v3()
+        return
     if args.v2:
         print(json.dumps(freeze_v2(args.run_dir, args.created, args.run_id), indent=2))
         verify_frozen_v2()
