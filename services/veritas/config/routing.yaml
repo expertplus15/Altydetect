@@ -2,17 +2,17 @@
 # Relues à chaque modification du fichier : aucun redéploiement nécessaire.
 version: 1
 
-# Porte de sortie de la phase 3 : accord Veritas / fournisseur externe sur un segment.
+# Accord Veritas / fournisseur externe sur un segment. Sans objet depuis ADR-0015 (aucun
+# fournisseur en production) ; gardé pour les mesures ponctuelles d'un fournisseur.
 agreement:
   threshold: 0.85
   # TODO : taille d'échantillon minimale avant de juger un segment (à confirmer).
   min_comparisons: 200
 
-# Mode fantôme : Veritas tourne en arrière-plan quand l'externe répond seul.
-# Chaque comparaison appelle la couche 2 sur un GPU Modal (démarrage à froid compris) :
-# 10 % des requêtes au départ (ADR-0010), à relever une fois le coût réel mesuré.
+# Mode fantôme : Veritas tourne en arrière-plan quand l'externe répond seul (ADR-0010).
+# Désactivé par ADR-0015 : sans fournisseur externe, il n'y a rien à comparer.
 shadow:
-  enabled: true
+  enabled: false
   sample_rate: 0.1 # part des requêtes comparées, de 0 à 1
 
 # Phase 3 : si aucun fournisseur externe ne répond, la détection est indisponible ; Veritas
@@ -20,7 +20,11 @@ shadow:
 veritas_fallback: false
 
 # Premier segment qui correspond. Champs : languages, plans, min_words, max_words (facultatifs) ;
-# serve : external | veritas | both ; primary (pour both) : external | veritas ;
+# serve : external | veritas | both | closed (langue non servie, UNSUPPORTED_LANGUAGE) ;
+# primary (pour both) : external | veritas ;
+# Langue non ouverte (ADR-0015 §1) : serve: external ; sans fournisseur, DETECTION_UNAVAILABLE.
+# Ouverture (ADR-0016) : la langue passe à serve: veritas, veritas_min_confidence: low, les
+# autres et default à serve: closed.
 # veritas_min_confidence (pour veritas) : high | medium | low.
 segments:
   - name: fr

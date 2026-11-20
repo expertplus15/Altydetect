@@ -1,6 +1,6 @@
 # ADR-0001 — Fournisseur de détection externe
 
-- **Statut** : proposé. Passe à « accepté » quand les conditions de la section « Décision » sont remplies.
+- **Statut** : remplacé en partie par ADR-0015 (19/11/2026) : aucun fournisseur externe n'est servi en production ; l'adaptateur reste pour des mesures ponctuelles. Statut précédent : proposé.
 - **Date** : 2026-11-04
 - **Décideurs** : équipe AltyDetect
 

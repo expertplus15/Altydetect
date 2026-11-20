@@ -7,7 +7,7 @@ Ce fichier est la constitution du dépôt. Claude Code le lit à chaque session.
 AltyDetect (altydetect.com) est un SaaS d'espace de travail textuel à quatre modules : **Détecter** (texte IA), **Plagiat**, **Réécrire**, **Écrire**. Marque ombrelle Alty. Produit commercial indépendant, self-service, cible grand public et professionnelle (étudiants, rédacteurs, agences, RH), plus une API publique en phase 4.
 
 Deux moteurs propriétaires, chacun un package autonome :
-- **Veritas** — détection IA. Références `VRT-[DET|HUM|PLG]-[FR|EN|ML]-x.y`.
+- **Veritas** — détection IA, **seul moteur de détection servi aux utilisateurs** (ADR-0015). Références `VRT-[DET|HUM|PLG]-[FR|EN|ML]-x.y`. Une langue n'est servie qu'après un seuil propre, les quatre portes et une vérification sur des textes réels (ADR-0015 §2, ADR-0016).
 - **Indexa** — plagiat. Références `IDX-[WEB|PRV]-x.y`.
 
 Promesse produit non négociable : un résultat de détection est **une probabilité avec niveau de confiance et zone « indéterminé »**, jamais un verdict binaire.
@@ -62,8 +62,8 @@ Règles de dépendance : `apps/web` dépend des `packages/*` ; les `packages/*` 
 
 1. **Chaque module métier est un package indépendant** avec une API interne versionnée (`/internal/v1/...`). L'API publique (`/api/v1/...`) est une passerelle devant ces mêmes endpoints, jamais une réimplémentation.
 2. **Veritas et Indexa sont déployables, facturables et exposables séparément.** Aucun import croisé.
-3. **L'adaptateur de détection externe est une interface unique** (`DetectionProvider`) avec implémentations `CopyleaksProvider`, `GPTZeroProvider`, `PangramProvider`. Le fournisseur actif se choisit par variable d'environnement. Ajouter un fournisseur ne touche que `services/veritas/providers/`.
-4. **L'aiguillage** (`services/veritas/router.py`) décide qui répond selon : langue, longueur, niveau de confiance de Veritas, plan de l'utilisateur, règles de bascule par segment lues depuis la configuration. Il enregistre toujours les deux avis quand les deux ont tourné, pour la comparaison.
+3. **L'adaptateur de détection externe est une interface unique** (`DetectionProvider`) avec implémentations `CopyleaksProvider`, `GPTZeroProvider`, `PangramProvider`. Depuis ADR-0015, aucun fournisseur n'est configuré en production : l'adaptateur sert seulement à mesurer ponctuellement un fournisseur sur nos jeux de test, avec accord explicite et coût annoncé. Le fournisseur se choisit par variable d'environnement. Ajouter un fournisseur ne touche que `services/veritas/providers/`.
+4. **L'aiguillage** (`services/veritas/router.py`) décide qui répond selon : langue, longueur, niveau de confiance de Veritas, plan de l'utilisateur, règles de bascule par segment lues depuis la configuration. Il enregistre toujours les deux avis quand les deux ont tourné, pour la comparaison. Une langue ouverte est servie par Veritas (`serve: veritas`) ; une langue non ouverte est fermée (`serve: closed`, erreur `UNSUPPORTED_LANGUAGE`).
 5. **Le texte analysé n'est jamais écrit en base.** Il transite en mémoire et dans la file, puis est supprimé. Seuls les résultats agrégés sont persistés ; une copie du texte n'est conservée que si l'utilisateur l'a demandée explicitement (`keep_text: true`).
 6. **Aucun appel LLM ni aucun appel fournisseur depuis un composant React.** Tout passe par les API internes.
 7. **Toute chaîne visible passe par next-intl.** Aucune chaîne en dur dans un composant. La langue d'interface (`fr` par défaut, `en`) est indépendante de la langue du texte analysé, détectée automatiquement côté service.
@@ -163,7 +163,7 @@ Un test lint (`scripts/lint-vocabulary.ts`) échoue si un mot interdit apparaît
 | 0 | Spécification, choix du fournisseur externe, dépôt initialisé | PRD validé, ADR-0001 (fournisseur) |
 | 1 | Squelette SaaS + Réécrire + Écrire, i18n, Stripe | Un abonnement Pro peut être souscrit et résilié en production |
 | 2 | Indexa (web + base privée), rapport PDF combiné | Rappel ≥ seuil sur le jeu de test plagiat, coût par document mesuré |
-| 3 | Détection : externe en production, Veritas FR/EN 0.1 en arrière-plan | Accord ≥ seuil sur un segment, faux positifs < 1 % |
+| 3 | Détection : Veritas seul moteur (ADR-0015), ouverture langue par langue | Par langue : seuil propre, quatre portes franchies, vérification sur des textes réels (ADR-0015 §2, ADR-0016) |
 | 4 | VRT-HUM, VRT-DET-ML-1.0 sur les cas faciles, benchmark public, API publique | ≥ 50 % du trafic servi par Veritas, premier client API |
 
 Commencer par la phase 1 : c'est le chemin le plus court vers un produit vendable.

@@ -88,34 +88,31 @@ DATABASE_URL=… pnpm -C apps/web db:migrate
 - Mesurer le rappel réel avec Brave sur un échantillon de pages avant d'annoncer la fonction
   (le benchmark du dépôt simule la recherche web).
 
-## 7. Veritas (phase 3, ADR-0008)
+## 7. Veritas (phase 3, ADR-0008, ADR-0015)
+
+Veritas est le seul moteur de détection servi aux utilisateurs (ADR-0015). Aucun fournisseur
+externe n'est configuré en production ; le mode fantôme et son worker `veritas-shadow` ne
+servent plus.
 
 - **API** : image `services/veritas/Dockerfile` (uvicorn sur le port 8001). Variables :
-  `VERITAS_INTERNAL_TOKEN`, `DATABASE_URL`, `REDIS_URL`, `DETECTION_PROVIDER`,
-  `DETECTION_FALLBACK_PROVIDER` et les clés du ou des fournisseurs (`PANGRAM_API_KEY`,
-  `COPYLEAKS_EMAIL`, `COPYLEAKS_API_KEY`), `VERITAS_ENV=production`, et `VERITAS_MODEL_DIR`
-  quand un modèle Veritas est livré, avec `MODAL_TOKEN_ID` et `MODAL_TOKEN_SECRET` si son
-  paquet utilise la couche 2. Routes internes protégées par `VERITAS_INTERNAL_TOKEN`.
-- **Worker du mode fantôme** : même image, commande
-  `/app/.venv/bin/rq worker veritas-shadow --url "$REDIS_URL"`, mêmes variables. Inutile tant
-  que Veritas n'est pas activé.
-- **Activation du mode fantôme (ADR-0010)**, dans cet ordre :
-  1. Prérequis : un fournisseur externe actif (`DETECTION_PROVIDER` et sa clé). Sans lui,
-     rien n'est comparé et Détecter reste indisponible : Veritas ne répond jamais seul
-     (`veritas_fallback: false` dans `routing.yaml`).
-  2. Déployer la couche 2 : workflow « Entraînement Veritas », étape `deploy` (à la main, ou
-     `"stage": "deploy"` dans `ml/train/requests/run.json`, avec `run` et `cost_usd`, obligatoires).
-     Application
-     `altydetect-veritas-encoder` : aucun coût tant qu'elle n'est pas appelée.
-  3. Sur `veritas-api` **et** `veritas-shadow` : `VERITAS_MODEL_DIR=/app/services/veritas/models`,
-     `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET`. L'API en a besoin pour décider des comparaisons et
-     pour le mode approfondi (appel synchrone).
-  4. Démarrer `veritas-shadow`. Vérifier dans les journaux `GET /health` puis, après quelques
-     détections, `GET /internal/v1/detect/agreement`.
-  5. Coût : 10 % des requêtes comparées (`shadow.sample_rate`), ≈ 6 $ par mois à 50 détections
-     par jour, plus un appel par détection approfondie. Suivre la facturation Modal le premier
-     mois avant de relever le taux.
-  - Retour arrière : retirer `VERITAS_MODEL_DIR` (ou `shadow.enabled: false`, relu à chaud).
+  `VERITAS_INTERNAL_TOKEN`, `VERITAS_ENV=production`,
+  `VERITAS_MODEL_DIR=/app/services/veritas/models`, `MODAL_TOKEN_ID` et `MODAL_TOKEN_SECRET`
+  (couche 2 sur Modal). Laisser `DETECTION_PROVIDER` vide. Routes internes protégées par
+  `VERITAS_INTERNAL_TOKEN`.
+- **Modèles livrés** : `services/veritas/models/fr` (VRT-DET-FR-0.6, seuil 0,93) et
+  `services/veritas/models/en` (VRT-DET-EN-0.2, seuil 0,70), seuils dans
+  `config/thresholds.yaml`.
+- **Ouverture d'une langue** (ADR-0016 pour l'anglais, même démarche pour le français), après
+  sa vérification sur des textes réels :
+  1. `routing.yaml` : la langue passe à `serve: veritas`, `veritas_min_confidence: low` ; les
+     autres langues et `default` à `serve: closed` (erreur `UNSUPPORTED_LANGUAGE`, mots rendus,
+     message dans l'éditeur). Relu à chaud, sans redéploiement.
+  2. Couche 2 déployée : workflow « Entraînement Veritas », étape `deploy` (application
+     `altydetect-veritas-encoder`, aucun coût tant qu'elle n'est pas appelée).
+  3. Suivre la facturation Modal et la latence la première semaine, puis chaque semaine.
+  - Retour arrière : remettre la langue à `serve: closed` dans `routing.yaml`.
+- **Avant toute ouverture**, Détecter répond `DETECTION_UNAVAILABLE` (aucun fournisseur) : le
+  reste du site fonctionne.
 - **Couche 2** : `modal deploy services/veritas/modal/encoder_app.py` (ou le workflow
   « Entraînement Veritas », étape `deploy`). GPU à la demande, arrêt après une minute sans
   requête.
@@ -173,19 +170,16 @@ Tous les services viennent du dépôt, branche `main`. `DATABASE_URL` (Neon, poo
 depuis la racine du dépôt ; elles écoutent sur un port fixe, indiqué à Railway par `PORT` (ou
 par le port cible du domaine public).
 
-| Service          | Source et commande                                                                | Variables propres                                                                                                                                                                                     | Domaine public |
-| ---------------- | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `worker`         | build automatique (pnpm) ; démarrage `pnpm -C apps/web worker`                    | `AUTH_SECRET` (identique à Vercel)                                                                                                                                                                    | non            |
-| `indexa-api`     | `RAILWAY_DOCKERFILE_PATH=services/indexa/Dockerfile`                              | `INDEXA_INTERNAL_TOKEN`, `PORT=8002`                                                                                                                                                                  | oui            |
-| `indexa-worker`  | même image ; démarrage `/app/.venv/bin/rq worker indexa --url $REDIS_URL`         | celles de `indexa-api`, `BRAVE_SEARCH_API_KEY`, `INDEXA_MAX_QUERIES=8`, `INDEXA_MAX_PAGES=10`                                                                                                         | non            |
-| `veritas-api`    | `RAILWAY_DOCKERFILE_PATH=services/veritas/Dockerfile`                             | `VERITAS_INTERNAL_TOKEN`, `PORT=8001`, `VERITAS_ENV=production`, `DETECTION_PROVIDER`, `DETECTION_FALLBACK_PROVIDER`, clés du fournisseur (`PANGRAM_API_KEY`, `COPYLEAKS_EMAIL`, `COPYLEAKS_API_KEY`) | oui            |
-| `veritas-shadow` | même image ; démarrage `/app/.venv/bin/rq worker veritas-shadow --url $REDIS_URL` | celles de `veritas-api`                                                                                                                                                                               | non            |
+| Service         | Source et commande                                                        | Variables propres                                                                                                                                         | Domaine public |
+| --------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `worker`        | build automatique (pnpm) ; démarrage `pnpm -C apps/web worker`            | `AUTH_SECRET` (identique à Vercel)                                                                                                                        | non            |
+| `indexa-api`    | `RAILWAY_DOCKERFILE_PATH=services/indexa/Dockerfile`                      | `INDEXA_INTERNAL_TOKEN`, `PORT=8002`                                                                                                                      | oui            |
+| `indexa-worker` | même image ; démarrage `/app/.venv/bin/rq worker indexa --url $REDIS_URL` | celles de `indexa-api`, `BRAVE_SEARCH_API_KEY`, `INDEXA_MAX_QUERIES=8`, `INDEXA_MAX_PAGES=10`                                                             | non            |
+| `veritas-api`   | `RAILWAY_DOCKERFILE_PATH=services/veritas/Dockerfile`                     | `VERITAS_INTERNAL_TOKEN`, `PORT=8001`, `VERITAS_ENV=production`, `VERITAS_MODEL_DIR=/app/services/veritas/models`, `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET` | oui            |
 
-- Activation de Veritas (ADR-0010, section 7) : ajouter à `veritas-api` et `veritas-shadow`
-  `VERITAS_MODEL_DIR=/app/services/veritas/models`, `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET`,
-  puis démarrer `veritas-shadow`. Avant, l'externe répond seul.
-- Tant qu'aucun contrat de fournisseur n'est signé (ADR-0001), Détecter répond
-  `DETECTION_UNAVAILABLE`. Ne jamais définir en production `VERITAS_ALLOW_SIMULATED`,
+- Pas de service `veritas-shadow` depuis ADR-0015. L'ouverture de chaque langue suit la
+  section 7.
+- Tant qu'aucune langue n'est ouverte, Détecter répond `DETECTION_UNAVAILABLE`. Ne jamais définir en production `VERITAS_ALLOW_SIMULATED`,
   `INDEXA_SEARCH_PROVIDER=fixtures` ni `INDEXA_FIXTURES_PATH`.
 - Sans `worker`, les exports PDF restent en attente ; sans Indexa ou Veritas, Plagiat ou
   Détecter indiquent que le service ne répond pas. Le reste du site fonctionne.
