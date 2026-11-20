@@ -1,6 +1,6 @@
 # Jeu de test gelé `detection-v4` (français, ADR-0017)
 
-Jeu neuf pour mesurer une seule fois VRT-DET-FR-0.6 au seuil choisi sur la grille élargie (0,70 à 0,95). `detection-v1` à `detection-v3` ne servent plus à mesurer un seuil de FR 0.6 (ADR-0015 §4). Il ne reçoit jamais de données d'entraînement. Le manifeste (sans texte) sera commité ici après sa construction ; les textes restent dans le volume Modal `altydetect-veritas-corpus`, dossier `detection-v4/`.
+Jeu neuf pour mesurer une seule fois VRT-DET-FR-0.6 au seuil choisi sur la grille élargie (0,70 à 0,95). `detection-v1` à `detection-v3` ne servent plus à mesurer un seuil de FR 0.6 (ADR-0015 §4). Il ne reçoit jamais de données d'entraînement. Le manifeste (sans texte) est gelé ici : `fr.jsonl` et `MANIFEST.json` (run 44625772183, empreinte vérifiée par `ml/eval/tests/test_detection_testset.py`) ; les textes restent dans le volume Modal `altydetect-veritas-corpus`, dossier `detection-v4/`.
 
 Code : `ml/train/train/testset_v4.py` (règles, testées) et `ml/train/pipeline.py` (étapes Modal).
 

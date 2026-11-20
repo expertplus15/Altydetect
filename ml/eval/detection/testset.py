@@ -1,5 +1,4 @@
-"""Jeux de test gelés `detection-v1`, `detection-v2` et `detection-v3`, manifestes des corpus de
-Veritas.
+"""Jeux de test gelés `detection-v1` à `detection-v4`, manifestes des corpus de Veritas.
 
 `detection-v1` (ADR-0009) :
 
@@ -26,6 +25,12 @@ dans `ml/eval/testset/detection-v3/` ; le reste du corpus (entraînement et cali
 dans `ml/corpus/manifests/veritas-0.3/`.
 
     uv run --no-sync python -m detection.testset <dossier du run> --created AAAA-MM-JJ --v3
+
+`detection-v4` (mesure unique de FR 0.6, ADR-0017) : jeu neuf de 1 900 textes français,
+construit par l'étape `testset-v4` ; son manifeste sans texte (`detection-v4-fr.jsonl`) est gelé
+dans `ml/eval/testset/detection-v4/fr.jsonl`.
+
+    uv run --no-sync python -m detection.testset <dossier du run> --created AAAA-MM-JJ --v4
 """
 
 import argparse
@@ -257,6 +262,95 @@ def verify_frozen_v3() -> dict[str, Any]:
     return manifest
 
 
+V4 = "detection-v4"
+V4_DIR = REPO / "ml/eval/testset" / V4
+V4_SIZES = {
+    "human_web": 400,
+    "human_wikipedia": 300,
+    "human_academic": 200,
+    "human_legal": 100,
+    "human_short": 100,
+    "ai_claude": 200,
+    "ai_qwen": 100,
+    "ai_mistral": 100,
+    "ai_granite": 100,
+    "ai_phi": 100,
+    "ai_reformulated": 100,
+    "mixed": 100,
+}
+V4_LICENCE = (
+    "Textes humains : mC4 (ODC-BY 1.0), Wikipédia (CC BY-SA 3.0), French Science Commons "
+    "(licences ouvertes, par document), Cour de cassation (Judilibre, Licence ouverte 2.0) ; "
+    "textes générés : Claude (Anthropic) pour AltyDetect, Qwen2.5-7B-Instruct, "
+    "Mistral-7B-Instruct-v0.3, Granite-3.3-8B-Instruct (Apache-2.0), Phi-3.5-mini-instruct (MIT)"
+)
+# Corpus et jeux que detection-v4 ne doit jamais recouper (ADR-0017 §2) : corpus 0.1 à 0.5
+# (le corpus 0.5 inclut le 0.4) et detection-v1 à detection-v3.
+V4_EXCLUDED = (
+    "ml/corpus/manifests/veritas-0.1/fr.jsonl",
+    "ml/corpus/manifests/veritas-0.2/fr.jsonl",
+    "ml/corpus/manifests/veritas-0.3/fr.jsonl",
+    "ml/corpus/manifests/veritas-0.5/fr.jsonl",
+    "ml/eval/testset/detection-v1/fr.jsonl",
+    "ml/eval/testset/detection-v2/fr.jsonl",
+    "ml/eval/testset/detection-v3/fr.jsonl",
+)
+
+
+def freeze_v4(run_dir: Path, created: str, run_id: str) -> dict[str, Any]:
+    """Gèle detection-v4/fr à partir du manifeste produit par l'étape `testset-v4`."""
+    if (V4_DIR / "MANIFEST.json").exists():
+        raise RuntimeError(f"{V4} est gelé : créer une nouvelle version du jeu de test")
+    entries = sorted(_read_jsonl(run_dir / "detection-v4-fr.jsonl"), key=lambda e: e["id"])
+    if any("text" in e for e in entries):
+        raise ValueError("fr : un manifeste ne doit contenir aucun texte")
+    V4_DIR.mkdir(parents=True, exist_ok=True)
+    (V4_DIR / "fr.jsonl").write_text(_jsonl(entries), encoding="utf-8")
+    manifest = {
+        "version": V4,
+        "created": created,
+        "run": run_id,
+        "licence": V4_LICENCE,
+        "generator": "ml/train/pipeline.py (étape testset-v4, ml/train/train/testset_v4.py)",
+        "documents": {"fr": dict(sorted(Counter(e["category"] for e in entries).items()))},
+        "files": {"fr.jsonl": _sha256(V4_DIR / "fr.jsonl")},
+    }
+    (V4_DIR / "MANIFEST.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    return manifest
+
+
+def verify_frozen_v4() -> dict[str, Any]:
+    """Empreinte de detection-v4, absence de texte, effectifs d'ADR-0017, et aucun texte ni
+    aucune adresse en commun avec les corpus 0.1 à 0.5 et les jeux detection-v1 à v3."""
+    manifest: dict[str, Any] = json.loads((V4_DIR / "MANIFEST.json").read_text(encoding="utf-8"))
+    if _sha256(V4_DIR / "fr.jsonl") != manifest["files"]["fr.jsonl"]:
+        raise AssertionError(f"{V4}/fr.jsonl modifié : le jeu de test est gelé")
+    entries = _read_jsonl(V4_DIR / "fr.jsonl")
+    if any("text" in e for e in entries):
+        raise AssertionError("fr : texte présent dans un manifeste")
+    if len({e["sha256"] for e in entries}) != len(entries):
+        raise AssertionError(f"{V4} : textes en double")
+    hashes: set[str] = set()
+    urls: set[str] = set()
+    for path in V4_EXCLUDED:
+        for e in _read_jsonl(REPO / path):
+            hashes.add(e["sha256"])
+            if e.get("url"):
+                urls.add(e["url"])
+    shared = {e["sha256"] for e in entries} & hashes
+    if shared:
+        raise AssertionError(f"fr : {len(shared)} documents communs avec un autre corpus ou jeu")
+    reused = {e["url"] for e in entries if e["label"] == "human" and e.get("url")} & urls
+    if reused:
+        raise AssertionError(f"fr : {len(reused)} adresses déjà utilisées")
+    counts = dict(sorted(Counter(e["category"] for e in entries).items()))
+    if counts != manifest["documents"]["fr"] or counts != dict(sorted(V4_SIZES.items())):
+        raise AssertionError("fr : effectifs différents du manifeste ou d'ADR-0017")
+    return manifest
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("run_dir", type=Path)
@@ -264,7 +358,12 @@ def main() -> None:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--v2", action="store_true", help="geler detection-v2")
     parser.add_argument("--v3", action="store_true", help="geler detection-v3 (FR 0.3)")
+    parser.add_argument("--v4", action="store_true", help="geler detection-v4 (FR 0.6)")
     args = parser.parse_args()
+    if args.v4:
+        print(json.dumps(freeze_v4(args.run_dir, args.created, args.run_id), indent=2))
+        verify_frozen_v4()
+        return
     if args.v3:
         print(json.dumps(freeze_v3(args.run_dir, args.created, args.run_id), indent=2))
         verify_frozen_v3()

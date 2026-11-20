@@ -1,6 +1,6 @@
 # ADR-0017 — Suite du français : seuil propre de FR 0.6 sur une grille élargie, mesuré sur un jeu neuf
 
-- **Statut** : accepté (19/11/2026). Valeurs validées telles quelles. Mise en œuvre : `ml/eval/testset/detection-v4/README.md`.
+- **Statut** : accepté (19/11/2026) et exécuté (20/11/2026) : piste A réussie, voir « Résultats ». Mise en œuvre : `ml/eval/testset/detection-v4/README.md`.
 - **Date** : 2026-11-19
 - **Décideurs** : équipe AltyDetect
 - **Suite de** : ADR-0015 §4 (FR 0.6 ne remplit pas le critère d'ouverture), ADR-0013 (règle du seuil propre)
@@ -121,3 +121,11 @@ Une PR par intention :
 - Borne haute de la grille d'ADR-0013 : 0,95.
 - Composition de `detection-v4` : 1 100 textes humains, 800 textes générés ou mixtes.
 - Plafond de coût : 6 $ pour l'ensemble (construction du jeu et mesure).
+
+## Résultats (20/11/2026)
+
+- **Construction de `detection-v4`** (run 44625772183, 1 h 35) : 1 100 textes humains et 800 générés ou mixtes, tous les effectifs atteints, arrêts compris. Lot Claude : 360 demandes, 359 textes retenus. Exclusions : 31 pages web, 7 articles, 52 pages universitaires et 82 arrêts déjà vus. Coût estimé : 3 à 4,50 $.
+- **Seuil propre** (run 44643189844) : **0,93** sur la calibration, comme prévu (5 faux positifs sur 1 236, rappel 98,9 %).
+- **Mesure unique** au seuil de 0,93 : faux positifs 0,45 % (5 sur 1 100), rappel Claude 99,5 %, générateurs vus 98,75 %, Phi 100 %. **Les quatre portes sont franchies.** Coût ≈ 0,20 $.
+- **Conséquences appliquées** : seuil inscrit dans `thresholds.yaml`, paquet FR 0.6 livré dans `services/veritas/models/fr` à la place de FR 0.1, jeu gelé dans `ml/eval/testset/detection-v4/`. La piste B n'est pas nécessaire.
+- **Suite** : vérification sur des textes réels avant l'ouverture du français (ADR-0018).

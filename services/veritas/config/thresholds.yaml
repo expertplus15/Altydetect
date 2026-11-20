@@ -19,8 +19,9 @@ models:
   # Run 44352541251 (ADR-0015) : 0,45 % de faux positifs en calibration ; portes franchies.
   # Même valeur que `bands` : l'inscrire atteste qu'un seuil propre a été choisi.
   VRT-DET-EN-0.2: { likely_ai: 0.70 }
-  # VRT-DET-FR-0.6 : aucun seuil propre sur la grille 0,70-0,90 (0,65 % en calibration à 0,90) ;
-  # nouveau choix sur la grille élargie et mesure sur detection-v4 (ADR-0017).
+  # Run 44643189844 (ADR-0017) : 0,40 % de faux positifs en calibration sur la grille 0,70-0,95 ;
+  # mesure unique sur detection-v4 : 0,45 % de faux positifs, portes franchies.
+  VRT-DET-FR-0.6: { likely_ai: 0.93 }
 
 # Confiance : écart entre la probabilité du document et 0,5.
 confidence:

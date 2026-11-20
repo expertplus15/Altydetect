@@ -1,0 +1,26 @@
+{
+  "version": "detection-v4",
+  "created": "2026-11-19",
+  "run": "44625772183",
+  "licence": "Textes humains : mC4 (ODC-BY 1.0), Wikipédia (CC BY-SA 3.0), French Science Commons (licences ouvertes, par document), Cour de cassation (Judilibre, Licence ouverte 2.0) ; textes générés : Claude (Anthropic) pour AltyDetect, Qwen2.5-7B-Instruct, Mistral-7B-Instruct-v0.3, Granite-3.3-8B-Instruct (Apache-2.0), Phi-3.5-mini-instruct (MIT)",
+  "generator": "ml/train/pipeline.py (étape testset-v4, ml/train/train/testset_v4.py)",
+  "documents": {
+    "fr": {
+      "ai_claude": 200,
+      "ai_granite": 100,
+      "ai_mistral": 100,
+      "ai_phi": 100,
+      "ai_qwen": 100,
+      "ai_reformulated": 100,
+      "human_academic": 200,
+      "human_legal": 100,
+      "human_short": 100,
+      "human_web": 400,
+      "human_wikipedia": 300,
+      "mixed": 100
+    }
+  },
+  "files": {
+    "fr.jsonl": "980f3764fafcfb7d3e2424612941d31163a03a1fc7e95b4ef4792993d2c40e47"
+  }
+}

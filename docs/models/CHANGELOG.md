@@ -1,5 +1,10 @@
 # Changelog des modèles et des jeux de test
 
+## 2026-11-20
+
+- **Jeu de test `detection-v4`** (`ml/eval/testset/detection-v4`, français, run 44625772183, ADR-0017) : nouvelle version, jeu neuf de 1 900 textes. 1 100 humains (400 pages mC4 du fragment 3, 300 articles de Wikipédia du fichier 3, 200 pages universitaires de French Science Commons jamais lues, 100 arrêts de la tranche 1, 100 textes courts) et 800 générés ou mixtes (200 Claude, 100 chacun pour Qwen, Mistral, Granite et Phi-3.5-mini, 100 reformulés, 100 mixtes). Gelé : empreinte dans `MANIFEST.json`, vérifiée en test avec l'absence de tout texte ou adresse commune avec les corpus 0.1 à 0.5 et `detection-v1` à `v3`. `detection-v1` à `v3` inchangés.
+- **VRT-DET-FR-0.6** (run 44643189844, ADR-0017) : seuil propre **0,93** choisi sur la calibration, grille élargie à 0,95 (0,40 % de faux positifs). Mesure unique sur `detection-v4` : faux positifs 0,45 %, rappel Claude 99,5 %, vus 98,75 %, Phi 100 %. Critère d'ADR-0015 rempli. **Livré** dans `services/veritas/models/fr` à la place de FR 0.1 ; seuil inscrit dans `thresholds.yaml`. Le français reste fermé jusqu'à la vérification sur des textes réels (ADR-0018).
+
 ## 2026-11-18
 
 - **VRT-DET-FR-0.6** (run 44352541251, ADR-0015) : corpus 0.5 inchangé, encodeur `camembert-large`. Non retenu.

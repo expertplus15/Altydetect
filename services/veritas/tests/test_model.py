@@ -116,10 +116,10 @@ def test_layer2_combines_with_layer1() -> None:
     assert model.detect(french_text(200), "fr").probability > 0.98
 
 
-# Paquets livrés : chargés tels qu'ils sont commités, sans appel à Modal. Français : run v1
-# (ADR-0009) ; anglais : run v2 (ADR-0011, portes de sortie franchies).
+# Paquets livrés : chargés tels qu'ils sont commités, sans appel à Modal. Français : run v6
+# (ADR-0017, seuil 0,93 mesuré sur detection-v4) ; anglais : run v2 (ADR-0011).
 DELIVERED = Path(__file__).resolve().parents[1] / "models"
-DELIVERED_REFERENCES = {"fr": "VRT-DET-FR-0.1", "en": "VRT-DET-EN-0.2"}
+DELIVERED_REFERENCES = {"fr": "VRT-DET-FR-0.6", "en": "VRT-DET-EN-0.2"}
 
 
 @pytest.mark.parametrize("language", ["fr", "en"])
