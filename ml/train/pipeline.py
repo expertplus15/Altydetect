@@ -1611,33 +1611,53 @@ def _fetch(url: str, attempts: int = 6) -> bytes:
                 body: bytes = response.read()
                 return body
         except urllib.error.HTTPError as error:
-            if error.code not in (429, 500, 502, 503) or attempt == attempts - 1:
-                raise
+            # Relancée en RuntimeError : une HTTPError ne passe pas d'un conteneur au lanceur.
+            if error.code not in (429, 500, 502, 503, 504) or attempt == attempts - 1:
+                raise RuntimeError(f"{url[:120]} : HTTP {error.code}") from None
             wait = int(error.headers.get("Retry-After") or 10)
         except (urllib.error.URLError, TimeoutError):
             if attempt == attempts - 1:
-                raise
+                raise RuntimeError(f"{url[:120]} : inaccessible") from None
             wait = 10 * (attempt + 1)
         _log(f"nouvel essai dans {min(wait, 120)} s : {url[:80]}")
         time.sleep(min(wait, 120))
     raise RuntimeError("inaccessible")
 
 
+def _download(url: str, path: str, attempts: int = 6) -> None:
+    """Téléchargement en flux vers un fichier, avec reprise sur les erreurs passagères
+    (archive.org répond parfois 500 ou 503). Les erreurs HTTP sont relancées sous forme de
+    RuntimeError : une HTTPError ne passe pas d'un conteneur Modal au lanceur."""
+    import shutil
+    import urllib.error
+    import urllib.request
+
+    for attempt in range(attempts):
+        request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        try:
+            with urllib.request.urlopen(request, timeout=600) as response, open(path, "wb") as f:
+                shutil.copyfileobj(response, f, length=1 << 20)
+            return
+        except urllib.error.HTTPError as error:
+            if error.code not in (429, 500, 502, 503, 504) or attempt == attempts - 1:
+                raise RuntimeError(f"{url} : HTTP {error.code}") from None
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as error:
+            if attempt == attempts - 1:
+                raise RuntimeError(f"{url} : {error}") from None
+        wait = 30 * (attempt + 1)
+        _log(f"nouvel essai dans {wait} s : {url[:80]}")
+        time.sleep(wait)
+
+
 def _stack_exchange(site: str, inventory: Counter[str], language: str) -> list[dict[str, Any]]:
     """Messages retenus d'un site, lus en flux dans Posts.xml du vidage (rien n'est gardé
     sur le disque du conteneur après la lecture)."""
-    import shutil
     import subprocess
-    import urllib.request
 
     from train.verification import STACK_EXCHANGE_DUMP, iter_posts, stack_exchange_document
 
     archive = f"/tmp/{site}.7z"
-    request = urllib.request.Request(
-        STACK_EXCHANGE_DUMP.format(site=site), headers={"User-Agent": USER_AGENT}
-    )
-    with urllib.request.urlopen(request, timeout=600) as response, open(archive, "wb") as f:
-        shutil.copyfileobj(response, f, length=1 << 20)
+    _download(STACK_EXCHANGE_DUMP.format(site=site), archive)
     _log(f"Stack Exchange {site} : {os.path.getsize(archive) / 1e6:.0f} Mo téléchargés")
     process = subprocess.Popen(
         ["7z", "e", "-so", archive, "Posts.xml"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
