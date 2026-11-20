@@ -289,6 +289,19 @@ PROMPTS = {
         "ce début. Réponds uniquement par le texte, en paragraphes, sans titre, sans liste ni "
         "commentaire."
     ),
+    # FR 0.5 (ADR-0014) : pages web mC4 et corpus déposé, même principe d'appariement.
+    "web": (
+        "Voici le début d'une page web en français :\n\n« {start} »\n\n"
+        "Écris une page web originale d'environ {words} mots sur le même sujet, dans le même "
+        "genre et le même ton. Ne recopie pas ce début. Réponds uniquement par le texte, en "
+        "paragraphes, sans titre, sans liste ni commentaire."
+    ),
+    "resource": (
+        "Voici le début d'un texte en français :\n\n« {start} »\n\n"
+        "Écris un texte original d'environ {words} mots sur le même sujet, dans le même genre "
+        "et le même registre. Ne recopie pas ce début. Réponds uniquement par le texte, en "
+        "paragraphes, sans titre, sans liste ni commentaire."
+    ),
 }
 
 
@@ -337,6 +350,47 @@ def generated_document(job: Job, generator: str, raw: str) -> dict[str, Any] | N
     return document
 
 
+# --- FR 0.4 (ADR-0012, suite) ---
+
+# FR 0.3 accuse à tort 10 % des pages universitaires de detection-v3, surtout courtes (moins de
+# 300 mots) et récentes (2018 à 2022). FR 0.4 ajoute des textes humains pris hors de tout
+# document déjà utilisé (corpus 0.3 et detection-v3), en privilégiant ces pages-là.
+EXTRA_SIZES = {"academic": 2000, "legal": 800}
+PRIORITY_SHARE = 0.7
+
+
+def is_priority(document: dict[str, Any]) -> bool:
+    return int(document["words"]) < 300 or str(document["date"])[:4] >= "2018"
+
+
+def select_extra(
+    register: str, candidates: Sequence[dict[str, Any]], used: set[str]
+) -> list[dict[str, Any]]:
+    """Textes humains supplémentaires d'un registre, jamais issus d'un document déjà utilisé
+    (`used` : adresses et empreintes du corpus 0.3 et de detection-v3). Universitaire :
+    PRIORITY_SHARE de pages courtes ou récentes ; juridique : au plus EXTRA_SIZES[register].
+    Entraînement et calibration seulement : detection-v3 reste le jeu de test."""
+    pool = list(
+        {
+            d["sha256"]: d for d in candidates if d["url"] not in used and d["sha256"] not in used
+        }.values()
+    )
+    n = EXTRA_SIZES[register]
+    if register == "academic":
+        first = choose([d for d in pool if is_priority(d)], round(n * PRIORITY_SHARE), "v4-prio")
+        taken = {d["id"] for d in first}
+        rest = choose([d for d in pool if d["id"] not in taken], n - len(first), "v4-academic")
+        chosen = first + rest
+    else:
+        chosen = choose(pool, n, f"v4-{register}")
+    out = []
+    for d in chosen:
+        d = dict(d)
+        d["split"] = assign_split(d, test=False)
+        out.append(d)
+    return sorted(out, key=lambda d: d["id"])
+
+
 # --- Portes de sortie (ADR-0012 : celles d'ADR-0011, detection-v3 en plus) ---
 
 V3_AI = ("ai_academic", "ai_legal")
@@ -381,8 +435,9 @@ def check_gates(v1: dict[str, Any], v2: dict[str, Any], v3: dict[str, Any]) -> d
     return {"gates": GATES, "measured": measured, "checks": checks, "passed": all(checks.values())}
 
 
-def sample_line(line: bytes, every: int = JURIS_SAMPLE) -> bool:
-    """Tirage stable d'une ligne sur `every` (même sélection d'un run à l'autre)."""
+def sample_line(line: bytes, every: int = JURIS_SAMPLE, residue: int = 0) -> bool:
+    """Tirage stable d'une ligne sur `every` (même sélection d'un run à l'autre). `residue`
+    choisit une autre tranche, sans recouvrement avec la tranche 0 (detection-v4)."""
     import zlib
 
-    return zlib.crc32(line) % every == 0
+    return zlib.crc32(line) % every == residue

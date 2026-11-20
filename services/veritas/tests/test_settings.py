@@ -1,9 +1,18 @@
 import os
 from pathlib import Path
+from typing import Any
 
 import pytest
+import yaml
 
-from veritas.settings import CONFIG_DIR, LiveConfig, Routing, routing_config, thresholds_config
+from veritas.settings import (
+    CONFIG_DIR,
+    LiveConfig,
+    Routing,
+    Thresholds,
+    routing_config,
+    thresholds_config,
+)
 
 
 def test_shipped_configuration_is_valid() -> None:
@@ -63,3 +72,30 @@ def test_invalid_first_version_fails(tmp_path: Path) -> None:
     path.write_text((CONFIG_DIR / "thresholds.yaml").read_text().replace("0.70", "0.40"))
     with pytest.raises(ValueError, match="likely_ai"):
         thresholds_config(tmp_path).get()
+
+
+def test_delivered_model_thresholds() -> None:
+    """ADR-0015 : seuil propre d'EN 0.2 inscrit ; aucun pour le français."""
+    raw = yaml.safe_load((CONFIG_DIR / "thresholds.yaml").read_text(encoding="utf-8"))
+    assert Thresholds.parse(raw).model_likely_ai == {"VRT-DET-EN-0.2": 0.70}
+
+
+def _thresholds(models: str) -> dict[str, Any]:
+    raw: dict[str, Any] = yaml.safe_load(
+        "min_words: 150\nbands: {likely_ai: 0.70, likely_human: 0.30}\n"
+        "confidence: {high_margin: 0.35, medium_margin: 0.20, min_words_for_high: 300}\n" + models
+    )
+    return raw
+
+
+def test_model_thresholds_are_parsed_and_bounded() -> None:
+    """ADR-0013, ADR-0017 : seuil propre à un modèle, entre 0,70 et 0,95."""
+    assert Thresholds.parse(_thresholds("")).model_likely_ai == {}
+    assert Thresholds.parse(_thresholds("models: {}\n")).model_likely_ai == {}
+    parsed = Thresholds.parse(_thresholds("models: {VRT-DET-FR-0.4: {likely_ai: 0.84}}\n"))
+    assert parsed.model_likely_ai == {"VRT-DET-FR-0.4": 0.84}
+    assert parsed.for_model("VRT-DET-FR-0.4").likely_ai == 0.84
+    assert parsed.for_model("VRT-DET-FR-0.4").likely_human == 0.30
+    for value in (0.69, 0.96):
+        with pytest.raises(ValueError, match=r"VRT-DET-FR-0\.4"):
+            Thresholds.parse(_thresholds(f"models: {{VRT-DET-FR-0.4: {{likely_ai: {value}}}}}\n"))

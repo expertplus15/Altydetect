@@ -56,8 +56,11 @@ pnpm benchmark:plagiarism     # rappel d'Indexa sur le jeu de test gelé
 
 Sur Modal, lancé par GitHub Actions (ADR-0009) : un commit sur `main` qui modifie
 `ml/train/requests/run.json` démarre le workflow « Entraînement Veritas (Modal) » avec les
-paramètres du fichier (`pilot` pour un essai isolé, `v1` pour les modèles 0.1, étape `deploy`
-pour la couche 2). Fiches des modèles : `docs/models/`. Secrets du dépôt
+paramètres du fichier (`pilot` pour un essai isolé, `v1` à `v6` pour les modèles 0.1 à 0.6,
+étape `deploy` pour la couche 2). Le même workflow se lance aussi à la main (Actions → Run
+workflow). Dans les deux cas, l'étape, l'essai et le plafond de coût accepté (`cost_usd`, en
+dollars) sont obligatoires : aucune valeur par défaut ne lance de calcul (ADR-0015). Fiches des
+modèles : `docs/models/`. Secrets du dépôt
 nécessaires : `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET`, `ANTHROPIC_API_KEY`.
 
 ## Mettre en production

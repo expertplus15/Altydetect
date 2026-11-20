@@ -6,7 +6,12 @@ partition « test » du volume Modal. Chaque texte est noté par le fournisseur 
 (couche 2 : application Modal déployée), avec les mêmes seuils que la production. Le rapport
 ne contient aucun texte : identifiants, probabilités, métriques et accord.
 
-Lancement : workflow « Entraînement Veritas », étape `benchmark` (ml/train/requests/run.json).
+Sélection précise (`--selection`) : au lieu d'un tirage dans detection-v1, une liste
+d'identifiants d'un jeu gelé (fichier `ml/eval/requests/*.json` : jeu, langue, identifiants,
+motif). Sert à vérifier des cas précis, par exemple les faux positifs d'un modèle Veritas.
+
+Lancement : workflow « Entraînement Veritas », étape `benchmark` (ml/train/requests/run.json,
+champ `bench_selection` pour une sélection).
 """
 
 import json
@@ -77,6 +82,17 @@ def sample(
     chosen = rng.sample(human, humans) + rng.sample(ai, ais)
     # Ordre d'envoi mélangé : un banc d'essai interrompu garde des humains et des générés.
     rng.shuffle(chosen)
+    return chosen
+
+
+def select(documents: Sequence[dict[str, Any]], ids: Sequence[str]) -> list[dict[str, Any]]:
+    """Documents d'un jeu gelé désignés par leur identifiant, triés ; erreur si l'un manque
+    (une sélection incomplète fausserait la vérification)."""
+    wanted = set(ids)
+    chosen = sorted((d for d in documents if d["id"] in wanted), key=lambda d: d["id"])
+    missing = wanted - {d["id"] for d in chosen}
+    if missing:
+        raise ValueError(f"{len(missing)} identifiants absents du jeu : {sorted(missing)[:3]}")
     return chosen
 
 
@@ -215,7 +231,14 @@ app = modal.App("altydetect-provider-benchmark", image=image)
     secrets=[modal.Secret.from_name("altydetect-pangram")],
 )
 def benchmark(
-    provider: str, language: str, humans: int, ais: int, max_words: int, parallel: int
+    provider: str,
+    language: str,
+    humans: int,
+    ais: int,
+    max_words: int,
+    parallel: int,
+    testset: str = "",
+    ids: list[str] | None = None,
 ) -> dict[str, Any]:
     import os
 
@@ -229,10 +252,15 @@ def benchmark(
         print(f"[{time.strftime('%H:%M:%S')}] {message}", flush=True)
 
     documents = []
-    for name in ("human", "ai"):
-        with open(f"{CORPUS}/{RUN}/{language}/{name}.jsonl", encoding="utf-8") as f:
-            documents += [json.loads(line) for line in f if line.strip()]
-    chosen = sample(documents, humans, ais)
+    if ids:
+        with open(f"{CORPUS}/{testset}/{language}.jsonl", encoding="utf-8") as f:
+            documents = [json.loads(line) for line in f if line.strip()]
+        chosen = select(documents, ids)
+    else:
+        for name in ("human", "ai"):
+            with open(f"{CORPUS}/{RUN}/{language}/{name}.jsonl", encoding="utf-8") as f:
+                documents += [json.loads(line) for line in f if line.strip()]
+        chosen = sample(documents, humans, ais)
     words = sum(int(d["words"]) for d in chosen)
     if words > max_words:
         raise RuntimeError(f"{language} : {words} mots, au-delà du plafond de {max_words}")
@@ -262,6 +290,7 @@ def benchmark(
     )
     report["provider"] = provider
     report["words"] = words
+    report["testset"] = testset or "detection-v1"
     return report
 
 
@@ -273,14 +302,25 @@ def main(
     ais: int = 100,
     max_words: int = DEFAULT_MAX_WORDS,
     out: str = "ml/train/out",
+    selection: str = "",
 ) -> None:
+    out_dir = Path(out)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    if selection:
+        spec = json.loads((REPO / selection).read_text(encoding="utf-8"))
+        testset, language, ids = spec["testset"], spec["language"], spec["ids"]
+        report = benchmark.remote(provider, language, 0, 0, max_words, 1, testset, ids)
+        name = Path(selection).stem
+        (out_dir / f"benchmark-{provider}-{name}.json").write_text(
+            json.dumps(report, indent=1) + "\n", encoding="utf-8"
+        )
+        print(json.dumps({k: v for k, v in report.items() if k != "records"}, indent=1))
+        return
     langs = languages.split(",")
     # Estimation avant tout appel : 1 000 textes de test font en moyenne ≈ 450 mots.
     estimate = len(langs) * (humans + ais) * 450
     if estimate > max_words:
         raise SystemExit(f"≈ {estimate} mots prévus, au-delà du plafond de {max_words}")
-    out_dir = Path(out)
-    out_dir.mkdir(parents=True, exist_ok=True)
     # Plafond réparti entre les langues, vérifié sur les mots réels avant tout appel.
     per_language = max_words // len(langs)
     reports = benchmark.starmap(

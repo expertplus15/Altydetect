@@ -1,5 +1,30 @@
 # Changelog des modèles et des jeux de test
 
+## 2026-11-18
+
+- **VRT-DET-FR-0.6** (run 44352541251, ADR-0015) : corpus 0.5 inchangé, encodeur `camembert-large`. Non retenu.
+  - Les quatre portes sont franchies au seuil général : faux positifs 0,89 % (FR 0.5 : 1,28 %), rappel Claude 100 %, vus 99,5 %, Phi 100 %.
+  - Aucun seuil propre ne convient (0,65 % de faux positifs en calibration à 0,90, pour une cible de 0,5 %). Le critère d'ADR-0015 n'est pas rempli : le français reste indisponible.
+
+  Fiche : `VRT-DET-FR-0.6.md`.
+
+- **VRT-DET-EN-0.2** (même run) : seuil propre 0,70 choisi sur la calibration (0,45 % de faux positifs), inscrit dans `thresholds.yaml`. Mesure unique à ce seuil : faux positifs 0,14 %, les quatre portes franchies. Critère d'ADR-0015 rempli ; l'ouverture de l'anglais attend la vérification sur des textes réels.
+
+## 2026-11-16
+
+- **Corpus 0.5** (`ml/corpus/manifests/veritas-0.5/fr.jsonl`, run 43901277788) : corpus 0.4 inclus, plus 3 000 textes humains nouveaux, dont 721 « difficiles » pour FR 0.4. Chacun a un texte généré apparié (Qwen, Mistral, Granite ; Phi tenu à l'écart). 30 582 documents. ADR-0014.
+  - 1 500 pages universitaires (French Science Commons, 12 fichiers jamais lus).
+  - 800 pages web (mC4, fragment 2).
+  - 700 passages du corpus déposé, issus de 199 fichiers, avec des droits écrits déclarés par le déposant.
+
+  Manifeste sans texte, sans recoupement avec les jeux de test.
+
+- **VRT-DET-FR-0.5** (même run) : non retenu. Faux positifs 1,28 % (FR 0.4 : 1,9 %) pour une porte de 1 %. Les trois portes de rappel sont franchies (Claude 100 %, vus 99,5 %, Phi 100 %).
+  - Aucun seuil propre ne convient (0,65 % de faux positifs en calibration à 0,90, pour une cible de 0,5 %).
+  - VRT-DET-FR-0.1 reste en place.
+
+  Fiche : `VRT-DET-FR-0.5.md`.
+
 ## 2026-11-14
 
 - **Jeu de test `detection-v3`** (`ml/eval/testset/detection-v3`, français) : registre

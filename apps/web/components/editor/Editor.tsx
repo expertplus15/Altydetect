@@ -88,6 +88,7 @@ export function Editor({
         "aria-multiline": "true",
         role: "textbox",
         "aria-describedby": hintId,
+        "data-testid": "editor",
         class:
           "prose-alty min-h-64 w-full px-1 py-2 text-[15.5px] leading-[1.75] text-gray-900 focus:outline-none",
       },

@@ -105,7 +105,7 @@ OLMo, plus lents que prévu, ont souvent manqué de mémoire GPU sur les longues
 ## Résultats de l'entraînement (run 43425145321, 13/11/2026)
 
 Fiches : `docs/models/VRT-DET-EN-0.2.md`, `docs/models/VRT-DET-FR-0.2.md` ; rapports dans
-`docs/models/reports/`. 1 h 32 de bout en bout, ≈ 2,4 h de GPU L4 (≈ 2 $).
+`docs/models/reports/`. 1 h 32 de bout en bout, au plus ≈ 2,4 h de GPU L4 (≈ 2 $).
 
 | Porte                                    | FR 0.2    | EN 0.2  |
 | ---------------------------------------- | --------- | ------- |
@@ -128,8 +128,11 @@ Fiches : `docs/models/VRT-DET-EN-0.2.md`, `docs/models/VRT-DET-FR-0.2.md` ; rapp
 - Les scores de 100 % restent à confirmer hors laboratoire (jeux produits comme le corpus).
 - La zone « Indéterminé » reste presque vide : objectif de calibrage non atteint, à reprendre
   en 0.3.
-- Le run a passé ≈ 30 min par langue sur GPU à préparer les passages avant d'entraîner : à
-  faire sur CPU en 0.3.
+- 31 min se sont écoulées entre le lancement et la fin de la préparation des passages, pour les
+  deux langues à la fois. La cause n'est pas établie (préparation sur le GPU, démarrage du
+  conteneur ou attente d'un GPU, cette dernière n'étant pas facturée) : à mesurer en 0.3
+  (ADR-0012). Correction du 14/11/2026 : une version précédente l'attribuait à la seule
+  préparation.
 
 ## Conséquences
 

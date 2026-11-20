@@ -8,6 +8,7 @@ from detection.provider_benchmark import (
     compare,
     pangram_interval,
     sample,
+    select,
 )
 
 
@@ -180,3 +181,11 @@ def test_throttle_spaces_calls() -> None:
 def test_pangram_interval_shares_account_limit() -> None:
     assert pangram_interval(2.5, 2) == 1.0  # 2 langues, 2,5 req/s : 1 tâche par seconde chacune
     assert pangram_interval(None, 2) == 1.0
+
+
+def test_select_returns_exact_ids_or_fails() -> None:
+    docs = [{"id": f"h-fr-{i:04d}", "label": "human", "split": "test"} for i in range(10)]
+    chosen = select(docs, ["h-fr-0007", "h-fr-0002"])
+    assert [d["id"] for d in chosen] == ["h-fr-0002", "h-fr-0007"]
+    with pytest.raises(ValueError, match="absents"):
+        select(docs, ["h-fr-0002", "h-fr-9999"])

@@ -7,7 +7,7 @@ fichier change : on les modifie sans redéploiement (CLAUDE.md §6).
 import os
 import threading
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Literal
 
@@ -17,6 +17,9 @@ CONFIG_DIR = Path(os.environ.get("VERITAS_CONFIG_DIR", Path(__file__).parents[2]
 
 Serve = Literal["external", "veritas", "both"]
 Level = Literal["high", "medium", "low"]
+# Bornes d'un seuil « Probablement IA » propre à un modèle (ADR-0013 ; borne haute portée à
+# 0,95 par ADR-0017 : les probabilités plafonnent vers 0,96 avec le lissage des étiquettes).
+MODEL_LIKELY_AI_RANGE = (0.70, 0.95)
 LEVEL_RANK: dict[str, int] = {"low": 0, "medium": 1, "high": 2}
 
 
@@ -28,10 +31,18 @@ class Thresholds:
     high_margin: float
     medium_margin: float
     min_words_for_high: int
+    # Seuil « Probablement IA » propre à un modèle Veritas, par référence (ADR-0013).
+    model_likely_ai: dict[str, float] = field(default_factory=dict)
+
+    def for_model(self, reference: str) -> "Thresholds":
+        """Seuils d'un moteur : ceux de son modèle s'il en a, sinon les seuils généraux."""
+        likely_ai = self.model_likely_ai.get(reference)
+        return self if likely_ai is None else replace(self, likely_ai=likely_ai)
 
     @classmethod
     def parse(cls, raw: dict[str, Any]) -> "Thresholds":
         bands, confidence = raw["bands"], raw["confidence"]
+        models = raw.get("models") or {}
         thresholds = cls(
             min_words=int(raw["min_words"]),
             likely_ai=float(bands["likely_ai"]),
@@ -39,11 +50,18 @@ class Thresholds:
             high_margin=float(confidence["high_margin"]),
             medium_margin=float(confidence["medium_margin"]),
             min_words_for_high=int(confidence["min_words_for_high"]),
+            model_likely_ai={
+                str(reference): float(values["likely_ai"]) for reference, values in models.items()
+            },
         )
         if not 0 <= thresholds.likely_human < 0.5 < thresholds.likely_ai <= 1:
             raise ValueError("thresholds.yaml : il faut likely_human < 0,5 < likely_ai")
         if not 0 < thresholds.medium_margin <= thresholds.high_margin <= 0.5:
             raise ValueError("thresholds.yaml : il faut 0 < medium_margin ≤ high_margin ≤ 0,5")
+        low, high = MODEL_LIKELY_AI_RANGE
+        for reference, likely_ai in thresholds.model_likely_ai.items():
+            if not (low <= likely_ai <= high and likely_ai > thresholds.likely_human):
+                raise ValueError(f"thresholds.yaml : seuil de {reference} hors de [{low}, {high}]")
         return thresholds
 
 
