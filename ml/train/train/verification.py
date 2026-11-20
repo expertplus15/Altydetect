@@ -1,6 +1,11 @@
-"""Jeu de vérification `verification-en-v1` de VRT-DET-EN-0.2 sur des textes réels (ADR-0016).
+"""Jeux de vérification sur des textes réels : `verification-en-v1` de VRT-DET-EN-0.2
+(ADR-0016) et `verification-fr-v1` de VRT-DET-FR-0.6 (ADR-0018).
 
-Fonctions pures, sans réseau ni Modal (testées dans tests/test_verification.py) :
+Fonctions pures, sans réseau ni Modal (testées dans tests/test_verification.py et
+tests/test_verification_fr.py). Chaque jeu est décrit par un `Protocol` (EN, FR) ; les
+fonctions prennent le protocole anglais par défaut.
+
+Anglais :
 
 - textes humains publics, d'avant le 30/11/2022 (sortie de ChatGPT) :
   - `human_non_native` : questions d'English Language Learners Stack Exchange ;
@@ -11,6 +16,12 @@ Fonctions pures, sans réseau ni Modal (testées dans tests/test_verification.py
   - `ai_assistant` : textes produits à la main dans ChatGPT, Gemini ou Copilot ;
   - `ai_edited` : textes générés puis retouchés à la main (publiés, sans porte) ;
 - portes d'ADR-0016 §3, et borne haute à 95 % du taux de faux positifs.
+
+Français (mêmes dépôt et portes, ADR-0018) :
+
+- `human_forum` : questions et réponses rédigées en français de French Language Stack Exchange ;
+- `human_abstract` : résumés en français de dépôts HAL sous CC BY, CC BY-SA ou CC0 ;
+- assistants : ChatGPT, Gemini, Copilot, Le Chat.
 
 Aucun texte ne sort du volume : les rapports ne portent que des identifiants, des empreintes et
 des probabilités.
@@ -24,6 +35,7 @@ import re
 import xml.etree.ElementTree as ET
 from collections import Counter
 from collections.abc import Iterable, Iterator, Mapping
+from dataclasses import dataclass, field
 from typing import Any, BinaryIO
 
 from corpus.clean import count_words, fingerprint
@@ -68,6 +80,43 @@ KINDS = {
 ASSISTANTS = ("chatgpt", "gemini", "copilot", "other")
 GENRES = ("essay", "letter", "email", "report", "answer", "article", "other")
 
+# Français (ADR-0018) : forum French Language Stack Exchange, résumés HAL.
+FRENCH_SITE = "french"
+HAL_API = "https://api.archives-ouvertes.fr/search/"
+HAL_FIELDS = (
+    "halId_s",
+    "docType_s",
+    "fr_abstract_s",
+    "licence_s",
+    "producedDate_s",
+    "submittedDate_s",
+)
+# Licences gardées (usage commercial permis, ni NC ni ND), lues dépôt par dépôt.
+_HAL_LICENCE = re.compile(
+    r"creativecommons\.org/(?:licenses/(by|by-sa)/(\d\.\d)|publicdomain/(zero)/1\.0)"
+)
+
+
+@dataclass(frozen=True)
+class Protocol:
+    """Un jeu de vérification : langue, modèle mesuré, sources publiques et dépôt."""
+
+    version: str
+    language: str
+    reference: str
+    # Run du workflow dont le corpus sert de référence pour les exclusions.
+    run: str
+    quotas: Mapping[str, int]
+    assistants: tuple[str, ...]
+    # Total de textes publics visé : une catégorie trop petite est complétée par les autres.
+    # None : chaque catégorie doit atteindre son effectif.
+    public_total: int | None = None
+    deposit_dir: str = field(init=False)
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "deposit_dir", f"incoming/{self.version}")
+
+
 # Arrêts avant toute dépense GPU, et portes (ADR-0016 §3).
 MIN_HUMANS = 600
 MIN_ASSISTANTS = 100
@@ -78,6 +127,25 @@ GATES = {
     "max_category_false_positive_rate": 0.02,
     "min_recall_assistants": 0.60,
 }
+
+EN = Protocol(
+    version=VERSION,
+    language=LANGUAGE,
+    reference=REFERENCE,
+    run="v2",
+    quotas=QUOTAS,
+    assistants=ASSISTANTS,
+)
+FR = Protocol(
+    version="verification-fr-v1",
+    language="fr",
+    reference="VRT-DET-FR-0.6",
+    run="v6",
+    quotas={"human_forum": 150, "human_abstract": 350},
+    assistants=("chatgpt", "gemini", "copilot", "lechat", "other"),
+    public_total=500,
+)
+PROTOCOLS = {"en": EN, "fr": FR}
 
 _BLOCKS = re.compile(r"<(pre|code|blockquote|table)\b[^>]*>.*?</\1\s*>", re.IGNORECASE | re.DOTALL)
 _BREAKS = re.compile(r"<\s*(br|/p|/li|/h[1-6]|/div)\b[^>]*>", re.IGNORECASE)
@@ -100,7 +168,7 @@ def html_to_text(body: str) -> str:
     return "\n\n".join(p for p in paragraphs if p)
 
 
-def _usable(text: str, inventory: Counter[str], prefix: str) -> bool:
+def _usable(text: str, inventory: Counter[str], prefix: str, protocol: Protocol = EN) -> bool:
     words = count_words(text)
     if words < MIN_WORDS:
         inventory[f"{prefix}_too_short"] += 1
@@ -108,18 +176,20 @@ def _usable(text: str, inventory: Counter[str], prefix: str) -> bool:
     if words > MAX_WORDS:
         inventory[f"{prefix}_too_long"] += 1
         return False
-    if language_of(text) != LANGUAGE:
-        inventory[f"{prefix}_not_english"] += 1
+    if language_of(text) != protocol.language:
+        inventory[f"{prefix}_not_{'english' if protocol.language == 'en' else 'french'}"] += 1
         return False
     return True
 
 
-def _document(id_: str, category: str, label: str, text: str, **meta: Any) -> dict[str, Any]:
+def _document(
+    id_: str, category: str, label: str, text: str, protocol: Protocol = EN, **meta: Any
+) -> dict[str, Any]:
     return {
         "id": id_,
         "category": category,
         "label": label,
-        "language": LANGUAGE,
+        "language": protocol.language,
         "words": count_words(text),
         "sha256": fingerprint(text),
         **meta,
@@ -143,9 +213,10 @@ def iter_posts(stream: BinaryIO) -> Iterator[dict[str, str]]:
 
 
 def stack_exchange_document(
-    row: Mapping[str, str], site: str, inventory: Counter[str]
+    row: Mapping[str, str], site: str, inventory: Counter[str], protocol: Protocol = EN
 ) -> dict[str, Any] | None:
-    """Message retenu, ou None (motif compté dans `inventory`). ELL : questions seulement."""
+    """Message retenu, ou None (motif compté dans `inventory`). ELL : questions seulement.
+    French Language (protocole FR) : questions et réponses rédigées en français."""
     kind = row.get("PostTypeId")
     non_native = site == NON_NATIVE_SITE
     if kind not in (("1",) if non_native else ("1", "2")):
@@ -155,7 +226,7 @@ def stack_exchange_document(
         inventory[f"{prefix}_after_cutoff"] += 1
         return None
     text = html_to_text(row.get("Body", ""))
-    if not _usable(text, inventory, prefix):
+    if not _usable(text, inventory, prefix, protocol):
         return None
     post = row["Id"]
     path = "q" if kind == "1" else "a"
@@ -164,6 +235,7 @@ def stack_exchange_document(
         "human_non_native" if non_native else "human_forum",
         "human",
         text,
+        protocol,
         source=f"stackexchange:{site}",
         url=f"https://{site}.stackexchange.com/{path}/{post}",
         licence=STACK_EXCHANGE_LICENCE,
@@ -220,6 +292,84 @@ def arxiv_document(record: Mapping[str, str], inventory: Counter[str]) -> dict[s
     )
 
 
+# --- HAL (français) ---
+
+
+def hal_query(cursor: str = "*", rows: int = 500, licence_filter: bool = True) -> str:
+    """Adresse d'une page de l'interface de recherche HAL : dépôts en français, articles et
+    thèses, déposés au plus tard en 2021, triés par identifiant (pagination par curseur)."""
+    from urllib.parse import urlencode
+
+    filters = [
+        "language_s:fr",
+        "docType_s:(ART OR THESE)",
+        "submittedDateY_i:[2000 TO 2021]",
+    ]
+    if licence_filter:
+        filters.append("licence_s:*creativecommons.org*")
+    params = [("q", "*:*")] + [("fq", f) for f in filters]
+    params += [
+        ("fl", ",".join(HAL_FIELDS)),
+        ("rows", str(rows)),
+        ("sort", "docid asc"),
+        ("cursorMark", cursor),
+        ("wt", "json"),
+    ]
+    return f"{HAL_API}?{urlencode(params)}"
+
+
+def hal_page(body: bytes) -> tuple[list[dict[str, Any]], str | None, int]:
+    """Une page de réponse HAL : dépôts, curseur de la page suivante (None à la fin) et nombre
+    total de résultats."""
+    data = json.loads(body)
+    response = data.get("response", {})
+    cursor = data.get("nextCursorMark")
+    return list(response.get("docs", [])), cursor, int(response.get("numFound", 0))
+
+
+def hal_licence(value: str | None) -> str | None:
+    """Licence lisible si elle permet un usage commercial (CC BY, CC BY-SA, CC0), sinon None."""
+    match = _HAL_LICENCE.search((value or "").lower())
+    if match is None:
+        return None
+    kind, version, zero = match.groups()
+    return "CC0 1.0" if zero else f"CC {kind.upper()} {version}"
+
+
+def hal_document(
+    record: Mapping[str, Any], inventory: Counter[str], protocol: Protocol = FR
+) -> dict[str, Any] | None:
+    """Résumé français retenu : dépôt sous licence ouverte, produit et déposé avant la date
+    limite."""
+    licence = hal_licence(record.get("licence_s"))
+    if licence is None:
+        inventory["hal_licence_excluded"] += 1
+        return None
+    if not _before_cutoff(record.get("producedDate_s"), record.get("submittedDate_s")):
+        inventory["hal_after_cutoff"] += 1
+        return None
+    abstracts = record.get("fr_abstract_s") or []
+    first = abstracts[0] if isinstance(abstracts, list) and abstracts else abstracts
+    text = " ".join(str(first or "").split())
+    if not text:
+        inventory["hal_no_abstract"] += 1
+        return None
+    if not _usable(text, inventory, "hal", protocol):
+        return None
+    hal_id = str(record["halId_s"])
+    return _document(
+        f"hal-{hal_id}",
+        "human_abstract",
+        "human",
+        text,
+        protocol,
+        source="hal",
+        url=f"https://hal.science/{hal_id}",
+        licence=f"{licence} (licence du dépôt)",
+        date=str(record.get("producedDate_s", ""))[:10],
+    )
+
+
 # --- sélection ---
 
 
@@ -251,13 +401,30 @@ def exclude_known(
     return kept
 
 
-def _rank(document: Mapping[str, Any]) -> str:
-    return hashlib.sha256(f"{VERSION}:{document['id']}".encode()).hexdigest()
+def _rank(document: Mapping[str, Any], version: str = VERSION) -> str:
+    return hashlib.sha256(f"{version}:{document['id']}".encode()).hexdigest()
 
 
-def select(documents: Iterable[dict[str, Any]], size: int) -> list[dict[str, Any]]:
+def select(
+    documents: Iterable[dict[str, Any]], size: int, protocol: Protocol = EN
+) -> list[dict[str, Any]]:
     """Tirage stable : le même ensemble de candidats donne toujours la même sélection."""
-    return sorted(documents, key=_rank)[:size]
+    return sorted(documents, key=lambda d: _rank(d, protocol.version))[:size]
+
+
+def select_public(
+    documents: Iterable[dict[str, Any]], protocol: Protocol = FR
+) -> list[dict[str, Any]]:
+    """Textes publics d'un protocole à total fixe (français) : chaque catégorie jusqu'à son
+    effectif, puis les catégories qui ont des textes en réserve complètent jusqu'au total."""
+    documents = list(documents)
+    chosen: list[dict[str, Any]] = []
+    for category, quota in protocol.quotas.items():
+        chosen += select((d for d in documents if d["category"] == category), quota, protocol)
+    total = protocol.public_total or sum(protocol.quotas.values())
+    ids = {d["id"] for d in chosen}
+    rest = (d for d in documents if d["id"] not in ids and d["category"] in protocol.quotas)
+    return chosen + select(rest, max(0, total - len(chosen)), protocol)
 
 
 def select_forum(documents: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -276,16 +443,17 @@ def select_forum(documents: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def parse_deposit(
-    lines: Iterable[bytes | str], inventory: Counter[str]
+    lines: Iterable[bytes | str], inventory: Counter[str], protocol: Protocol = EN
 ) -> list[tuple[dict[str, Any] | None, bytes | str]]:
     """Lignes JSON du dépôt → (document, ligne brute). Le document vaut None si la ligne est
     refusée (motif dans `inventory`). Format d'une ligne :
 
     - `kind` : `volunteer`, `assistant` ou `edited` ;
-    - `text` : le texte, en anglais, de 150 à 1 500 mots ;
+    - `text` : le texte, dans la langue du protocole, de 150 à 1 500 mots ;
     - volontaire : `consent_id` (référence du consentement écrit, gardé par l'équipe hors du
       dépôt) et `year` (année d'écriture, au plus 2022) ;
-    - assistant ou retouché : `source` parmi chatgpt, gemini, copilot, other ;
+    - assistant ou retouché : `source` parmi les assistants du protocole (anglais : chatgpt,
+      gemini, copilot, other ; français : les mêmes et lechat) ;
     - facultatif : `genre` parmi essay, letter, email, report, answer, article, other.
     """
     out: list[tuple[dict[str, Any] | None, bytes | str]] = []
@@ -293,11 +461,13 @@ def parse_deposit(
         line = raw.decode("utf-8", "replace") if isinstance(raw, bytes) else raw
         if not line.strip():
             continue
-        out.append((_deposit_document(line, inventory), raw))
+        out.append((_deposit_document(line, inventory, protocol), raw))
     return out
 
 
-def _deposit_document(line: str, inventory: Counter[str]) -> dict[str, Any] | None:
+def _deposit_document(
+    line: str, inventory: Counter[str], protocol: Protocol = EN
+) -> dict[str, Any] | None:
     try:
         record = json.loads(line)
     except json.JSONDecodeError:
@@ -329,15 +499,15 @@ def _deposit_document(line: str, inventory: Counter[str]) -> dict[str, Any] | No
         meta.update(source="volunteer", year=year)
     else:
         source = record.get("source")
-        if source not in ASSISTANTS:
+        if source not in protocol.assistants:
             inventory[f"deposit_{kind}_unknown_source"] += 1
             return None
         meta.update(source=str(source))
-    if not _usable(text, inventory, f"deposit_{kind}"):
+    if not _usable(text, inventory, f"deposit_{kind}", protocol):
         return None
     category, label = KINDS[kind]
     digest = fingerprint(text)
-    return _document(f"dep-{kind}-{digest[:16]}", category, label, text, **meta)
+    return _document(f"dep-{kind}-{digest[:16]}", category, label, text, protocol, **meta)
 
 
 def keep_line(document: Mapping[str, Any] | None) -> bool:
@@ -349,12 +519,18 @@ def keep_line(document: Mapping[str, Any] | None) -> bool:
 # --- arrêts et portes ---
 
 
-def check_sizes(counts: Mapping[str, int]) -> list[str]:
-    """Motifs d'arrêt avant la notation (aucune dépense GPU)."""
+def check_sizes(counts: Mapping[str, int], protocol: Protocol = EN) -> list[str]:
+    """Motifs d'arrêt avant la notation (aucune dépense GPU). Protocole à total fixe : seul le
+    total des textes publics compte, pas l'effectif de chaque catégorie."""
     problems = []
-    for category, quota in QUOTAS.items():
-        if counts.get(category, 0) < quota:
-            problems.append(f"{category} : {counts.get(category, 0)} textes pour {quota}")
+    if protocol.public_total is None:
+        for category, quota in protocol.quotas.items():
+            if counts.get(category, 0) < quota:
+                problems.append(f"{category} : {counts.get(category, 0)} textes pour {quota}")
+    else:
+        public = sum(counts.get(c, 0) for c in protocol.quotas)
+        if public < protocol.public_total:
+            problems.append(f"textes publics : {public} pour {protocol.public_total}")
     humans = sum(n for c, n in counts.items() if c.startswith("human_"))
     if humans < MIN_HUMANS:
         problems.append(f"textes humains : {humans} pour {MIN_HUMANS}")

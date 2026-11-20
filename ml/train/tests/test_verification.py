@@ -292,7 +292,8 @@ def test_gates_not_evaluable_without_enough_texts() -> None:
 
 
 def test_pipeline_has_verification_stages() -> None:
-    """Étapes Modal d'ADR-0016 présentes, réservées au run v2 en anglais."""
+    """Étapes Modal d'ADR-0016 présentes, réservées au run v2 en anglais et au run v6 en
+    français (ADR-0018)."""
     import ast
     from pathlib import Path
 
@@ -300,4 +301,4 @@ def test_pipeline_has_verification_stages() -> None:
     functions = {n.name for n in ast.walk(ast.parse(source)) if isinstance(n, ast.FunctionDef)}
     assert {"verify_collect", "verify_prepare", "verify_score", "verify_finish"} <= functions
     assert '"verify-collect", "verify"' in source
-    assert 'run != "v2" or langs != ["en"]' in source
+    assert '(run, langs) not in (("v2", ["en"]), ("v6", ["fr"]))' in source
