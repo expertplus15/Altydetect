@@ -528,7 +528,27 @@
     "deleteBody": "Your account, history and preferences are permanently erased. An active Pro subscription is cancelled immediately, with no refund for the current period.",
     "deleteConfirm": "To confirm, type your email address: {email}",
     "deleteButton": "Delete permanently",
-    "deleteMismatch": "The address doesn't match the account's."
+    "deleteMismatch": "The address doesn't match the account's.",
+    "apiKeys": {
+      "title": "API keys",
+      "intro": "Keys give access to the public API (detection and plagiarism) using your account's quota. Each key is shown only once: keep it somewhere safe. Up to {max} active keys.",
+      "name": "Key name",
+      "namePlaceholder": "For example: production server",
+      "create": "Create a key",
+      "created": "Here is your new key. Copy it now: it will not be shown again.",
+      "none": "No active keys.",
+      "createdOn": "Created on {date}",
+      "lastUsed": "used on {date}",
+      "neverUsed": "never used",
+      "revoke": "Revoke",
+      "revokeLabel": "Revoke key {name}",
+      "errors": {
+        "limit": "You already have {max} active keys. Revoke one to create another.",
+        "invalid": "Give the key a name between 1 and 60 characters.",
+        "upgrade": "The API is included in Pro.",
+        "closed": "The public API is not open yet."
+      }
+    }
   },
   "plagiarism": {
     "title": "Plagiarism",

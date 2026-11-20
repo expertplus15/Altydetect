@@ -67,6 +67,9 @@ DATABASE_URL=… pnpm -C apps/web db:migrate
   build : `pnpm build`.
 - Toutes les variables de l'étape 1.
 - `NEXT_PUBLIC_APP_URL` doit être défini **au moment du build** (sitemap, robots, liens).
+- API publique (ADR-0019) : laisser `PUBLIC_API_ENABLED` vide tant que le prix de l'API n'est
+  pas décidé. Avec `PUBLIC_API_ENABLED=true`, `/api/v1/*` répond aux comptes Pro munis d'une clé
+  et la page Compte affiche la gestion des clés. Migration `20261120000000_api_keys` requise.
 
 ## 5. Worker (Railway ou Render)
 

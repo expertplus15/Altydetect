@@ -1,7 +1,9 @@
 import { MIN_WORDS_FOR_DETECTION } from "@altydetect/billing";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { DeleteAccountForm, PreferencesForm } from "@/components/account/AccountForms";
+import { ApiKeys } from "@/components/account/ApiKeys";
 import { Link } from "@/i18n/navigation";
+import { isPublicApiEnabled, listApiKeys, MAX_ACTIVE_API_KEYS } from "@/lib/api/keys";
 import { checkDetectionQuota, checkRewriteQuota } from "@/lib/billing/quota";
 import { getUserPlan } from "@/lib/billing/subscription";
 import { db } from "@/lib/db";
@@ -45,6 +47,9 @@ export default async function AccountPage({
     checkDetectionQuota(sessionUser.id, MIN_WORDS_FOR_DETECTION),
     checkRewriteQuota(sessionUser.id),
   ]);
+  // Clés d'API : seulement si l'API publique est ouverte et le compte Pro (ADR-0019).
+  const showApiKeys = isPublicApiEnabled() && plan.plan === "pro";
+  const apiKeys = showApiKeys ? await listApiKeys(sessionUser.id) : [];
   const date = (value: Date) => format.dateTime(value, { dateStyle: "long" });
   const card = "flex flex-col gap-4 rounded-2xl border border-gray-200 p-5 md:p-6";
 
@@ -125,6 +130,15 @@ export default async function AccountPage({
           note={`${rewrite.limitHidden ? `${t("fairUse")} · ` : ""}${t("resets", { date: format.dateTime(rewrite.resetsAt, { dateStyle: "long", timeStyle: "short", timeZone: "UTC" }) })}`}
         />
       </section>
+
+      {showApiKeys && (
+        <section aria-labelledby="api-keys" className={card}>
+          <h2 id="api-keys" className="font-semibold">
+            {t("apiKeys.title")}
+          </h2>
+          <ApiKeys keys={apiKeys} max={MAX_ACTIVE_API_KEYS} />
+        </section>
+      )}
 
       <section className={card}>
         <PreferencesForm locale={user.locale} trainingOptIn={user.trainingOptIn} />
