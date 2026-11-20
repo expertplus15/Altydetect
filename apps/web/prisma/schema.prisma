@@ -57,6 +57,7 @@ model User {
   documents    Document[]
   accounts     Account[]
   sessions     Session[]
+  apiKeys      ApiKey[]
 
   @@index([createdAt])
   @@map("users")
@@ -131,6 +132,27 @@ model Analysis {
   @@index([documentId, createdAt])
   @@index([createdAt])
   @@map("analyses")
+}
+
+// --- API publique (ADR-0019) ---
+// Seule l'empreinte SHA-256 de la clé est conservée ; la clé n'est montrée qu'à sa création.
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  userId     String    @map("user_id")
+  name       String
+  /// Début de la clé (alty_ + 6 caractères), pour la reconnaître dans la liste.
+  prefix     String
+  /// Empreinte SHA-256 (hexadécimale) de la clé complète.
+  hash       String    @unique
+  lastUsedAt DateTime? @map("last_used_at")
+  revokedAt  DateTime? @map("revoked_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("api_keys")
 }
 
 // --- Base privée du plagiat (Indexa, phase 2) ---

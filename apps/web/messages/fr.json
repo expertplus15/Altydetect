@@ -528,7 +528,27 @@
     "deleteBody": "Votre compte, votre historique et vos préférences sont effacés définitivement. Un abonnement Pro en cours est résilié immédiatement, sans remboursement de la période entamée.",
     "deleteConfirm": "Pour confirmer, saisissez votre adresse e-mail : {email}",
     "deleteButton": "Supprimer définitivement",
-    "deleteMismatch": "L'adresse saisie ne correspond pas à celle du compte."
+    "deleteMismatch": "L'adresse saisie ne correspond pas à celle du compte.",
+    "apiKeys": {
+      "title": "Clés d'API",
+      "intro": "Les clés donnent accès à l'API publique (détection et plagiat) avec le quota de votre compte. Chaque clé n'est affichée qu'une fois : conservez-la en lieu sûr. Jusqu'à {max} clés actives.",
+      "name": "Nom de la clé",
+      "namePlaceholder": "Par exemple : serveur de production",
+      "create": "Créer une clé",
+      "created": "Voici votre nouvelle clé. Copiez-la maintenant : elle ne sera plus affichée.",
+      "none": "Aucune clé active.",
+      "createdOn": "Créée le {date}",
+      "lastUsed": "utilisée le {date}",
+      "neverUsed": "jamais utilisée",
+      "revoke": "Révoquer",
+      "revokeLabel": "Révoquer la clé {name}",
+      "errors": {
+        "limit": "Vous avez déjà {max} clés actives. Révoquez-en une pour en créer une autre.",
+        "invalid": "Donnez à la clé un nom de 1 à 60 caractères.",
+        "upgrade": "L'API est incluse dans Pro.",
+        "closed": "L'API publique n'est pas encore ouverte."
+      }
+    }
   },
   "plagiarism": {
     "title": "Plagiat",
