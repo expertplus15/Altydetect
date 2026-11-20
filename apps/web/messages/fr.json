@@ -639,6 +639,7 @@
       "UPGRADE_REQUIRED": "L'analyse approfondie est incluse dans Pro.",
       "TEXT_TOO_LONG": "Ce texte est trop long. Analysez-le par parties.",
       "DETECTION_UNAVAILABLE": "Le service de détection ne répond pas. Vos mots ont été rendus ; réessayez dans un instant.",
+      "UNSUPPORTED_LANGUAGE": "La détection n'est pas encore disponible pour la langue de ce texte. Vos mots ont été rendus.",
       "default": "L'analyse n'a pas abouti. Réessayez dans un instant."
     }
   }

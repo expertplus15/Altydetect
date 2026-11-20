@@ -11,6 +11,10 @@ d'après les règles de config/routing.yaml (relues sans redéploiement). Quatre
 Quand les deux ont tourné, la comparaison est toujours enregistrée. Si aucun fournisseur
 externe ne répond, Veritas ne répond seul que si `veritas_fallback` est activé (désactivé en
 phase 3) ; sinon la détection est indisponible.
+
+Un segment `serve: closed` n'est pas servi : erreur UNSUPPORTED_LANGUAGE, en mode standard
+comme approfondi (ADR-0016). Sans fournisseur externe configuré, le mode approfondi suit le
+segment au lieu de demander deux avis (ADR-0015 §1).
 """
 
 import logging
@@ -50,6 +54,14 @@ class DetectionUnavailableError(Exception):
     """Ni le fournisseur externe ni Veritas ne peuvent répondre."""
 
 
+class UnsupportedLanguageError(Exception):
+    """La langue du texte n'est pas ouverte à la détection (segment `serve: closed`)."""
+
+    def __init__(self, language: str) -> None:
+        super().__init__(f"langue non servie : {language}")
+        self.language = language
+
+
 @dataclass
 class Router:
     thresholds: Callable[[], Thresholds]
@@ -73,7 +85,9 @@ class Router:
         )
         plan = (request.plan or Plan.free).value
         segment = routing.segment_for(language, words, plan)
-        serve = "both" if request.mode == Mode.deep else segment.serve
+        if segment.serve == "closed":
+            raise UnsupportedLanguageError(language)
+        serve = "both" if request.mode == Mode.deep and self.externals else segment.serve
         if not self.veritas.available(language):
             serve = "external"
 

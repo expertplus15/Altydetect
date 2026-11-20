@@ -11,7 +11,7 @@ from veritas.engine.model import VeritasModels
 from veritas.main import app, get_router, get_store
 from veritas.providers.base import ProviderError
 from veritas.router import Router
-from veritas.settings import routing_config
+from veritas.settings import Routing, Segment, routing_config
 
 TOKEN = "jeton-de-test"
 HEADERS = {"X-Internal-Token": TOKEN}
@@ -69,6 +69,26 @@ def test_unavailable(client: TestClient) -> None:
     response = client.post("/internal/v1/detect", json={"text": french_text()}, headers=HEADERS)
     assert response.status_code == 503
     assert response.json() == {"error": "DETECTION_UNAVAILABLE"}
+
+
+def test_unsupported_language(client: TestClient) -> None:
+    """ADR-0016 : un segment `serve: closed` répond UNSUPPORTED_LANGUAGE (422)."""
+    closed = Routing(
+        agreement_threshold=0.85,
+        min_comparisons=10,
+        shadow_enabled=False,
+        shadow_sample_rate=0.0,
+        segments=(Segment(name="fr", serve="closed", languages=frozenset({"fr"})),),
+    )
+    app.dependency_overrides[get_router] = lambda: Router(
+        thresholds=lambda: THRESHOLDS,
+        routing=lambda: closed,
+        externals=[FixedProvider("pangram", 0.92)],
+        veritas=VeritasModels(),
+    )
+    response = client.post("/internal/v1/detect", json={"text": french_text()}, headers=HEADERS)
+    assert response.status_code == 422
+    assert response.json() == {"error": "UNSUPPORTED_LANGUAGE"}
 
 
 def test_token_required(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:

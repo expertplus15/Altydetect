@@ -15,7 +15,9 @@ import yaml
 
 CONFIG_DIR = Path(os.environ.get("VERITAS_CONFIG_DIR", Path(__file__).parents[2] / "config"))
 
-Serve = Literal["external", "veritas", "both"]
+# closed : langue non servie, erreur UNSUPPORTED_LANGUAGE (ADR-0016).
+Serve = Literal["external", "veritas", "both", "closed"]
+SERVES = ("external", "veritas", "both", "closed")
 Level = Literal["high", "medium", "low"]
 # Bornes d'un seuil « Probablement IA » propre à un modèle (ADR-0013 ; borne haute portée à
 # 0,95 par ADR-0017 : les probabilités plafonnent vers 0,96 avec le lissage des étiquettes).
@@ -89,7 +91,7 @@ class Segment:
         serve = raw.get("serve", "external")
         primary = raw.get("primary", "external")
         level = raw.get("veritas_min_confidence", "high")
-        if serve not in ("external", "veritas", "both") or primary not in ("external", "veritas"):
+        if serve not in SERVES or primary not in ("external", "veritas"):
             raise ValueError(f"routing.yaml : segment {raw.get('name')!r} invalide")
         if level not in LEVEL_RANK:
             raise ValueError(f"routing.yaml : veritas_min_confidence {level!r} invalide")

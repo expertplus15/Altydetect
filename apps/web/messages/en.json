@@ -639,6 +639,7 @@
       "UPGRADE_REQUIRED": "In-depth analysis is included in Pro.",
       "TEXT_TOO_LONG": "This text is too long. Analyze it in parts.",
       "DETECTION_UNAVAILABLE": "The detection service is not responding. Your words have been returned; try again in a moment.",
+      "UNSUPPORTED_LANGUAGE": "Detection is not yet available for the language of this text. Your words have been returned.",
       "default": "The analysis did not complete. Try again in a moment."
     }
   }
