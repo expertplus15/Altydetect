@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "Étape : all, corpus, train, threshold (seuil propre, ADR-0013), inspect (corpus déposé), deploy (inférence), benchmark (fournisseur), robustness, verify-collect et verify (vérification EN 0.2, ADR-0016 : run v2, languages en), testset-v4 et measure-v4 (jeu detection-v4 et mesure de FR 0.6, ADR-0017 : run v6, languages fr)"
+        description: "Étape : all, corpus, train, threshold (seuil propre, ADR-0013), inspect (corpus déposé), deploy (inférence), benchmark (fournisseur), robustness, verify-collect et verify (vérification EN 0.2, ADR-0016 : run v2, languages en ; FR 0.6, ADR-0018 : run v6, languages fr), testset-v4 et measure-v4 (jeu detection-v4 et mesure de FR 0.6, ADR-0017 : run v6, languages fr)"
         type: choice
         options:
           [
@@ -137,8 +137,9 @@ jobs:
           if [[ "$stage" == *-v4 ]]; then
             [ "$run" = v6 ] && [ "$languages" = fr ] || { echo "::error::Étape $stage : run v6 et languages fr."; exit 1; }
           fi
+          # Vérification sur des textes réels : EN 0.2 (ADR-0016) ou FR 0.6 (ADR-0018).
           if [[ "$stage" == verify* ]]; then
-            [ "$run" = v2 ] && [ "$languages" = en ] || { echo "::error::Étape $stage : run v2 et languages en."; exit 1; }
+            { [ "$run" = v2 ] && [ "$languages" = en ]; } || { [ "$run" = v6 ] && [ "$languages" = fr ]; } || { echo "::error::Étape $stage : run v2 et languages en, ou run v6 et languages fr."; exit 1; }
           fi
           # Inspect : un nom de fichier simple, sans chemin.
           if [ "$stage" = inspect ]; then

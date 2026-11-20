@@ -1582,11 +1582,20 @@ def v4_measure() -> dict[str, Any]:
     return result
 
 
-# --- Jeu de vérification verification-en-v1 (ADR-0016) ---
+# --- Jeux de vérification verification-en-v1 (ADR-0016) et verification-fr-v1 (ADR-0018) ---
 
-VERIFICATION = "verification-en-v1"
-VERIFICATION_DIR = f"{CORPUS}/{VERIFICATION}"
-# Identification générique auprès d'archive.org et d'arXiv (aucune donnée personnelle).
+
+def _protocol(language: str) -> Any:
+    from train.verification import PROTOCOLS
+
+    return PROTOCOLS[language]
+
+
+def _verification_dir(language: str) -> str:
+    return f"{CORPUS}/{_protocol(language).version}"
+
+
+# Identification générique auprès d'archive.org, d'arXiv et de HAL (aucune donnée personnelle).
 USER_AGENT = "AltyDetect-verification/1.0"
 
 
@@ -1614,7 +1623,7 @@ def _fetch(url: str, attempts: int = 6) -> bytes:
     raise RuntimeError("inaccessible")
 
 
-def _stack_exchange(site: str, inventory: Counter[str]) -> list[dict[str, Any]]:
+def _stack_exchange(site: str, inventory: Counter[str], language: str) -> list[dict[str, Any]]:
     """Messages retenus d'un site, lus en flux dans Posts.xml du vidage (rien n'est gardé
     sur le disque du conteneur après la lecture)."""
     import shutil
@@ -1636,7 +1645,7 @@ def _stack_exchange(site: str, inventory: Counter[str]) -> list[dict[str, Any]]:
     assert process.stdout is not None
     documents = []
     for row in iter_posts(process.stdout):
-        document = stack_exchange_document(row, site, inventory)
+        document = stack_exchange_document(row, site, inventory, _protocol(language))
         if document is not None:
             documents.append(document)
     if process.wait() != 0:
@@ -1671,46 +1680,89 @@ def _arxiv(inventory: Counter[str], needed: int) -> list[dict[str, Any]]:
     return documents
 
 
+def _hal(inventory: Counter[str], needed: int) -> list[dict[str, Any]]:
+    """Résumés HAL en français sous licence ouverte, par l'interface de recherche (pagination
+    par curseur, une page par seconde). Si le filtre de licence ne donne rien, la licence est
+    lue seulement dépôt par dépôt."""
+    from train.verification import hal_document, hal_page, hal_query
+
+    documents: list[dict[str, Any]] = []
+    licence_filter = True
+    cursor, pages = "*", 0
+    while pages < 200 and len(documents) < needed:
+        records, following, found = hal_page(_fetch(hal_query(cursor, 500, licence_filter)))
+        if pages == 0 and found == 0 and licence_filter:
+            _log("HAL : aucun résultat avec le filtre de licence, lecture dépôt par dépôt")
+            licence_filter = False
+            continue
+        pages += 1
+        inventory["hal_records"] += len(records)
+        documents += [d for r in records if (d := hal_document(r, inventory)) is not None]
+        if not records or following in (None, cursor):
+            break
+        cursor = following
+        time.sleep(1)
+    _log(f"HAL : {len(documents)} résumés utilisables ({pages} pages)")
+    return documents
+
+
 @app.function(
     image=verify_image, volumes={CORPUS: corpus_volume}, timeout=90 * 60, cpu=2, memory=8192
 )
-def verify_collect() -> dict[str, Any]:
-    """Textes humains publics du jeu de vérification (CPU seul) : Stack Exchange et arXiv,
-    hors de tout texte du corpus d'EN 0.2 et des jeux de test anglais."""
+def verify_collect(language: str = "en") -> dict[str, Any]:
+    """Textes humains publics du jeu de vérification (CPU seul), hors de tout texte du corpus
+    du modèle mesuré et des jeux de test de sa langue. Anglais : Stack Exchange et arXiv ;
+    français : French Language Stack Exchange et HAL."""
     from train.verification import (
         FORUM_SITES,
+        FRENCH_SITE,
         NON_NATIVE_SITE,
         QUOTAS,
         exclude_known,
         manifest_entry,
         select,
         select_forum,
+        select_public,
     )
 
-    path = f"{VERIFICATION_DIR}/public.jsonl"
+    protocol = _protocol(language)
+    path = f"{_verification_dir(language)}/public.jsonl"
     inventory: Counter[str] = Counter()
     if not os.path.exists(path):
-        used, tests, test_shingles = _test_reference(f"{CORPUS}/v2/en", "en")
-        _log(f"en : référence {len(used)} empreintes et adresses, {len(tests)} textes de test")
+        base = f"{CORPUS}/{protocol.run}/{language}"
+        used, tests, test_shingles = _test_reference(base, language)
+        _log(
+            f"{language} : référence {len(used)} empreintes et adresses, "
+            f"{len(tests)} textes de test"
+        )
         candidates: list[dict[str, Any]] = []
-        for site in (NON_NATIVE_SITE, *FORUM_SITES):
-            candidates += _stack_exchange(site, inventory)
-        candidates += _arxiv(inventory, needed=4 * QUOTAS["human_abstract"])
+        if language == "en":
+            for site in (NON_NATIVE_SITE, *FORUM_SITES):
+                candidates += _stack_exchange(site, inventory, language)
+            candidates += _arxiv(inventory, needed=4 * QUOTAS["human_abstract"])
+        else:
+            candidates += _stack_exchange(FRENCH_SITE, inventory, language)
+            candidates += _hal(inventory, needed=3 * (protocol.public_total or 0))
         fresh = exclude_known(candidates, used, tests, test_shingles, inventory)
 
         def of(category: str) -> list[dict[str, Any]]:
             return [d for d in fresh if d["category"] == category]
 
-        public = (
-            select(of("human_non_native"), QUOTAS["human_non_native"])
-            + select_forum(of("human_forum"))
-            + select(of("human_abstract"), QUOTAS["human_abstract"])
-        )
-        counts = Counter(d["category"] for d in public)
-        short = {c: counts[c] for c, quota in QUOTAS.items() if counts[c] < quota}
+        if language == "en":
+            public = (
+                select(of("human_non_native"), QUOTAS["human_non_native"])
+                + select_forum(of("human_forum"))
+                + select(of("human_abstract"), QUOTAS["human_abstract"])
+            )
+            counts = Counter(d["category"] for d in public)
+            short = {c: counts[c] for c, quota in QUOTAS.items() if counts[c] < quota}
+        else:
+            public = select_public(fresh, protocol)
+            total = protocol.public_total or 0
+            short = {"public": len(public)} if len(public) < total else {}
         if short:
             raise RuntimeError(
-                f"{VERIFICATION} : sources insuffisantes {short} ; {dict(inventory)}"
+                f"{protocol.version} : sources insuffisantes {short} ; {dict(inventory)}"
             )
         _write(path, public)
         corpus_volume.commit()
@@ -1720,98 +1772,103 @@ def verify_collect() -> dict[str, Any]:
         "counts": dict(Counter(d["category"] for d in public)),
         "manifest": [manifest_entry(d) for d in public],
     }
-    _log(f"{VERIFICATION} : textes publics {summary['counts']} {summary['inventory']}")
+    _log(f"{protocol.version} : textes publics {summary['counts']} {summary['inventory']}")
     return summary
 
 
-def _deposit_files() -> list[Path]:
-    return sorted(Path(INCOMING, VERIFICATION).glob("*.jsonl"))
+def _deposit_files(language: str) -> list[Path]:
+    return sorted(Path(INCOMING, _protocol(language).version).glob("*.jsonl"))
 
 
 @app.function(volumes={CORPUS: corpus_volume}, timeout=30 * 60, cpu=2, memory=8192)
-def verify_prepare() -> dict[str, Any]:
+def verify_prepare(language: str = "en") -> dict[str, Any]:
     """Textes publics et dépôt de l'équipe réunis (CPU seul). Arrêt avant toute dépense GPU
     s'il manque des textes ou si la mesure a déjà eu lieu (une seule mesure, ADR-0016)."""
     from train.verification import check_sizes, exclude_known, parse_deposit
 
-    if os.path.exists(f"{VERIFICATION_DIR}/measured.json"):
-        raise RuntimeError(f"{VERIFICATION} : déjà mesuré, aucune nouvelle mesure (ADR-0016)")
-    public = _read(f"{VERIFICATION_DIR}/public.jsonl")
+    protocol = _protocol(language)
+    directory, version = _verification_dir(language), protocol.version
+    if os.path.exists(f"{directory}/measured.json"):
+        raise RuntimeError(f"{version} : déjà mesuré, aucune nouvelle mesure (ADR-0016)")
+    public = _read(f"{directory}/public.jsonl")
     if not public:
-        raise RuntimeError(f"{VERIFICATION} : lancer d'abord l'étape verify-collect")
+        raise RuntimeError(f"{version} : lancer d'abord l'étape verify-collect")
     inventory: Counter[str] = Counter()
-    files = _deposit_files()
+    files = _deposit_files(language)
     deposit = [
         d
         for file in files
-        for d, _ in parse_deposit(file.read_bytes().splitlines(), inventory)
+        for d, _ in parse_deposit(file.read_bytes().splitlines(), inventory, protocol)
         if d is not None
     ]
-    used, tests, test_shingles = _test_reference(f"{CORPUS}/v2/en", "en")
+    used, tests, test_shingles = _test_reference(f"{CORPUS}/{protocol.run}/{language}", language)
     used |= {d["sha256"] for d in public}
     deposit = exclude_known(deposit, used, tests, test_shingles, inventory)
     documents = public + deposit
     counts = dict(Counter(d["category"] for d in documents))
-    problems = check_sizes(counts)
+    problems = check_sizes(counts, protocol)
     summary = {"files": len(files), "counts": counts, "inventory": dict(inventory)}
-    _log(f"{VERIFICATION} : {summary}")
+    _log(f"{version} : {summary}")
     if problems:
-        raise RuntimeError(f"{VERIFICATION} : arrêt avant notation : {problems}")
-    _write(f"{VERIFICATION_DIR}/scoring.jsonl", documents)
+        raise RuntimeError(f"{version} : arrêt avant notation : {problems}")
+    _write(f"{directory}/scoring.jsonl", documents)
     corpus_volume.commit()
     return summary
 
 
 @app.function(volumes={CORPUS: corpus_volume, MODELS: models_volume}, gpu="L4", timeout=45 * 60)
-def verify_score() -> list[dict[str, Any]]:
-    """Notation unique par VRT-DET-EN-0.2, à son seuil propre (thresholds.yaml). Rien d'autre
-    que l'identifiant, la catégorie, la probabilité et la bande ne sort du conteneur."""
+def verify_score(language: str = "en") -> list[dict[str, Any]]:
+    """Notation unique par le modèle du protocole (EN 0.2 ou FR 0.6), à son seuil propre
+    (thresholds.yaml). Rien d'autre que l'identifiant, la catégorie, la probabilité et la
+    bande ne sort du conteneur."""
     from veritas.scoring import score
     from veritas.settings import thresholds_config
 
-    from train.verification import LANGUAGE, REFERENCE
-
-    _log(f"{REFERENCE} : conteneur GPU démarré ({VERIFICATION})")
+    protocol = _protocol(language)
+    reference = protocol.reference
+    _log(f"{reference} : conteneur GPU démarré ({protocol.version})")
     corpus_volume.reload()
-    model = _load_model(REFERENCE)
+    model = _load_model(reference)
     thresholds = thresholds_config().get()
     records = []
-    for d in _read(f"{VERIFICATION_DIR}/scoring.jsonl"):
-        scored = score(model.detect(d["text"], LANGUAGE), d["text"], LANGUAGE, thresholds)
+    for d in _read(f"{_verification_dir(language)}/scoring.jsonl"):
+        scored = score(model.detect(d["text"], language), d["text"], language, thresholds)
         record = {"id": d["id"], "category": d["category"], "label": d["label"]}
         if d["category"] != "human_volunteer":
             record["source"] = d.get("source")
         record["probability"] = round(scored.probability, 4)
         record["band"] = scored.output.verdict_band.value
         records.append(record)
-    _log(f"{REFERENCE} : {len(records)} textes notés")
+    _log(f"{reference} : {len(records)} textes notés")
     return records
 
 
 @app.function(volumes={CORPUS: corpus_volume}, timeout=10 * 60)
-def verify_finish(report: dict[str, Any]) -> dict[str, Any]:
+def verify_finish(report: dict[str, Any], language: str = "en") -> dict[str, Any]:
     """Après la mesure : jeu gelé sans les volontaires, textes des volontaires effacés du
     dépôt (et lignes refusées), marque « mesuré » qui interdit une seconde mesure."""
     from train.verification import keep_line, manifest_entry, parse_deposit
 
-    documents = _read(f"{VERIFICATION_DIR}/scoring.jsonl")
+    protocol = _protocol(language)
+    directory = _verification_dir(language)
+    documents = _read(f"{directory}/scoring.jsonl")
     manifest = [manifest_entry(d) for d in documents]
     _write(
-        f"{VERIFICATION_DIR}/en.jsonl",
+        f"{directory}/{language}.jsonl",
         [d for d in documents if d["category"] != "human_volunteer"],
     )
-    os.remove(f"{VERIFICATION_DIR}/scoring.jsonl")
+    os.remove(f"{directory}/scoring.jsonl")
     erased = 0
-    for file in _deposit_files():
+    for file in _deposit_files(language):
         lines = file.read_bytes().splitlines()
-        parsed = parse_deposit(lines, Counter())
+        parsed = parse_deposit(lines, Counter(), protocol)
         kept = [raw for d, raw in parsed if keep_line(d)]
         erased += len(parsed) - len(kept)
         file.write_bytes(b"".join(bytes(raw) + b"\n" for raw in kept))
-    with open(f"{VERIFICATION_DIR}/measured.json", "w", encoding="utf-8") as f:
+    with open(f"{directory}/measured.json", "w", encoding="utf-8") as f:
         json.dump({"measured_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), **report}, f)
     corpus_volume.commit()
-    _log(f"{VERIFICATION} : jeu gelé écrit, {erased} lignes effacées du dépôt")
+    _log(f"{protocol.version} : jeu gelé écrit, {erased} lignes effacées du dépôt")
     return {"manifest": manifest, "erased_lines": erased}
 
 
@@ -1927,11 +1984,14 @@ def main(
         _testset_v4(stage, out_dir, model)
         return
     if stage in ("verify-collect", "verify"):
-        # Vérification de VRT-DET-EN-0.2 sur des textes réels (ADR-0016) : anglais, modèle du
-        # run v2, sans entraînement.
-        if run != "v2" or langs != ["en"]:
-            raise SystemExit(f"stage {stage} (ADR-0016) : run v2 et languages « en » seulement")
-        _verify(stage, out_dir)
+        # Vérification sur des textes réels, sans entraînement : VRT-DET-EN-0.2 (ADR-0016,
+        # run v2, anglais) ou VRT-DET-FR-0.6 (ADR-0018, run v6, français).
+        if (run, langs) not in (("v2", ["en"]), ("v6", ["fr"])):
+            raise SystemExit(
+                f"stage {stage} : run v2 et languages « en » (ADR-0016), "
+                "ou run v6 et languages « fr » (ADR-0018)"
+            )
+        _verify(stage, out_dir, langs[0])
         return
     if stage == "inspect":
         # Corpus déposé à la main dans le volume (CPU seul, quelques centimes).
@@ -1983,12 +2043,16 @@ def _testset_v4(stage: str, out_dir: Path, model: str) -> None:
         _log(f"{report['reference']} detection-v4 portes : " + json.dumps(report["gates"]))
 
 
-def _verify(stage: str, out_dir: Path) -> None:
+def _verify(stage: str, out_dir: Path, language: str = "en") -> None:
     """verify-collect : textes publics (CPU). verify : dépôt vérifié (CPU), notation unique
-    (un L4), portes d'ADR-0016, puis effacement des textes des volontaires."""
+    (un L4), portes d'ADR-0016 (mêmes pour le français, ADR-0018), puis effacement des textes
+    des volontaires."""
     from detection.robustness import category_report
 
-    from train.verification import REFERENCE, check_gates
+    from train.verification import check_gates
+
+    protocol = _protocol(language)
+    reference, version = protocol.reference, protocol.version
 
     def write(name: str, value: Any) -> None:
         (out_dir / name).write_text(
@@ -1996,24 +2060,26 @@ def _verify(stage: str, out_dir: Path) -> None:
         )
 
     if stage == "verify-collect":
-        summary = verify_collect.remote()
-        write(f"manifest-{VERIFICATION}-public.json", summary)
+        summary = verify_collect.remote(language)
+        write(f"manifest-{version}-public.json", summary)
         return
-    prepared = verify_prepare.remote()
-    records = verify_score.remote()
+    prepared = verify_prepare.remote(language)
+    records = verify_score.remote(language)
     gates = check_gates(records)
     report = {
-        "reference": REFERENCE,
-        "testset": VERIFICATION,
+        "reference": reference,
+        "testset": version,
         "prepared": prepared,
         "gates": gates,
         "categories": category_report(records),
         "records": records,
     }
-    write(f"verification-{VERIFICATION}-{REFERENCE}.json", report)
-    finished = verify_finish.remote({"passed": gates["passed"], "checks": gates["checks"]})
-    write(f"manifest-{VERIFICATION}.json", finished)
-    _log(f"{REFERENCE} {VERIFICATION} portes : " + json.dumps(gates, ensure_ascii=False))
+    write(f"verification-{version}-{reference}.json", report)
+    finished = verify_finish.remote(
+        {"passed": gates["passed"], "checks": gates["checks"]}, language
+    )
+    write(f"manifest-{version}.json", finished)
+    _log(f"{reference} {version} portes : " + json.dumps(gates, ensure_ascii=False))
 
 
 def _run_threshold(out_dir: Path, run: str, langs: list[str], suffix: str = "") -> None:
