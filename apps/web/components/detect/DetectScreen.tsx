@@ -27,6 +27,7 @@ const KNOWN_ERRORS = [
   "UPGRADE_REQUIRED",
   "TEXT_TOO_LONG",
   "DETECTION_UNAVAILABLE",
+  "UNSUPPORTED_LANGUAGE",
 ];
 const SHARE_KEY = { likely_ai: "ai", undetermined: "undetermined", likely_human: "human" } as const;
 

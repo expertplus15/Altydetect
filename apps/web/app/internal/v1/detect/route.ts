@@ -69,6 +69,10 @@ export async function POST(request: Request): Promise<Response> {
         { status: 422 },
       );
     }
+    // Langue non ouverte à la détection (ADR-0016) : mots rendus, aucun score.
+    if (error instanceof VeritasError && error.code === "UNSUPPORTED_LANGUAGE") {
+      return Response.json({ error: "UNSUPPORTED_LANGUAGE" }, { status: 422 });
+    }
     return Response.json({ error: "DETECTION_UNAVAILABLE" }, { status: 503 });
   }
 

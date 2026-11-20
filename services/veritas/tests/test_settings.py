@@ -9,6 +9,7 @@ from veritas.settings import (
     CONFIG_DIR,
     LiveConfig,
     Routing,
+    Segment,
     Thresholds,
     routing_config,
     thresholds_config,
@@ -102,3 +103,11 @@ def test_model_thresholds_are_parsed_and_bounded() -> None:
     for value in (0.69, 0.96):
         with pytest.raises(ValueError, match=r"VRT-DET-FR-0\.4"):
             Thresholds.parse(_thresholds(f"models: {{VRT-DET-FR-0.4: {{likely_ai: {value}}}}}\n"))
+
+
+def test_closed_serve_is_accepted() -> None:
+    """ADR-0016 : `serve: closed` pour une langue non ouverte."""
+    segment = Segment.parse({"name": "fr", "languages": ["fr"], "serve": "closed"})
+    assert segment.serve == "closed"
+    with pytest.raises(ValueError, match="invalide"):
+        Segment.parse({"name": "fr", "serve": "ferme"})

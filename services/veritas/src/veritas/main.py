@@ -25,7 +25,12 @@ from veritas.contracts import (
 )
 from veritas.engine.model import VeritasModels
 from veritas.providers import external_providers_from_env
-from veritas.router import DetectionUnavailableError, Router, TextTooShortError
+from veritas.router import (
+    DetectionUnavailableError,
+    Router,
+    TextTooShortError,
+    UnsupportedLanguageError,
+)
 from veritas.settings import database_url, routing_config, thresholds_config
 from veritas.shadow import RqShadowQueue
 
@@ -103,6 +108,8 @@ def detect(
         return router.detect(request)
     except TextTooShortError as error:
         return _error(Error.TEXT_TOO_SHORT, 422, error.min_words)
+    except UnsupportedLanguageError:
+        return _error(Error.UNSUPPORTED_LANGUAGE, 422)
     except DetectionUnavailableError:
         return _error(Error.DETECTION_UNAVAILABLE, 503)
 

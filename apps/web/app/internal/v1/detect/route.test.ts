@@ -117,6 +117,14 @@ describe.skipIf(!process.env.DATABASE_URL)("route de détection", () => {
     expect(await used(userId)).toBe(0);
   });
 
+  it("rend les mots quand la langue du texte n'est pas ouverte", async () => {
+    state.detect = () => Promise.reject(new VeritasError(422, "UNSUPPORTED_LANGUAGE"));
+    const response = await post({ text: TEXT });
+    expect(response.status).toBe(422);
+    expect(await response.json()).toEqual({ error: "UNSUPPORTED_LANGUAGE" });
+    expect(await used(userId)).toBe(0);
+  });
+
   it("rend les mots quand Veritas compte moins de 150 mots", async () => {
     state.detect = () => Promise.reject(new VeritasError(422, "TEXT_TOO_SHORT", 150));
     expect((await post({ text: TEXT })).status).toBe(422);

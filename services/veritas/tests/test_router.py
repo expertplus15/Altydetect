@@ -10,7 +10,12 @@ from veritas.comparisons import MemoryComparisonStore
 from veritas.contracts import Confidence, Language, Mode, Plan, VerdictBand, VeritasDetectRequest
 from veritas.engine.model import ModelUnavailableError, VeritasModels
 from veritas.providers.base import ProviderError, RawDetection
-from veritas.router import DetectionUnavailableError, Router, TextTooShortError
+from veritas.router import (
+    DetectionUnavailableError,
+    Router,
+    TextTooShortError,
+    UnsupportedLanguageError,
+)
 from veritas.settings import Routing, Segment
 from veritas.shadow import ShadowJob
 
@@ -239,3 +244,41 @@ def test_store_failure_does_not_break_the_answer() -> None:
 
     store.record = broken  # type: ignore[method-assign,assignment]
     assert router.detect(request()).engine.secondary == "VRT-DET-FR-0.1"
+
+
+# --- Ouverture par langue (ADR-0015 §1, ADR-0016) ---
+
+
+@pytest.mark.parametrize("mode", [Mode.standard, Mode.deep])
+def test_closed_segment_is_never_served(mode: Mode) -> None:
+    external, veritas = FixedProvider("pangram", 0.9), FakeVeritas(0.9)
+    router, store, shadow = make(routing("closed"), [external], veritas)
+    with pytest.raises(UnsupportedLanguageError) as raised:
+        router.detect(request(mode=mode))
+    assert raised.value.language == "fr"
+    # Aucun avis demandé, rien d'enregistré.
+    assert external.calls == 0 and veritas.calls == 0
+    assert store.items == [] and shadow.jobs == []
+
+
+def test_closed_default_segment_covers_other_languages() -> None:
+    rules = replace(routing("veritas"), default=Segment(name="other", serve="closed"))
+    router, _, _ = make(rules, [], FakeVeritas(0.9, languages=("fr", "en")))
+    with pytest.raises(UnsupportedLanguageError):
+        router.detect(request(language=Language.en))
+
+
+def test_deep_mode_follows_segment_without_external_provider() -> None:
+    veritas = FakeVeritas(0.9)
+    router, store, _ = make(routing("veritas", veritas_min_confidence="low"), [], veritas)
+    out = router.detect(request(mode=Mode.deep))
+    assert out.engine.primary == "VRT-DET-FR-0.1" and out.engine.secondary is None
+    assert veritas.calls == 1 and store.items == []
+
+
+def test_deep_mode_without_provider_on_external_segment_is_unavailable() -> None:
+    veritas = FakeVeritas(0.9)
+    router, _, _ = make(routing("external"), [], veritas)
+    with pytest.raises(DetectionUnavailableError):
+        router.detect(request(mode=Mode.deep))
+    assert veritas.calls == 0
